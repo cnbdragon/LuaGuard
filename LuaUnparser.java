@@ -18,6 +18,11 @@ class LuaUnparser extends Visitor {
    * Statements
    ***/
   
+  /**
+   * Outputs a local variable assignment.
+   *
+   * @param n Local assignment statement
+   */
   public void visit(LocalAssign n) {
     out.print("local ");
   
@@ -37,6 +42,11 @@ class LuaUnparser extends Visitor {
     ((Exp)n.values.get(n.values.size()-1)).accept(this);
   }
 
+  /**
+   * Outputs variable assignment.
+   *
+   * @param n Assignment statement node
+   */
   public void visit(Assign n) {
     // Variables
     for(int i = 0; i < n.vars.size() - 1; i++) {
@@ -59,11 +69,21 @@ class LuaUnparser extends Visitor {
    *  Expressions
    ***/
 
+  /**
+   * Outputs a unary expression.
+   *
+   * @param n Unary expression node
+   */
   public void visit(UnopExp n) {
     out.print(opString(n.op));
     n.rhs.accept(this);
   }
 
+  /**
+   * Outputs a binary expression
+   *
+   * @param n Binary expression node
+   */
   public void visit(BinopExp n) {
     n.lhs.accept(this);
     String op = opString(n.op);
@@ -71,14 +91,32 @@ class LuaUnparser extends Visitor {
     n.rhs.accept(this);
   }
 
+  /**
+   * Outputs the variable name referred by the node.
+   *
+   * @param n Node that contains a variable name
+   */
+  public void visit(NameExp n) {
+    out.print(((Name)n.name).name);
+  }
+  
+  /**
+   * Outputs constant values.
+   *
+   * @param n Constant AST node
+   */
   public void visit(Constant n) {
     out.print(n.value.toString());
   }
 
-  public void visit(NameExp n) {
-    out.print(((Name)n.name).name);
-  }
 
+
+  /**
+   * Converts integer value of operators to the string representation.
+   *
+   * @param op integer value of operator tokens
+   * @return string representation of the operator
+   */
   private String opString(int op) {
     String opStr = "";
     switch(op) {
