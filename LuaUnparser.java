@@ -5,19 +5,30 @@ import org.luaj.vm2.ast.*;
 import org.luaj.vm2.ast.Exp.*;
 import org.luaj.vm2.ast.Stat.*;
 import org.luaj.vm2.Lua;
+import org.luaj.vm2.LuaString;
 
 class LuaUnparser extends Visitor {
 
   private PrintStream out;
+  private int indentLevel;
 
   public LuaUnparser(PrintStream out) {
     this.out = out;
+    this.indentLevel = 0;
+  }
+
+  public void visit(Block n) {
+    for(int i = 0; i < n.stats.size() - 1; i++) {
+      ((Stat)n.stats.get(i)).accept(this);
+      out.print(";\n");
+    }
+    ((Stat)n.stats.get(n.stats.size() - 1)).accept(this);
   }
 
   /****
    * Statements
    ***/
-  
+
   /**
    * Outputs a local variable assignment.
    *
@@ -25,7 +36,7 @@ class LuaUnparser extends Visitor {
    */
   public void visit(LocalAssign n) {
     out.print("local ");
-  
+
     // Variables
     for(int i = 0; i < n.names.size() - 1; i++) {
       out.print(((Name)n.names.get(0)).name + ",");
@@ -99,17 +110,39 @@ class LuaUnparser extends Visitor {
   public void visit(NameExp n) {
     out.print(((Name)n.name).name);
   }
-  
+
   /**
    * Outputs constant values.
    *
    * @param n Constant AST node
    */
   public void visit(Constant n) {
-    out.print(n.value.toString());
+    if (n.value.typename() == "string") {
+      out.print("'" + unescape(n.value.toString()) + "'");
+    }
+    else {
+      out.print(n.value.toString());
+    }
   }
 
+  public void visit(IfThenElse n) {
+    out.print("if ");
+    n.ifexp.accept(this);
 
+    out.print(" then\n");
+    n.ifblock.accept(this);
+    out.print("\n");
+
+    for(int i = 0; i < n.elseifexps.size(); i++) {
+      out.print("elseif ");
+      ((Exp)n.elseifexps.get(i)).accept(this);
+      out.print(" then\n");
+      ((Block)n.elseifblocks.get(i)).accept(this);
+      out.print("\n");
+    }
+    out.print("else\n");
+    out.print("end\n");
+  }
 
   /**
    * Converts integer value of operators to the string representation.
@@ -122,67 +155,88 @@ class LuaUnparser extends Visitor {
     switch(op) {
       // Arithmetic
       case Lua.OP_ADD:
-         opStr = "+";
-         break;
+        opStr = "+";
+        break;
       case Lua.OP_SUB:
-         opStr = "-";
-         break;
+        opStr = "-";
+        break;
       case Lua.OP_MUL:
-         opStr = "*";
-         break;
+        opStr = "*";
+        break;
       case Lua.OP_DIV:
-         opStr = "/";
-         break;
+        opStr = "/";
+        break;
       case Lua.OP_MOD:
-         opStr = "%";
-         break;
+        opStr = "%";
+        break;
       case Lua.OP_POW:
-         opStr = "^";
-         break;
-      // String
+        opStr = "^";
+        break;
+        // String
       case Lua.OP_CONCAT:
-         opStr = "..";
-         break;
-      // Logical
+        opStr = "..";
+        break;
+        // Logical
       case Lua.OP_OR: 
-         opStr = "and";
-         break;
+        opStr = "and";
+        break;
       case Lua.OP_AND:
-         opStr = "or";
-         break;
-      // Relational
+        opStr = "or";
+        break;
+        // Relational
       case Lua.OP_NEQ:
-         opStr = "~=";
-         break;
+        opStr = "~=";
+        break;
       case Lua.OP_EQ:
-         opStr = "==";
-         break;
+        opStr = "==";
+        break;
       case Lua.OP_LT:
-         opStr = "<";
-         break;
+        opStr = "<";
+        break;
       case Lua.OP_LE:
-         opStr = "<=";
-         break; 
+        opStr = "<=";
+        break; 
       case Lua.OP_GT:
-         opStr = ">";
-         break;
+        opStr = ">";
+        break;
       case Lua.OP_GE:
-         opStr = ">=";
-         break;
-      // Unary
+        opStr = ">=";
+        break;
+        // Unary
       case Lua.OP_NOT:
-         opStr = "not";
-         break;
+        opStr = "not";
+        break;
       case Lua.OP_UNM:
-         opStr = "-";
-         break;
+        opStr = "-";
+        break;
       case Lua.OP_LEN:
-         opStr = "#";
-         break;
+        opStr = "#";
+        break;
       default:
-         System.err.println("Unhandled operator!\n");
+        System.err.println("Unhandled operator!\n");
     }
     return opStr;
   }
 
+  public static String unescape(String s) {
+    StringBuilder sb = new StringBuilder();
+    char[] c = s.toCharArray();
+    int n = c.length;
+    for ( int i=0; i<n; i++ ) {
+      switch ( c[i] ) {
+        case 7:  sb.append( "\\a" );    continue;
+        case '\b':  sb.append( "\\b" ); continue;
+        case '\f':  sb.append( "\\f" ); continue;
+        case '\n':  sb.append( "\\n" ); continue;
+        case '\r':  sb.append( "\\r" ); continue;
+        case '\t':  sb.append( "\\t" ); continue;
+        case 11:    sb.append( "\\v" );   continue;
+        case '"':   sb.append( '"' );  continue;
+        case '\'':  sb.append( "\\'" ); continue;
+        case '\\':  sb.append( "\\\\" ); continue;
+        default: sb.append( c[i] ); break;
+      }
+    }
+    return sb.toString();
+  }
 }
