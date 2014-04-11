@@ -59,72 +59,14 @@ class LuaUnparser extends Visitor {
    *  Expressions
    ***/
 
+  public void visit(UnopExp n) {
+    out.print(opString(n.op));
+    n.rhs.accept(this);
+  }
+
   public void visit(BinopExp n) {
     n.lhs.accept(this);
-    String op = "";
-    switch(n.op) {
-      // Arithmetic
-      case Lua.OP_ADD:
-         op = "+";
-         break;
-      case Lua.OP_SUB:
-         op = "-";
-         break;
-      case Lua.OP_MUL:
-         op = "*";
-         break;
-      case Lua.OP_DIV:
-         op = "/";
-         break;
-      case Lua.OP_MOD:
-         op = "%";
-         break;
-      case Lua.OP_POW:
-         op = "^";
-         break;
-      // String
-      case Lua.OP_CONCAT:
-         op = "..";
-         break;
-      // Logical
-      case Lua.OP_OR: 
-         op = "and";
-         break;
-      case Lua.OP_AND:
-         op = "or";
-         break;
-      // Relational
-      case Lua.OP_NEQ:
-         op = "~=";
-         break;
-      case Lua.OP_EQ:
-         op = "==";
-         break;
-      case Lua.OP_LT:
-         op = "<";
-         break;
-      case Lua.OP_LE:
-         op = "<=";
-         break; 
-      case Lua.OP_GT:
-         op = ">";
-         break;
-      case Lua.OP_GE:
-         op = ">=";
-         break;
-      // Unary
-      case Lua.OP_NOT:
-         op = "not";
-         break;
-      case Lua.OP_UNM:
-         op = "-";
-         break;
-      case Lua.OP_LEN:
-         op = "#";
-         break;
-      default:
-         System.err.println("Unhandled operator!\n");
-    }
+    String op = opString(n.op);
     out.print(" " + op + " ");
     n.rhs.accept(this);
   }
@@ -136,4 +78,73 @@ class LuaUnparser extends Visitor {
   public void visit(NameExp n) {
     out.print(((Name)n.name).name);
   }
+
+  private String opString(int op) {
+    String opStr = "";
+    switch(op) {
+      // Arithmetic
+      case Lua.OP_ADD:
+         opStr = "+";
+         break;
+      case Lua.OP_SUB:
+         opStr = "-";
+         break;
+      case Lua.OP_MUL:
+         opStr = "*";
+         break;
+      case Lua.OP_DIV:
+         opStr = "/";
+         break;
+      case Lua.OP_MOD:
+         opStr = "%";
+         break;
+      case Lua.OP_POW:
+         opStr = "^";
+         break;
+      // String
+      case Lua.OP_CONCAT:
+         opStr = "..";
+         break;
+      // Logical
+      case Lua.OP_OR: 
+         opStr = "and";
+         break;
+      case Lua.OP_AND:
+         opStr = "or";
+         break;
+      // Relational
+      case Lua.OP_NEQ:
+         opStr = "~=";
+         break;
+      case Lua.OP_EQ:
+         opStr = "==";
+         break;
+      case Lua.OP_LT:
+         opStr = "<";
+         break;
+      case Lua.OP_LE:
+         opStr = "<=";
+         break; 
+      case Lua.OP_GT:
+         opStr = ">";
+         break;
+      case Lua.OP_GE:
+         opStr = ">=";
+         break;
+      // Unary
+      case Lua.OP_NOT:
+         opStr = "not";
+         break;
+      case Lua.OP_UNM:
+         opStr = "-";
+         break;
+      case Lua.OP_LEN:
+         opStr = "#";
+         break;
+      default:
+         System.err.println("Unhandled operator!\n");
+    }
+    return opStr;
+  }
+
 }
