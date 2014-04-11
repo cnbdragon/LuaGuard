@@ -17,6 +17,11 @@ class LuaUnparser extends Visitor {
     this.indentLevel = 0;
   }
 
+  /**
+   * Visits each statement outputing line terminator, i.e. semi-colons
+   *
+   * @param n Block node
+   */
   public void visit(Block n) {
     for(int i = 0; i < n.stats.size() - 1; i++) {
       ((Stat)n.stats.get(i)).accept(this);
@@ -32,7 +37,7 @@ class LuaUnparser extends Visitor {
   /**
    * Outputs a local variable assignment.
    *
-   * @param n Local assignment statement
+   * @param n Local assignment statement node
    */
   public void visit(LocalAssign n) {
     out.print("local ");
@@ -112,6 +117,15 @@ class LuaUnparser extends Visitor {
   }
 
   /**
+   * Outputs a vararg, "..."
+   *
+   * @param n Node that indicates it's a vararg
+   */
+  public void visit(VarargsExp n) {
+    out.print("...");
+  }
+
+  /**
    * Outputs constant values.
    *
    * @param n Constant AST node
@@ -125,6 +139,11 @@ class LuaUnparser extends Visitor {
     }
   }
 
+  /**
+   * Outputs if-else condition/statement blocks.
+   *
+   * @param n If-else node
+   */
   public void visit(IfThenElse n) {
     out.print("if ");
     n.ifexp.accept(this);
@@ -218,6 +237,11 @@ class LuaUnparser extends Visitor {
     return opStr;
   }
 
+  /**
+   * Takes input string and produces a string with all escape characters unescaped.
+   *
+   * @param s String to unescape
+   */
   public static String unescape(String s) {
     StringBuilder sb = new StringBuilder();
     char[] c = s.toCharArray();
