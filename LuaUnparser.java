@@ -120,6 +120,36 @@ class LuaUnparser extends Visitor {
     out.print("end");
   }
 
+  /**
+   * Outputs goto statement
+   *
+   * @param n Goto node
+   */
+  public void visit(Goto n) {
+    out.print("goto ");
+    out.print(n.name);
+  }
+
+  /**
+   * Outputs label
+   *
+   * @param n Label node
+   */
+  public void visit(Label n) {
+    out.print("::");
+    out.print(n.name);
+    out.print("::");
+  }
+
+  /**
+   * Outputs break statement
+   *
+   * @param n Break node
+   */
+  public void visit(Break n) {
+    out.print("break");
+  }
+
   /****
    *  Expressions
    ***/
