@@ -26,7 +26,7 @@ class LuaUnparser extends Visitor {
     int numStats = n.stats.size();
     for(int i = 0; i < numStats - 1; i++) {
       ((Stat)n.stats.get(i)).accept(this);
-      out.print(";\n");
+      out.print("\n");
     }
     ((Stat)n.stats.get(numStats - 1)).accept(this);
   }
@@ -102,12 +102,14 @@ class LuaUnparser extends Visitor {
     out.print("\n");
 
     // else-if conditions/blocks
-    for(int i = 0; i < n.elseifexps.size(); i++) {
-      out.print("elseif ");
-      ((Exp)n.elseifexps.get(i)).accept(this);
-      out.print(" then\n");
-      ((Block)n.elseifblocks.get(i)).accept(this);
-      out.print("\n");
+    if(null != n.elseifexps) {
+      for(int i = 0; i < n.elseifexps.size(); i++) {
+        out.print("elseif ");
+        ((Exp)n.elseifexps.get(i)).accept(this);
+        out.print(" then\n");
+        ((Block)n.elseifblocks.get(i)).accept(this);
+        out.print("\n");
+      }
     }
 
     // else block
@@ -115,7 +117,7 @@ class LuaUnparser extends Visitor {
       out.print("else\n");
       n.elseblock.accept(this);
     }
-    out.print("end\n");
+    out.print("end");
   }
 
   /****
