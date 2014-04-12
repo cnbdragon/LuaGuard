@@ -145,13 +145,15 @@ class LuaUnparser extends Visitor {
    * @param n If-else node
    */
   public void visit(IfThenElse n) {
+
+    // if-then condition/block
     out.print("if ");
     n.ifexp.accept(this);
-
     out.print(" then\n");
     n.ifblock.accept(this);
     out.print("\n");
 
+    // else-if conditions/blocks
     for(int i = 0; i < n.elseifexps.size(); i++) {
       out.print("elseif ");
       ((Exp)n.elseifexps.get(i)).accept(this);
@@ -159,8 +161,39 @@ class LuaUnparser extends Visitor {
       ((Block)n.elseifblocks.get(i)).accept(this);
       out.print("\n");
     }
-    out.print("else\n");
+
+    // else block
+    if(null != n.elseblock) {
+      out.print("else\n");
+      n.elseblock.accept(this);
+    }
     out.print("end\n");
+  }
+
+  /**
+   * Outputs function call.
+   *
+   * @param n Function call node
+   */
+  public void visit(FuncCall n) {
+    n.lhs.accept(this);
+    out.print("(");
+    n.args.accept(this);
+    out.print(")");
+  }
+
+  /**
+   * Visits all expressions used as function arguments.
+   *
+   * @param n Function arguments node
+   */
+  public void visit(FuncArgs n) {
+    for(int i = 0; i < n.exps.size() - 1; i++) {
+      ((Exp)n.exps.get(i)).accept(this);
+      out.print(";\n");
+    }
+    ((Exp)n.exps.get(n.exps.size() - 1)).accept(this);
+    
   }
 
   /**
