@@ -150,7 +150,41 @@ class LuaUnparser extends Visitor {
    * @param n Node that contains a variable name
    */
   public void visit(NameExp n) {
-    out.print(((Name)n.name).name);
+    out.print(n.name.name);
+  }
+
+  /**
+   * Outputs parentheses for a parenthesized expression
+   *
+   * @param n Parenthesized expression node
+   */
+  public void visit(ParensExp n) {
+    out.print("(");
+    n.exp.accept(this);
+    out.print(")");
+  }
+
+  /**
+   * Outputs brackets for an index expression
+   *
+   * @param n Index expression node
+   */
+  public void visit(IndexExp n) {
+    n.lhs.accept(this);
+    out.print("[");
+    n.exp.accept(this);
+    out.print("]");
+  }
+  
+  /**
+   * Outputs dot for a field expression
+   *
+   * @param n Index expression node
+   */
+  public void visit(FieldExp n) {
+    n.lhs.accept(this);
+    out.print(".");
+    out.print(n.name.name);
   }
 
   /**
