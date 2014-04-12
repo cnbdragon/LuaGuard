@@ -23,11 +23,12 @@ class LuaUnparser extends Visitor {
    * @param n Block node
    */
   public void visit(Block n) {
-    for(int i = 0; i < n.stats.size() - 1; i++) {
+    int numStats = n.stats.size();
+    for(int i = 0; i < numStats - 1; i++) {
       ((Stat)n.stats.get(i)).accept(this);
       out.print(";\n");
     }
-    ((Stat)n.stats.get(n.stats.size() - 1)).accept(this);
+    ((Stat)n.stats.get(numStats - 1)).accept(this);
   }
 
   /****
@@ -43,19 +44,21 @@ class LuaUnparser extends Visitor {
     out.print("local ");
 
     // Variables
-    for(int i = 0; i < n.names.size() - 1; i++) {
+    int numNames = n.names.size();
+    for(int i = 0; i < numNames - 1; i++) {
       out.print(((Name)n.names.get(0)).name + ",");
     }
-    out.print(((Name)n.names.get(n.names.size()-1)).name);
+    out.print(((Name)n.names.get(numNames - 1)).name);
 
     out.print("=");
 
     // Expressions
-    for(int i = 0; i < n.values.size() - 1; i++) {
+    int numVals = n.values.size();
+    for(int i = 0; i < numVals - 1; i++) {
       ((Exp)n.values.get(i)).accept(this);
       out.print(",");
     }
-    ((Exp)n.values.get(n.values.size()-1)).accept(this);
+    ((Exp)n.values.get(numVals - 1)).accept(this);
   }
 
   /**
@@ -64,21 +67,55 @@ class LuaUnparser extends Visitor {
    * @param n Assignment statement node
    */
   public void visit(Assign n) {
+
     // Variables
-    for(int i = 0; i < n.vars.size() - 1; i++) {
+    int numVars = n.vars.size();
+    for(int i = 0; i < numVars - 1; i++) {
       ((VarExp)n.vars.get(i)).accept(this);
       out.print(",");
     }
-    ((VarExp)n.vars.get(n.vars.size()-1)).accept(this);
+    ((VarExp)n.vars.get(numVars - 1)).accept(this);
 
     out.print("=");
 
     // Expressions
-    for(int i = 0; i < n.exps.size() - 1; i++) {
+    int numExps = n.exps.size();
+    for(int i = 0; i < numExps - 1; i++) {
       ((Exp)n.exps.get(i)).accept(this);
       out.print(",");
     }
-    ((Exp)n.exps.get(n.exps.size()-1)).accept(this);
+    ((Exp)n.exps.get(numExps - 1)).accept(this);
+  }
+  
+  /**
+   * Outputs if-else condition/statement blocks.
+   *
+   * @param n If-else node
+   */
+  public void visit(IfThenElse n) {
+
+    // if-then condition/block
+    out.print("if ");
+    n.ifexp.accept(this);
+    out.print(" then\n");
+    n.ifblock.accept(this);
+    out.print("\n");
+
+    // else-if conditions/blocks
+    for(int i = 0; i < n.elseifexps.size(); i++) {
+      out.print("elseif ");
+      ((Exp)n.elseifexps.get(i)).accept(this);
+      out.print(" then\n");
+      ((Block)n.elseifblocks.get(i)).accept(this);
+      out.print("\n");
+    }
+
+    // else block
+    if(null != n.elseblock) {
+      out.print("else\n");
+      n.elseblock.accept(this);
+    }
+    out.print("end\n");
   }
 
   /****
@@ -140,37 +177,6 @@ class LuaUnparser extends Visitor {
   }
 
   /**
-   * Outputs if-else condition/statement blocks.
-   *
-   * @param n If-else node
-   */
-  public void visit(IfThenElse n) {
-
-    // if-then condition/block
-    out.print("if ");
-    n.ifexp.accept(this);
-    out.print(" then\n");
-    n.ifblock.accept(this);
-    out.print("\n");
-
-    // else-if conditions/blocks
-    for(int i = 0; i < n.elseifexps.size(); i++) {
-      out.print("elseif ");
-      ((Exp)n.elseifexps.get(i)).accept(this);
-      out.print(" then\n");
-      ((Block)n.elseifblocks.get(i)).accept(this);
-      out.print("\n");
-    }
-
-    // else block
-    if(null != n.elseblock) {
-      out.print("else\n");
-      n.elseblock.accept(this);
-    }
-    out.print("end\n");
-  }
-
-  /**
    * Outputs function call.
    *
    * @param n Function call node
@@ -188,12 +194,12 @@ class LuaUnparser extends Visitor {
    * @param n Function arguments node
    */
   public void visit(FuncArgs n) {
-    for(int i = 0; i < n.exps.size() - 1; i++) {
+    int numExps = n.exps.size();
+    for(int i = 0; i < numExps - 1; i++) {
       ((Exp)n.exps.get(i)).accept(this);
-      out.print(";\n");
+      out.print(",");
     }
-    ((Exp)n.exps.get(n.exps.size() - 1)).accept(this);
-    
+    ((Exp)n.exps.get(numExps - 1)).accept(this);
   }
 
   /**
