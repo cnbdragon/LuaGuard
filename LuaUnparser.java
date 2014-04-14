@@ -1,5 +1,6 @@
 import java.io.PrintStream;
 import java.io.*;
+import java.util.List;
 
 import org.luaj.vm2.ast.*;
 import org.luaj.vm2.ast.Exp.*;
@@ -215,6 +216,38 @@ class LuaUnparser extends Visitor {
    */
   public void visit(Break n) {
     out.print("break");
+  }
+  
+  /****
+   * Tables
+   ***/
+
+  /**
+   * Outputs table constructor. Table fields are included as part of the constructor.
+   *
+   * @param n TableConstructor node
+   */
+  public void visit(TableConstructor n) {
+    out.print("{");
+    for (int i = 0; i < n.fields.size(); i++) {
+      TableField f = (TableField)((List<?>)n.fields).get(i);
+
+      // keyed field
+      if (null != f.index) {
+        out.print("[");
+        f.index.accept(this);
+        out.print("]=");
+      }
+      // named field
+      else if (null != f.name) {
+        out.print(f.name);
+        out.print("=");
+      }
+      // list field (implicit)
+      f.rhs.accept(this);
+      out.print(";");
+    }
+    out.print("}");
   }
 
   /****
