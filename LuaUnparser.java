@@ -116,8 +116,22 @@ class LuaUnparser extends Visitor {
     if(null != n.elseblock) {
       out.print("else\n");
       n.elseblock.accept(this);
+      out.print("\n");
     }
     out.print("end");
+  }
+
+  public void visit(WhileDo n) {
+    
+    // condition
+    out.print("while ");
+    n.exp.accept(this);
+    out.print(" do\n");
+
+    // block
+    n.block.accept(this);
+    out.print("\n");
+    out.print("end\n");
   }
 
   /**
