@@ -158,6 +158,36 @@ class LuaUnparser extends Visitor {
   }
 
   /**
+   * Outputs numeric for loop
+   *
+   * @param n NumericFor node
+   */
+  public void visit(NumericFor n) {
+
+    // Name
+    out.print("for ");
+    out.print(n.name.name);
+    out.print("=");
+
+    // expression
+    n.initial.accept(this);
+    out.print(",");
+    n.limit.accept(this);
+
+    if (null != n.step) {
+      out.print(",");
+      n.step.accept(this);
+    }
+
+    // block
+    out.print(" do\n");
+    n.block.accept(this);
+    out.print("\n");
+    out.print("end");
+
+  }
+
+  /**
    * Outputs goto statement
    *
    * @param n Goto node
