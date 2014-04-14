@@ -121,6 +121,11 @@ class LuaUnparser extends Visitor {
     out.print("end");
   }
 
+  /**
+   * Outputs while loop
+   *
+   * @param n WhileDo node
+   */
   public void visit(WhileDo n) {
     
     // condition
@@ -131,7 +136,25 @@ class LuaUnparser extends Visitor {
     // block
     n.block.accept(this);
     out.print("\n");
-    out.print("end\n");
+    out.print("end");
+  }
+
+  /**
+   * Outputs repeat until loop
+   *
+   * @param n RepeatUntil node
+   */
+  public void visit(RepeatUntil n) {
+    
+    // block
+    out.print("repeat\n");
+    n.block.accept(this);
+
+    // condition
+    out.print("\n");
+    out.print("until ");
+    n.exp.accept(this);
+
   }
 
   /**
