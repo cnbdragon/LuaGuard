@@ -47,7 +47,7 @@ class LuaUnparser extends Visitor {
     // Variables
     int numNames = n.names.size();
     for(int i = 0; i < numNames - 1; i++) {
-      out.print(((Name)n.names.get(0)).name + ",");
+      out.print(((Name)n.names.get(i)).name + ",");
     }
     out.print(((Name)n.names.get(numNames - 1)).name);
 
@@ -186,6 +186,38 @@ class LuaUnparser extends Visitor {
     out.print("\n");
     out.print("end");
 
+  }
+
+  /**
+   * Outputs generic for loop
+   *
+   * @param n GenericFor node
+   */
+  public void visit(GenericFor n) {
+    int numNames = n.names.size();
+    int numExps = n.exps.size();
+
+    // Names
+    out.print("for ");
+    for(int i = 0; i < numNames - 1; i++) {
+      out.print(((Name)n.names.get(i)).name);
+      out.print(",");
+    }
+    out.print(((Name)n.names.get(numNames - 1)).name);
+    out.print(" in ");
+
+    // Expressions
+    for(int i = 0; i < numExps - 1; i++) {
+      ((Exp)n.exps.get(i)).accept(this);
+      out.print(",");
+    }
+    ((Exp)n.exps.get(numExps-1)).accept(this);
+
+    // block
+    out.print(" do\n");
+    n.block.accept(this);
+    out.print("\n");
+    out.print("end");
   }
 
   /**
