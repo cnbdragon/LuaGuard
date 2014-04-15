@@ -27,9 +27,10 @@ class LuaUnparser extends Visitor {
     int numStats = n.stats.size();
     for(int i = 0; i < numStats - 1; i++) {
       ((Stat)n.stats.get(i)).accept(this);
-      out.print("\n");
+      out.print(";\n");
     }
     ((Stat)n.stats.get(numStats - 1)).accept(this);
+    out.print(";");
   }
 
   /****
@@ -249,7 +250,24 @@ class LuaUnparser extends Visitor {
   public void visit(Break n) {
     out.print("break");
   }
-  
+   
+  /**
+   * Outputs return statement
+   *
+   * @param n Return node
+   */ 
+  public void visit(Return n) {
+    out.print("return ");
+
+    // Expressions
+    int numVals = n.values.size();
+    for(int i = 0; i < numVals - 1; i++) {
+      ((Exp)n.values.get(i)).accept(this);
+      out.print(",");
+    }
+    ((Exp)n.values.get(numVals - 1)).accept(this);
+  }
+
   /****
    * Tables
    ***/
