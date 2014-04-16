@@ -300,8 +300,82 @@ class LuaUnparser extends Visitor {
     out.print("}");
   }
 
+  /**
+   * Outputs a parameter list
+   *
+   * @param n ParList node
+   */
+  public void visit(ParList n) {
+
+    // Names
+    if (null != n.names) {
+      int numNames = n.names.size();
+      if (numNames > 0) {
+        out.print(((Name)n.names.get(0)).name);
+        for (int i = 1; i < numNames; i++) {
+          out.print(",");
+          out.print(((Name)n.names.get(i)).name);
+        }
+
+        if (n.isvararg) {
+          out.print(",");
+        }
+      }
+    }
+
+    // varargs
+    if (n.isvararg) {
+      out.print("...");
+    }
+  }
+
+  /**
+   * Outputs function body which includes the parameter list as well as the function block
+   *
+   * @param n FuncBody node
+   */
+  public void visit(FuncBody n) {
+    
+    // ParList
+    out.print("(");
+    n.parlist.accept(this);
+    out.print(")");
+    out.print("\n");
+
+    // block
+    n.block.accept(this);
+
+  }
+
+  /**
+   * Outputs a global function declaration
+   *
+   * @param n FuncDef node
+   */
+  public void visit(FuncDef n) {
+    out.print("function ");
+    
+    // Name
+    out.print(n.name.name.name);
+    if (null != n.name.dots) {
+      for (int i = 0; i < n.name.dots.size(); i++) {
+        out.print(".");
+        out.print(n.name.dots.get(i));
+      }
+    }
+    if (null != n.name.method) {
+      out.print(":");
+      out.print(n.name.method);
+    }
+
+    n.body.accept(this);
+
+    out.print("\n");
+    out.print("end");
+  }
+
   /****
-   *  Expressions
+   * Expressions
    ***/
 
   /**
