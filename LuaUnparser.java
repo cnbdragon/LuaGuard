@@ -11,11 +11,16 @@ import org.luaj.vm2.LuaString;
 class LuaUnparser extends Visitor {
 
   private PrintStream out;
-  private int indentLevel;
+  private boolean isCompressed; // true if newlines should NOT be printed.
 
   public LuaUnparser(PrintStream out) {
     this.out = out;
-    this.indentLevel = 0;
+    this.isCompressed = true;
+  }
+  
+  public LuaUnparser(PrintStream out, boolean isCompressed) {
+    this.out = out;
+    this.isCompressed = isCompressed;
   }
 
   /**
@@ -27,7 +32,8 @@ class LuaUnparser extends Visitor {
     int numStats = n.stats.size();
     for(int i = 0; i < numStats - 1; i++) {
       ((Stat)n.stats.get(i)).accept(this);
-      out.print(";\n");
+      out.print(";");
+      newline();
     }
     ((Stat)n.stats.get(numStats - 1)).accept(this);
     out.print(";");
@@ -99,26 +105,29 @@ class LuaUnparser extends Visitor {
     // if-then condition/block
     out.print("if ");
     n.ifexp.accept(this);
-    out.print(" then\n");
+    out.print(" then");
+    newline();
     n.ifblock.accept(this);
-    out.print("\n");
+    newline();
 
     // else-if conditions/blocks
     if(null != n.elseifexps) {
       for(int i = 0; i < n.elseifexps.size(); i++) {
         out.print("elseif ");
         ((Exp)n.elseifexps.get(i)).accept(this);
-        out.print(" then\n");
+        out.print(" then");
+        newline();
         ((Block)n.elseifblocks.get(i)).accept(this);
-        out.print("\n");
+        newline();
       }
     }
 
     // else block
     if(null != n.elseblock) {
-      out.print("else\n");
+      out.print("else");
+      newline();
       n.elseblock.accept(this);
-      out.print("\n");
+      newline();
     }
     out.print("end");
   }
@@ -133,11 +142,12 @@ class LuaUnparser extends Visitor {
     // condition
     out.print("while ");
     n.exp.accept(this);
-    out.print(" do\n");
+    out.print(" do");
+    newline();
 
     // block
     n.block.accept(this);
-    out.print("\n");
+    newline();
     out.print("end");
   }
 
@@ -149,11 +159,12 @@ class LuaUnparser extends Visitor {
   public void visit(RepeatUntil n) {
     
     // block
-    out.print("repeat\n");
+    out.print("repeat");
+    newline();
     n.block.accept(this);
 
     // condition
-    out.print("\n");
+    newline();
     out.print("until ");
     n.exp.accept(this);
 
@@ -182,9 +193,10 @@ class LuaUnparser extends Visitor {
     }
 
     // block
-    out.print(" do\n");
+    out.print(" do");
+    newline();
     n.block.accept(this);
-    out.print("\n");
+    newline();
     out.print("end");
 
   }
@@ -215,9 +227,10 @@ class LuaUnparser extends Visitor {
     ((Exp)n.exps.get(numExps-1)).accept(this);
 
     // block
-    out.print(" do\n");
+    out.print(" do");
+    newline();
     n.block.accept(this);
-    out.print("\n");
+    newline();
     out.print("end");
   }
 
@@ -340,7 +353,7 @@ class LuaUnparser extends Visitor {
     out.print("(");
     n.parlist.accept(this);
     out.print(")");
-    out.print("\n");
+    newline();
 
     // block
     n.block.accept(this);
@@ -370,7 +383,7 @@ class LuaUnparser extends Visitor {
 
     n.body.accept(this);
 
-    out.print("\n");
+    newline();
     out.print("end");
   }
 
@@ -571,7 +584,7 @@ class LuaUnparser extends Visitor {
    *
    * @param s String to unescape
    */
-  public static String unescape(String s) {
+  private static String unescape(String s) {
     StringBuilder sb = new StringBuilder();
     char[] c = s.toCharArray();
     int n = c.length;
@@ -591,5 +604,13 @@ class LuaUnparser extends Visitor {
       }
     }
     return sb.toString();
+  }
+
+  /**
+   * Prints newline if output does not need to be compressed, otherwise does nothing.
+   */
+  private void newline() {
+    if (!isCompressed)
+      out.print("\n");
   }
 }
