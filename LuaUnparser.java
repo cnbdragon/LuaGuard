@@ -381,6 +381,25 @@ class LuaUnparser extends Visitor {
       out.print(n.name.method);
     }
 
+    // Parameter list + body
+    n.body.accept(this);
+
+    newline();
+    out.print("end");
+  }
+  
+  /**
+   * Outputs a local function declaration
+   *
+   * @param n LocalFuncDef node
+   */
+  public void visit(LocalFuncDef n) {
+    out.print("local function ");
+
+    // Name
+    out.print(n.name.name);
+
+    // Parameter list + body
     n.body.accept(this);
 
     newline();
