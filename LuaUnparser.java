@@ -516,12 +516,26 @@ class LuaUnparser extends Visitor {
    * @param n Function arguments node
    */
   public void visit(FuncArgs n) {
-    int numExps = n.exps.size();
-    for(int i = 0; i < numExps - 1; i++) {
-      ((Exp)n.exps.get(i)).accept(this);
-      out.print(",");
+    if (null != n.exps) {
+      int numExps = n.exps.size();
+      for(int i = 0; i < numExps - 1; i++) {
+        ((Exp)n.exps.get(i)).accept(this);
+        out.print(",");
+      }
+      ((Exp)n.exps.get(numExps - 1)).accept(this);
     }
-    ((Exp)n.exps.get(numExps - 1)).accept(this);
+  }
+
+  /**
+   * Outputs anonymous function declaration.
+   *
+   * @param n AnonFuncDef
+   */
+  public void visit(AnonFuncDef n) {
+    out.print("function");
+    n.body.accept(this);
+    newline();
+    out.print("end");
   }
 
   /**
