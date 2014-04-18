@@ -305,23 +305,25 @@ class LuaUnparser extends Visitor {
    */
   public void visit(TableConstructor n) {
     out.print("{");
-    for (int i = 0; i < n.fields.size(); i++) {
-      TableField f = (TableField)((List<?>)n.fields).get(i);
+    if (null != n.fields) {
+      for (int i = 0; i < n.fields.size(); i++) {
+        TableField f = (TableField)((List<?>)n.fields).get(i);
 
-      // keyed field
-      if (null != f.index) {
-        out.print("[");
-        f.index.accept(this);
-        out.print("]=");
+        // keyed field
+        if (null != f.index) {
+          out.print("[");
+          f.index.accept(this);
+          out.print("]=");
+        }
+        // named field
+        else if (null != f.name) {
+          out.print(f.name);
+          out.print("=");
+        }
+        // list field (implicit)
+        f.rhs.accept(this);
+        out.print(";");
       }
-      // named field
-      else if (null != f.name) {
-        out.print(f.name);
-        out.print("=");
-      }
-      // list field (implicit)
-      f.rhs.accept(this);
-      out.print(";");
     }
     out.print("}");
   }
