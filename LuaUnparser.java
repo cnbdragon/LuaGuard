@@ -29,6 +29,14 @@ class LuaUnparser extends Visitor {
    * @param n Block node
    */
   public void visit(Block n) {
+
+    // Determine if a do block vs. regular block
+    if (n.isDoBlock) {
+      out.print("do ");
+      newline();
+    }
+
+    // Block statements
     int numStats = n.stats.size();
     for(int i = 0; i < numStats - 1; i++) {
       ((Stat)n.stats.get(i)).accept(this);
@@ -37,6 +45,11 @@ class LuaUnparser extends Visitor {
     }
     ((Stat)n.stats.get(numStats - 1)).accept(this);
     out.print(";");
+
+    if (n.isDoBlock) {
+      newline();
+      out.print("end");
+    }
   }
 
   /****
