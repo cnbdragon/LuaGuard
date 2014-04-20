@@ -30,12 +30,6 @@ class LuaUnparser extends Visitor {
    */
   public void visit(Block n) {
 
-    // Determine if a do block vs. regular block
-    if (n.isDoBlock) {
-      out.print("do ");
-      newline();
-    }
-
     // Block statements
     int numStats = n.stats.size();
     for(int i = 0; i < numStats - 1; i++) {
@@ -45,16 +39,26 @@ class LuaUnparser extends Visitor {
     }
     ((Stat)n.stats.get(numStats - 1)).accept(this);
     out.print(";");
-
-    if (n.isDoBlock) {
-      newline();
-      out.print("end");
-    }
+  
   }
 
   /****
    * Statements
    ***/
+
+  /**
+   * Outputs a do-end block.
+   *
+   * @param n DoBlock node
+   */
+  public void visit(DoBlock n) {
+    out.print("do");
+    if (isCompressed) out.print(" ");
+    newline();
+    n.block.accept(this);
+    newline();
+    out.print("end");
+  }
 
   /**
    * Outputs a local variable assignment.
