@@ -1,3 +1,11 @@
+/**
+ * Visitor that takes an AST representing the Lua grammar and generates Lua code.
+ * The AST, and therefore the code, is not modified after the visit.
+ *
+ * @author Joshua Stein
+ */
+
+
 import java.io.PrintStream;
 import java.io.*;
 import java.util.List;
