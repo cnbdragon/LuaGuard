@@ -526,6 +526,20 @@ class LuaUnparser extends Visitor {
   }
 
   /**
+   * Outputs a method call.
+   *
+   * @param n Method call node
+   */
+  public void visit(MethodCall n) {
+    n.lhs.accept(this);
+    out.print(":");
+    out.print(n.name);
+    out.print("(");
+    n.args.accept(this);
+    out.print(")");
+  }
+
+  /**
    * Visits all expressions used as function arguments.
    *
    * @param n Function arguments node
