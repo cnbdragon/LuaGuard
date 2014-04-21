@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package luagaurd;
+package luaguard;
 
-import luagaurd.commandLine.CommandObfuFolder;
-import luagaurd.commandLine.CommandObfu;
-import luagaurd.commandLine.ListFilesUtility;
-import luagaurd.commandLine.JCommanderLuaGuard;
+import luaguard.commandLine.CommandObfuFolder;
+import luaguard.commandLine.CommandObfu;
+import luaguard.commandLine.ListFilesUtility;
+import luaguard.commandLine.JCommanderLuaGuard;
 import com.beust.jcommander.JCommander;
 
 
@@ -27,7 +27,7 @@ import com.beust.jcommander.JCommander;
  *
  * @author jwulf
  */
-public class LuaGaurd {
+public class LuaGuard {
 
     /**
      * @param argv the command line arguments

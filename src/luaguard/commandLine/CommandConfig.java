@@ -13,29 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package luaguard.commandLine;
 
-package luagaurd.commandLine;
-
-import com.beust.jcommander.IParameterValidator;
-import com.beust.jcommander.ParameterException;
+import com.beust.jcommander.Parameter;
+import com.beust.jcommander.Parameters;
+import java.util.List;
 
 /**
  *
  * @author jwulf
  */
+@Parameters(commandDescription = "Obfuscate code using a config file")
+public class CommandConfig {
 
+    @Parameter(description = "The config file to load ")
+    private List<String> files;
 
-public class FileValidator  implements IParameterValidator {
-
-    /**
-     *
-     * @param name
-     * @param value
-     * @throws ParameterException
-     */
-    @Override
-    public void validate(String name, String value) throws ParameterException {
-        throw new ParameterException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-    
 }

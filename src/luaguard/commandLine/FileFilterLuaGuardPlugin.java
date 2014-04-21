@@ -13,20 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package luagaurd.commandLine;
+package luaguard.commandLine;
 
-import com.beust.jcommander.Parameter;
-import com.beust.jcommander.Parameters;
-import java.util.List;
+import java.io.File;
 
 /**
  *
  * @author jwulf
  */
-@Parameters(commandDescription = "Obfuscate code using a config file")
-public class CommandConfig {
 
-    @Parameter(description = "The config file to load ")
-    private List<String> files;
 
+public class FileFilterLuaGuardPlugin {
+     public boolean accepts(File pathname)
+     {
+          if (pathname.getName().toLowerCase().endsWith(".txt") && pathname.isFile())
+          {
+               return true;
+          }
+          return false;
+     }
+    
 }

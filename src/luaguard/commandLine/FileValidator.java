@@ -13,9 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package luagaurd.commandLine;
 
-import java.io.File;
+package luaguard.commandLine;
+
+import com.beust.jcommander.IParameterValidator;
+import com.beust.jcommander.ParameterException;
 
 /**
  *
@@ -23,14 +25,17 @@ import java.io.File;
  */
 
 
-public class FileFilterLuaGuardPlugin {
-     public boolean accepts(File pathname)
-     {
-          if (pathname.getName().toLowerCase().endsWith(".txt") && pathname.isFile())
-          {
-               return true;
-          }
-          return false;
-     }
+public class FileValidator  implements IParameterValidator {
+
+    /**
+     *
+     * @param name
+     * @param value
+     * @throws ParameterException
+     */
+    @Override
+    public void validate(String name, String value) throws ParameterException {
+        throw new ParameterException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
 }

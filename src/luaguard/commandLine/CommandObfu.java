@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package luagaurd.commandLine;
+package luaguard.commandLine;
 
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.Parameters;
