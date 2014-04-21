@@ -1,0 +1,18 @@
+<group>
+    <file> text.lua </file>
+    <output> out.lua </output>
+    <obfu> obfu1 </obfu>
+    <obfu> obfu2 </obfu>
+</group>
+
+cli-- 
+jcommander.org 10.2 variale arities 
+(maybe jopt-simple if jcommander doesn't work)
+xxx.jar 
+    -config cfg.xml
+|   -file in.lua out.lua -obfu obfu1 [obfu2 ..]
+
+
+obfu
+renaming
+structure changes
