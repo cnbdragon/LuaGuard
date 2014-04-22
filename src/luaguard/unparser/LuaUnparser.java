@@ -53,6 +53,7 @@ class LuaUnparser extends Visitor {
    *
    * @param n Block node
    */
+  @Override
   public void visit(Block n) {
 
     // Block statements
@@ -76,6 +77,7 @@ class LuaUnparser extends Visitor {
    *
    * @param n DoBlock node
    */
+  @Override
   public void visit(DoBlock n) {
     out.print("do");
     if (isCompressed) out.print(" ");
@@ -90,6 +92,7 @@ class LuaUnparser extends Visitor {
    *
    * @param n Local assignment statement node
    */
+  @Override
   public void visit(LocalAssign n) {
     out.print("local ");
 
@@ -116,6 +119,7 @@ class LuaUnparser extends Visitor {
    *
    * @param n Assignment statement node
    */
+  @Override
   public void visit(Assign n) {
 
     // Variables
@@ -142,6 +146,7 @@ class LuaUnparser extends Visitor {
    *
    * @param n If-else node
    */
+  @Override
   public void visit(IfThenElse n) {
 
     // if-then condition/block
@@ -179,6 +184,7 @@ class LuaUnparser extends Visitor {
    *
    * @param n WhileDo node
    */
+  @Override
   public void visit(WhileDo n) {
     
     // condition
@@ -198,6 +204,7 @@ class LuaUnparser extends Visitor {
    *
    * @param n RepeatUntil node
    */
+  @Override
   public void visit(RepeatUntil n) {
     
     // block
@@ -217,6 +224,7 @@ class LuaUnparser extends Visitor {
    *
    * @param n NumericFor node
    */
+  @Override
   public void visit(NumericFor n) {
 
     // Name
@@ -248,6 +256,7 @@ class LuaUnparser extends Visitor {
    *
    * @param n GenericFor node
    */
+  @Override
   public void visit(GenericFor n) {
     int numNames = n.names.size();
     int numExps = n.exps.size();
@@ -281,6 +290,7 @@ class LuaUnparser extends Visitor {
    *
    * @param n Goto node
    */
+  @Override
   public void visit(Goto n) {
     out.print("goto ");
     out.print(n.name);
@@ -291,6 +301,7 @@ class LuaUnparser extends Visitor {
    *
    * @param n Label node
    */
+  @Override
   public void visit(Label n) {
     out.print("::");
     out.print(n.name);
@@ -302,6 +313,7 @@ class LuaUnparser extends Visitor {
    *
    * @param n Break node
    */
+  @Override
   public void visit(Break n) {
     out.print("break");
   }
@@ -311,6 +323,7 @@ class LuaUnparser extends Visitor {
    *
    * @param n Return node
    */ 
+  @Override
   public void visit(Return n) {
     out.print("return ");
 
@@ -332,6 +345,7 @@ class LuaUnparser extends Visitor {
    *
    * @param n TableConstructor node
    */
+  @Override
   public void visit(TableConstructor n) {
     out.print("{");
     if (null != n.fields) {
@@ -362,6 +376,7 @@ class LuaUnparser extends Visitor {
    *
    * @param n ParList node
    */
+  @Override
   public void visit(ParList n) {
 
     // Names
@@ -391,6 +406,7 @@ class LuaUnparser extends Visitor {
    *
    * @param n FuncBody node
    */
+  @Override
   public void visit(FuncBody n) {
     
     // ParList
@@ -409,6 +425,7 @@ class LuaUnparser extends Visitor {
    *
    * @param n FuncDef node
    */
+  @Override
   public void visit(FuncDef n) {
     out.print("function ");
     
@@ -437,6 +454,7 @@ class LuaUnparser extends Visitor {
    *
    * @param n LocalFuncDef node
    */
+  @Override
   public void visit(LocalFuncDef n) {
     out.print("local function ");
 
@@ -459,6 +477,7 @@ class LuaUnparser extends Visitor {
    *
    * @param n Unary expression node
    */
+  @Override
   public void visit(UnopExp n) {
     out.print(opString(n.op));
     n.rhs.accept(this);
@@ -469,6 +488,7 @@ class LuaUnparser extends Visitor {
    *
    * @param n Binary expression node
    */
+  @Override
   public void visit(BinopExp n) {
     n.lhs.accept(this);
     String op = opString(n.op);
@@ -481,6 +501,7 @@ class LuaUnparser extends Visitor {
    *
    * @param n Node that contains a variable name
    */
+  @Override
   public void visit(NameExp n) {
     out.print(n.name.name);
   }
@@ -490,6 +511,7 @@ class LuaUnparser extends Visitor {
    *
    * @param n Parenthesized expression node
    */
+  @Override
   public void visit(ParensExp n) {
     out.print("(");
     n.exp.accept(this);
@@ -501,6 +523,7 @@ class LuaUnparser extends Visitor {
    *
    * @param n Index expression node
    */
+  @Override
   public void visit(IndexExp n) {
     n.lhs.accept(this);
     out.print("[");
@@ -513,6 +536,7 @@ class LuaUnparser extends Visitor {
    *
    * @param n Index expression node
    */
+  @Override
   public void visit(FieldExp n) {
     n.lhs.accept(this);
     out.print(".");
@@ -524,6 +548,7 @@ class LuaUnparser extends Visitor {
    *
    * @param n Node that indicates it's a vararg
    */
+  @Override
   public void visit(VarargsExp n) {
     out.print("...");
   }
@@ -533,8 +558,9 @@ class LuaUnparser extends Visitor {
    *
    * @param n Constant AST node
    */
+  @Override
   public void visit(Constant n) {
-    if (n.value.typename() == "string") {
+    if (n.value.typename().equalsIgnoreCase("string")) {
       out.print("'" + unescape(n.value.toString()) + "'");
     }
     else {
@@ -547,6 +573,7 @@ class LuaUnparser extends Visitor {
    *
    * @param n Function call node
    */
+  @Override
   public void visit(FuncCall n) {
     n.lhs.accept(this);
     out.print("(");
@@ -559,6 +586,7 @@ class LuaUnparser extends Visitor {
    *
    * @param n Method call node
    */
+  @Override
   public void visit(MethodCall n) {
     n.lhs.accept(this);
     out.print(":");
@@ -573,6 +601,7 @@ class LuaUnparser extends Visitor {
    *
    * @param n Function arguments node
    */
+  @Override
   public void visit(FuncArgs n) {
     if (null != n.exps) {
       int numExps = n.exps.size();
@@ -589,6 +618,7 @@ class LuaUnparser extends Visitor {
    *
    * @param n AnonFuncDef
    */
+  @Override
   public void visit(AnonFuncDef n) {
     out.print("function");
     n.body.accept(this);
