@@ -14,13 +14,6 @@
  * limitations under the License.
  */
 
-/**
- * Visitor that takes an AST representing the Lua grammar and generates Lua code.
- * The AST, and therefore the code, is not modified after the visit.
- *
- * @author Joshua Stein
- */
-
 package luaguard.unparser;
 
 import java.io.PrintStream;
@@ -33,6 +26,12 @@ import org.luaj.vm2.ast.Stat.*;
 import org.luaj.vm2.Lua;
 import org.luaj.vm2.LuaString;
 
+/**
+ * Visitor that takes an AST representing the Lua grammar and generates Lua code.
+ * The AST, and therefore the code, is not modified after the visit.
+ *
+ * @author Joshua Stein
+ */
 class LuaUnparser extends Visitor {
 
   private PrintStream out;
