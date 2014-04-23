@@ -32,7 +32,7 @@ import org.luaj.vm2.LuaString;
  *
  * @author Joshua Stein
  */
-class LuaUnparser extends Visitor {
+public class LuaUnparser extends Visitor {
 
   private PrintStream out;
   private boolean isCompressed; // true if newlines should NOT be printed.
