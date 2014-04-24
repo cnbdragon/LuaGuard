@@ -36,7 +36,12 @@ public class ObfuscatorFactory {
      */
     public Obfuscator constructObfuscator(String name) {
         
-        return null;
+        Obfuscator obf = null;
+        if (name.equalsIgnoreCase("fpo")) {
+            obf = new FunctionParameterObfuscator();
+        }
+        
+        return obf;
         
     }
 }
