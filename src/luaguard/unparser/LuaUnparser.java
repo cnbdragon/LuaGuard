@@ -102,7 +102,7 @@ public class LuaUnparser extends Visitor {
         }
         out.print(((Name) n.names.get(numNames - 1)).name);
 
-        if (n.values != null) {
+        if (null != n.values ) {
 
             out.print("=");
 
@@ -329,6 +329,9 @@ public class LuaUnparser extends Visitor {
   public void visit(Return n) {
     out.print("return ");
 
+    if(null == n.values){
+        return;
+    }
     // Expressions
     int numVals = n.values.size();
     for(int i = 0; i < numVals - 1; i++) {
