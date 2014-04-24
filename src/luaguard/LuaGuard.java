@@ -17,14 +17,13 @@
 package luaguard;
 
 import com.beust.jcommander.JCommander;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.PrintStream;
 import java.util.List;
-import java.util.Locale;
 import java.util.ResourceBundle;
+import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import luaguard.commandLine.CommandObfu;
@@ -32,12 +31,7 @@ import luaguard.commandLine.CommandObfuFolder;
 import luaguard.commandLine.JCommanderLuaGuard;
 import luaguard.commandLine.ListFilesUtility;
 import luaguard.unparser.*;
-import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.ast.*;
-import org.luaj.vm2.ast.Exp.*;
-import org.luaj.vm2.ast.Exp.AnonFuncDef;
-import org.luaj.vm2.ast.Stat.FuncDef;
-import org.luaj.vm2.ast.Stat.LocalFuncDef;
 import org.luaj.vm2.parser.*;
 
 /**
@@ -96,13 +90,46 @@ public class LuaGuard {
             List<String> outputs = obfu.getOutput();
             PrintStream out;
 
+            //file utility
+            ListFilesUtility fileUtil = new ListFilesUtility();
+            
+            
             try {
                 if (!outputs.isEmpty()) {
                     String output = outputs.get(0);
+                    if (fileUtil.exists(output) && !obfu.getForce()) {
+                        System.out.println("output file already exist");
+                        System.out.println("would you like to overwrite:[y/n]");
+                        Scanner scan = new Scanner(System.in);
+                        
+                        String token = scan.next();
+                        while ( !token.equalsIgnoreCase("n") && 
+                                !token.equalsIgnoreCase("y") && 
+                                !token.equalsIgnoreCase("yes") && 
+                                !token.equalsIgnoreCase("no") ){
+                            System.out.println("output file already exist");
+                            System.out.println("would you like to overwrite:[y/n]");
+                            token = scan.next();
+                        }
+                        if (    !token.equalsIgnoreCase("n") && 
+                                !token.equalsIgnoreCase("no") ){
+                            System.exit(0);
+                        }
+                    }
                     out = new PrintStream(output);
                 } else {
+                    System.out.println("outputs.isEmpty " + outputs.isEmpty());
+                    //System.out.println(out.getClass());
                     out = System.out;
                 }
+                //check file
+                
+                if(!fileUtil.exists(file)){
+                    System.out.println("input file does not exist");
+                    System.exit(1);
+                }
+                
+                
                 LuaParser parser = new LuaParser(new FileInputStream(file));
                 Chunk chunk = parser.Chunk(); // this parses the file
                 
@@ -111,9 +138,13 @@ public class LuaGuard {
                 * this will probably be a loop structure of some type.
                 */
                 
-                chunk.accept(new LuaUnparser(out, false)); //this unparses the file
+                //if(obfu.getForce()){
+                    chunk.accept(new LuaUnparser(out, false)); //this unparses the file
+                //} 
 
             } catch (FileNotFoundException | ParseException | SecurityException ex) {
+                Logger.getLogger(LuaGuard.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
                 Logger.getLogger(LuaGuard.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
