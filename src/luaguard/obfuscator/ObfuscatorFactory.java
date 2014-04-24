@@ -15,11 +15,16 @@
  */
 package luaguard.obfuscator;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  *
  * @author Joshua Stein
  */
 public class ObfuscatorFactory {
+    
+    final Logger logger = LoggerFactory.getLogger(ObfuscatorFactory.class);
     
     public ObfuscatorFactory() {}
     
