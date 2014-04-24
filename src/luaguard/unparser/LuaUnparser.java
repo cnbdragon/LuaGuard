@@ -92,26 +92,29 @@ public class LuaUnparser extends Visitor {
    * @param n Local assignment statement node
    */
   @Override
-  public void visit(LocalAssign n) {
-    out.print("local ");
+    public void visit(LocalAssign n) {
+        out.print("local ");
 
-    // Variables
-    int numNames = n.names.size();
-    for(int i = 0; i < numNames - 1; i++) {
-      out.print(((Name)n.names.get(i)).name + ",");
+        // Variables
+        int numNames = n.names.size();
+        for (int i = 0; i < numNames - 1; i++) {
+            out.print(((Name) n.names.get(i)).name + ",");
+        }
+        out.print(((Name) n.names.get(numNames - 1)).name);
+
+        if (n.values != null) {
+
+            out.print("=");
+
+            // Expressions
+            int numVals = n.values.size();
+            for (int i = 0; i < numVals - 1; i++) {
+                ((Exp) n.values.get(i)).accept(this);
+                out.print(",");
+            }
+            ((Exp) n.values.get(numVals - 1)).accept(this);
+        }
     }
-    out.print(((Name)n.names.get(numNames - 1)).name);
-
-    out.print("=");
-
-    // Expressions
-    int numVals = n.values.size();
-    for(int i = 0; i < numVals - 1; i++) {
-      ((Exp)n.values.get(i)).accept(this);
-      out.print(",");
-    }
-    ((Exp)n.values.get(numVals - 1)).accept(this);
-  }
 
   /**
    * Outputs variable assignment.
