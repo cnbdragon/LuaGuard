@@ -15,6 +15,7 @@
  */
 package luaguard.commandLine;
 
+import luaguard.*;
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.Parameters;
 import java.util.List;
@@ -23,41 +24,57 @@ import java.util.List;
  *
  * @author jwulf
  */
-@Parameters(commandDescription = "Obfuscate code in a single file")
+@Parameters(commandDescription = "Obfuscate code in a single file",
+        resourceBundle = "luaguard.i18n.CommandLineHints", 
+        commandDescriptionKey  = "obfuscate")
 public class CommandObfu {
 
-    @Parameter(names = "-file", description = "The file to Obfuscate", required = true/*, validateWith = FileValidator.class*/)
+    @Parameter(names = "-file", 
+            description = "The file to Obfuscate", 
+            required = true/*, validateWith = FileValidator.class*/, 
+            descriptionKey = "file")
     private List<String> files;
 
-    @Parameter(names = "-output", description = "Name of the output file", required = true)
+    @Parameter(names = "-output", 
+            description = "Name of the output file", 
+            required = true, 
+            descriptionKey = "output")
     private List<String> outputfiles;
 
-    @Parameter(names = "-blacklist", description = "Words to not obfuscate")
+    @Parameter(names = "-blacklist", 
+            description = "Words to not obfuscate", 
+            descriptionKey = "blacklist")
     private List<String> blacklist;
 
-    @Parameter(names = "--amend", description = "Amend", hidden = true)
+    @Parameter(names = "--amend", 
+            description = "Amend", 
+            hidden = true)
     private Boolean amend = false;
 
-    @Parameter(names = "--author", hidden = true)
+    @Parameter(names = "--author", 
+            hidden = true)
     private String author;
 
-    @Parameter(names = {"-o", "-obfu", "-obfuscator"}, description = "Obfuscator to apply to the code.", required = true)
+    @Parameter(names = {"-o", "-obfu", "-obfuscator"}, 
+            /*description = "Obfuscator to apply to the code.", */
+            required = true, 
+            descriptionKey = "obfuscator")
     private List<String> obfus;
 
     
-    List<String> getfiles(){
+    public List<String> getfiles(){
         return files;
     }
     
-    List<String> getOutput(){
+    public List<String> getOutput(){
         return outputfiles;
     }
     
-    List<String> getBlacklist(){
+    public List<String> getBlacklist(){
         return blacklist;
     }
     
-    List<String> getObfuscators(){
+    public List<String> getObfuscators(){
         return obfus;
     }
 }

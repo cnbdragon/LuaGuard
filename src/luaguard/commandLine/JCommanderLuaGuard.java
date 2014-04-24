@@ -28,27 +28,35 @@ public class JCommanderLuaGuard {
     @Parameter
     private List<String> paramaters = new ArrayList<String>();
 
-    @Parameter(names = {"-log", "-verbose"}, description = "Level of verbosity")
+    @Parameter(names = {"-log", "-verbose"},
+            description = "Level of verbosity")
     private Integer verbose = 1;
-    
-    @Parameter(names = {"-version", "-ver"}, description = "Version of Lua the code is"/*, required = true*/)
+
+    @Parameter(names = {"-version", "-ver"},
+            description = "Version of Lua the code is", 
+            descriptionKey = "version"/*,
+     required = true*/)
     private Integer version;
     //this allows us to guard certain obfuscators.
 
     @Parameter(names = "-debug", description = "Debug mode")
     private boolean debug = false;
 
-    @Parameter(names = {"-?", "--help"}, description = "shows this message", help = true)
+    @Parameter(names = {"-?", "--help"},
+            description = "shows this message",
+            help = true)
     private boolean help;
-    
-    @Parameter(names = {"-!", "--about"}, description = "Learn about this program", help = true)
+
+    @Parameter(names = {"-!", "--about"},
+            description = "Learn about this program",
+            help = true)
     private boolean about;
 
     public int getVerbose() {
         return verbose;
     }
-    
-    public int getLog(){
+
+    public int getLog() {
         return verbose;
     }
 
@@ -59,12 +67,12 @@ public class JCommanderLuaGuard {
     public boolean getHelp() {
         return help;
     }
-    
+
     public boolean getAbout() {
         return about;
     }
-    
-    public int getVersion(){
+
+    public int getVersion() {
         return version;
     }
 }
