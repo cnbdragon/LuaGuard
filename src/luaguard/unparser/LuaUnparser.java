@@ -57,14 +57,15 @@ public class LuaUnparser extends Visitor {
 
     // Block statements
     int numStats = n.stats.size();
-    for(int i = 0; i < numStats - 1; i++) {
-      ((Stat)n.stats.get(i)).accept(this);
-      out.print(";");
-      newline();
+    if (numStats > 0) {
+        for(int i = 0; i < numStats - 1; i++) {
+          ((Stat)n.stats.get(i)).accept(this);
+          out.print(";");
+          newline();
+        }
+        ((Stat)n.stats.get(numStats - 1)).accept(this);
+        out.print(";");
     }
-    ((Stat)n.stats.get(numStats - 1)).accept(this);
-    out.print(";");
-  
   }
 
   /****
