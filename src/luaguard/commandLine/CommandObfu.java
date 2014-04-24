@@ -15,16 +15,17 @@
  */
 package luaguard.commandLine;
 
-import luaguard.*;
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.Parameters;
+import com.beust.jcommander.internal.Lists;
 import java.util.List;
+import luaguard.*;
 
 /**
  *
  * @author jwulf
  */
-@Parameters(commandDescription = "Obfuscate code in a single file",
+@Parameters(
         resourceBundle = "luaguard.i18n.CommandLineHints", 
         commandDescriptionKey  = "obfuscate")
 public class CommandObfu {
@@ -37,9 +38,9 @@ public class CommandObfu {
 
     @Parameter(names = "-output", 
             description = "Name of the output file", 
-            required = true, 
+            /*required = true, */
             descriptionKey = "output")
-    private List<String> outputfiles;
+    private List<String> outputfiles = Lists.newArrayList();
 
     @Parameter(names = "-blacklist", 
             description = "Words to not obfuscate", 
@@ -60,13 +61,17 @@ public class CommandObfu {
             required = true, 
             descriptionKey = "obfuscator")
     private List<String> obfus;
-
+    
+    @Parameter(names = {"-f", "-force"},  
+            descriptionKey = "force")
+    private boolean force;
     
     public List<String> getfiles(){
         return files;
     }
     
     public List<String> getOutput(){
+        //System.out.println(outputfiles);
         return outputfiles;
     }
     
@@ -76,5 +81,8 @@ public class CommandObfu {
     
     public List<String> getObfuscators(){
         return obfus;
+    }
+    public boolean getForce(){
+        return force;
     }
 }
