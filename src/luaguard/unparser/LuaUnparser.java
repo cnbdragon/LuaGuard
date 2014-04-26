@@ -25,6 +25,8 @@ import org.luaj.vm2.ast.Exp.*;
 import org.luaj.vm2.ast.Stat.*;
 import org.luaj.vm2.Lua;
 import org.luaj.vm2.LuaString;
+import org.apache.log4j.Logger;
+import org.apache.log4j.LogManager;
 
 /**
  * Visitor that takes an AST representing the Lua grammar and generates Lua code.
@@ -34,6 +36,9 @@ import org.luaj.vm2.LuaString;
  */
 public class LuaUnparser extends Visitor {
 
+  final Logger logger = LogManager.getLogger("GLOBAL");
+  
+    
   private PrintStream out;
   private boolean isCompressed; // true if newlines should NOT be printed.
 

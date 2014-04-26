@@ -15,8 +15,8 @@
  */
 package luaguard.obfuscator;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -24,7 +24,7 @@ import org.slf4j.LoggerFactory;
  */
 public class ObfuscatorFactory {
     
-    final Logger logger = LoggerFactory.getLogger(ObfuscatorFactory.class);
+    Logger logger = LogManager.getLogger("GLOBAL");
     
     public ObfuscatorFactory() {}
     
@@ -35,10 +35,11 @@ public class ObfuscatorFactory {
      * @return Obfuscator object
      */
     public Obfuscator constructObfuscator(String name) {
-        
+        logger.debug("obfuscator factory: cunstructObfuscator");
         Obfuscator obf = null;
         if (name.equalsIgnoreCase("fpo")) {
             obf = new FunctionParameterObfuscator();
+            logger.debug("build fpo");
         }
         
         return obf;
