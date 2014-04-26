@@ -15,11 +15,14 @@
  */
 package luaguard.unparser;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.PrintStream;
 import org.junit.Test;
 import org.luaj.vm2.ast.Chunk;
@@ -46,7 +49,7 @@ public class LuaUnparserTest {
         String before, after;   // before after 2nd run of parser
         
         // 1st run
-        parser = new LuaParser(new FileInputStream(null));
+        parser = new LuaParser(new FileInputStream("../test/classes.lua"));
         chunk = parser.Chunk();
         chunk.accept(new LuaUnparser(ps));
         
@@ -62,6 +65,42 @@ public class LuaUnparserTest {
         
         after = baos.toString();
         
+        assert(before.equals(after));
+    }
+    
+    @Test
+    public void FunctionalIdentityTest() throws IOException, ParseException {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        PrintStream ps = new PrintStream(baos);
+        InputStream is;
+        InputStreamReader isr;
+        BufferedReader br;
+        String line;
+        String before, after;
+        Process process;
+        
+        process = new ProcessBuilder("/usr/local/bin/lua", "../test/classes.lua").start();
+        is = process.getInputStream();
+        
+        before = "";
+        int c;
+        while ((c = is.read()) != -1){
+            before += (char)c;
+        }
+        
+        LuaParser parser = new LuaParser(new FileInputStream("../test/classes.lua"));
+        Chunk chunk = parser.Chunk();
+        chunk.accept(new LuaUnparser(ps));
+        
+        String prog = baos.toString();
+        process = new ProcessBuilder("/usr/local/bin/lua", "-e", prog).start();
+        is = process.getInputStream();
+        
+        after = "";
+        while ((c = is.read()) != -1){
+            after += (char)c;
+        }
+
         assert(before.equals(after));
     }
 }
