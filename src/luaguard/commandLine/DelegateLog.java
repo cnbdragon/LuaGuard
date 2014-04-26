@@ -6,15 +6,20 @@
 package luaguard.commandLine;
 
 import com.beust.jcommander.Parameter;
+import com.beust.jcommander.Parameters;
 
 /**
  *
  * @author jwulf
  */
-public class Delegate {
+
+@Parameters(
+        resourceBundle = "luaguard.i18n.CommandLineHints")
+
+public class DelegateLog {
     @Parameter(names = {"-l", "-log"},
             validateWith = LogLevelValidator.class,
-            description = "Level of logging  1:ALL < 2:DEBUG < 3:INFO < 4:WARN < 5:ERROR < 6:FATAL < 0:OFF")
+            descriptionKey = "log")
     private Integer verbose = 6;
     
      public int getL() {

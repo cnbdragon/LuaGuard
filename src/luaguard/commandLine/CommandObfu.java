@@ -59,7 +59,7 @@ public class CommandObfu {
     private boolean force;
     
     @ParametersDelegate
-        public Delegate delegate = new Delegate();
+        public DelegateLog delegate = new DelegateLog();
     
     public List<String> getfiles(){
         return files;

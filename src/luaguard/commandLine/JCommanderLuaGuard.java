@@ -17,6 +17,7 @@ package luaguard.commandLine;
 
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.ParametersDelegate;
+import com.beust.jcommander.internal.Lists;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,25 +31,67 @@ public class JCommanderLuaGuard {
     private List<String> paramaters = new ArrayList<String>();
 
     @Parameter(names = {"-v","-ver","-version"},
-            description = "Version of Lua the code is", 
             descriptionKey = "version"/*,
      required = true*/)
     private Integer version;
     //this allows us to guard certain obfuscators.
     
     @Parameter(names = {"-?", "--help"},
-            description = "shows this message",
+            descriptionKey = "help",
             help = true)
     private boolean help;
 
     @Parameter(names = {"-!", "--about"},
-            description = "Learn about this program",
+            descriptionKey = "about",
             help = true)
     private boolean about;
     
-    @ParametersDelegate
-        private Delegate delegate = new Delegate();
+    @Parameter(names = {"-file", "-files"}, 
+            variableArity = true, 
+            required = true, 
+            /*validateWith = FileValidator.class, */
+            descriptionKey = "file")
+    private List<String> files;
 
+    @Parameter(names = {"-out","-output"}, 
+            variableArity = true,
+            descriptionKey = "output")
+    private List<String> outputfiles = Lists.newArrayList();
+
+    @Parameter(names = "-blacklist", 
+            descriptionKey = "blacklist")
+    private List<String> blacklist;
+
+    @Parameter(names = {"-o", "-obfu", "-obfuscator"}, 
+            required = true, 
+            descriptionKey = "obfuscator")
+    private List<String> obfus;
+    
+    @Parameter(names = {"-f", "-force"},  
+            descriptionKey = "force")
+    private boolean force;
+    
+    @ParametersDelegate
+        public DelegateLog delegate = new DelegateLog();
+    
+    public List<String> getfiles(){
+        return files;
+    } 
+    public List<String> getOutput(){
+        return outputfiles;
+    }
+    public List<String> getBlacklist(){
+        return blacklist;
+    }
+    public List<String> getObfuscators(){
+        return obfus;
+    }
+    public boolean getForce(){
+        return force;
+    }
+    public int getLog(){
+        return delegate.getL();
+    }
     public boolean getHelp() {
         return help;
     }
@@ -57,8 +100,5 @@ public class JCommanderLuaGuard {
     }
     public int getVersion() {
         return version;
-    }
-    public int getLog(){
-        return delegate.getL();
     }
 }
