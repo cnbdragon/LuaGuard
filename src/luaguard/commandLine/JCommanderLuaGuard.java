@@ -16,6 +16,7 @@
 package luaguard.commandLine;
 
 import com.beust.jcommander.Parameter;
+import com.beust.jcommander.ParametersDelegate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,20 +29,13 @@ public class JCommanderLuaGuard {
     @Parameter
     private List<String> paramaters = new ArrayList<String>();
 
-    @Parameter(names = {"-log", "-verbose"},
-            description = "Level of verbosity")
-    private Integer verbose = 1;
-
-    @Parameter(names = {"-version", "-ver"},
+    @Parameter(names = {"-v","-ver","-version"},
             description = "Version of Lua the code is", 
             descriptionKey = "version"/*,
      required = true*/)
     private Integer version;
     //this allows us to guard certain obfuscators.
-
-    @Parameter(names = "-debug", description = "Debug mode")
-    private boolean debug = false;
-
+    
     @Parameter(names = {"-?", "--help"},
             description = "shows this message",
             help = true)
@@ -51,28 +45,20 @@ public class JCommanderLuaGuard {
             description = "Learn about this program",
             help = true)
     private boolean about;
-
-    public int getVerbose() {
-        return verbose;
-    }
-
-    public int getLog() {
-        return verbose;
-    }
-
-    public boolean getDebug() {
-        return debug;
-    }
+    
+    @ParametersDelegate
+        private Delegate delegate = new Delegate();
 
     public boolean getHelp() {
         return help;
     }
-
     public boolean getAbout() {
         return about;
     }
-
     public int getVersion() {
         return version;
+    }
+    public int getLog(){
+        return delegate.getL();
     }
 }

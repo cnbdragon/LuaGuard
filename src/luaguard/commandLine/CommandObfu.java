@@ -17,6 +17,7 @@ package luaguard.commandLine;
 
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.Parameters;
+import com.beust.jcommander.ParametersDelegate;
 import com.beust.jcommander.internal.Lists;
 import java.util.List;
 import luaguard.*;
@@ -36,7 +37,7 @@ public class CommandObfu {
             descriptionKey = "file")
     private List<String> files;
 
-    @Parameter(names = "-output", 
+    @Parameter(names = {"-out","-output"}, 
             description = "Name of the output file", 
             /*required = true, */
             descriptionKey = "output")
@@ -46,15 +47,6 @@ public class CommandObfu {
             description = "Words to not obfuscate", 
             descriptionKey = "blacklist")
     private List<String> blacklist;
-
-    @Parameter(names = "--amend", 
-            description = "Amend", 
-            hidden = true)
-    private Boolean amend = false;
-
-    @Parameter(names = "--author", 
-            hidden = true)
-    private String author;
 
     @Parameter(names = {"-o", "-obfu", "-obfuscator"}, 
             /*description = "Obfuscator to apply to the code.", */
@@ -66,23 +58,25 @@ public class CommandObfu {
             descriptionKey = "force")
     private boolean force;
     
+    @ParametersDelegate
+        public Delegate delegate = new Delegate();
+    
     public List<String> getfiles(){
         return files;
-    }
-    
+    } 
     public List<String> getOutput(){
-        //System.out.println(outputfiles);
         return outputfiles;
     }
-    
     public List<String> getBlacklist(){
         return blacklist;
     }
-    
     public List<String> getObfuscators(){
         return obfus;
     }
     public boolean getForce(){
         return force;
+    }
+    public int getLog(){
+        return delegate.getL();
     }
 }
