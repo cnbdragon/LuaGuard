@@ -15,14 +15,12 @@
  */
 package luaguard.unparser;
 
-import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.PrintStream;
 import org.junit.Test;
 import org.luaj.vm2.ast.Chunk;
@@ -31,7 +29,6 @@ import org.luaj.vm2.parser.ParseException;
 
 import harness.BehaviourHarness;
 import junit.framework.Assert;
-import luaguard.obfuscator.FunctionParameterObfuscator;
 
 /**
  * Performs two types of identity tests for unparsing: functionality and source code.
