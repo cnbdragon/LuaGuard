@@ -42,6 +42,6 @@ public class FunctionParameterObfuscatorTest {
         Assert.assertTrue("Different behaviour",
                BehaviourHarness.isSameOutput(path, obf));
         Assert.assertTrue("Identity transformation", 
-               TransformationHarness.isSameSourceCode(path, obf));
+               !TransformationHarness.isSameSourceCode(path, obf));
     }
 }
