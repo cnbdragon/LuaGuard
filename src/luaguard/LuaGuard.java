@@ -17,6 +17,7 @@
 package luaguard;
 
 import com.beust.jcommander.JCommander;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -65,7 +66,7 @@ static Logger logger = LogManager.getLogger("GLOBAL"/*LuaGuard.class.getName()*/
             System.exit(1);
         }
         logger.info("Start up");
-        logger.info("command: " + Arrays.toString(argv));
+        logger.info("Command: " + Arrays.toString(argv));
         
         
         // resource bundle for internationilization
@@ -90,33 +91,20 @@ static Logger logger = LogManager.getLogger("GLOBAL"/*LuaGuard.class.getName()*/
         mainCommander.setProgramName("LuaGuard");
         //mainCommander.setDescriptionsBundle(hints);
 
+        //parse the commandline
         mainCommander.parse(argv);
-        /*System.out.println(mainCommander.getParsedCommand());
-        System.out.println(mainCommander.getParameters().toString());
-        System.out.println(mainCommander.getObjects());
-        */
-        
-        
 
-        
+        //this is where we deal with the arguments from the cli
         if (jclg.getHelp()) {
             mainCommander.usage();
         } else if (jclg.getAbout()) {
             System.out.println(hints.getString("aboutText"));
-        } else if (true) {
-//            ListFilesUtility files = new ListFilesUtility();
-//            if (files.exists("c://test2")) {
-//                files.listFiles("C://test2");
-//            } else {
-//                System.out.println("Hey, we didn't find the directory");
-//            }
-
+        } else if (true) { // to be here we have to have a vailid command with a
+                           // -file and a -obfuscator
+            
             //change log level from commandline
             int loglevel = 0;
-            if (true/*mainCommander.getParameters()*/) {
-                loglevel = jclg.getLog();
-            }
-
+            loglevel = jclg.getLog(); //this will always return a value. if it doesn't exit(1)
             switch (loglevel) {
                 case 0:
                     logger.setLevel(Level.OFF);
@@ -139,24 +127,37 @@ static Logger logger = LogManager.getLogger("GLOBAL"/*LuaGuard.class.getName()*/
                 case 6:
                     logger.setLevel(Level.FATAL);
                     break;
+                default:
+                    logger.fatal("Bad log level");
+                    System.out.println("Bad log level");
+                    System.exit(1);
             }
             logger.info("Logger Level changed to: " + logger.getLevel());
 
+            /* first place it makes sense to go into debug mode*/
+            boolean debug = jclg.getDebug();
+            logger.info("Debug mode: " + debug);
+            
             /*
              * lua parser
              */
+            /*list of input files*/
             List<String> files = jclg.getfiles();
-            
-            //System.out.println("file count: " + files.size());
+            /*list of output files*/
             List<String> outputs = jclg.getOutput();
+            /**/
             PrintStream out;
 
             //file utility
             ListFilesUtility fileUtil = new ListFilesUtility();
             
+            /*iterate over the input files*/
             for (int i = 0; i < files.size(); i++) {
                 String file = files.get(i);
                 try {
+                    /* check if output is empty and exists.  
+                     * probably should move this block to a new function
+                     */
                     if (!outputs.isEmpty()) {
                         String output = outputs.get(0);
                         if (fileUtil.exists(output) && !jclg.getForce()) {
@@ -185,31 +186,43 @@ static Logger logger = LogManager.getLogger("GLOBAL"/*LuaGuard.class.getName()*/
                         out = new PrintStream(output);
                         outputs.remove(0);
                     } else {
-                        logger.info("output is empty");
+                        logger.info("Output is empty");
                         out = System.out;
                     }
                     //check file
 
                     if (!fileUtil.exists(file)) {
-                        System.out.println("input file " + file + " does not exist");
-                        logger.fatal("input file " + file + " does not exist");
+                        System.out.println("Input file " + file + " does not exist");
+                        logger.fatal("Input file " + file + " does not exist");
                         System.exit(1);
                     }
 
                     LuaParser parser = new LuaParser(new FileInputStream(file));
                     Chunk chunk = parser.Chunk(); // this parses the file
 
-                    //Visitor visit = new LuaUnparser(System.out);
                     /* this is were we would put the obfuscators.
                      * this will probably be a loop structure of some type.
                      */
                     ObfuscatorFactory obFactory = new ObfuscatorFactory();
-
-                    Obfuscator ob = obFactory.constructObfuscator("fpo");
-
-                    chunk.accept(ob);
-                    //if(obfu.getForce()){
-                    chunk.accept(new LuaUnparser(out, false)); //this unparses the file
+                    
+                    List<String> obfus = jclg.getObfuscators();
+                    List<String> blacklist = jclg.getBlacklist();
+                    
+                    
+                    /*iterate throught list of obfuscators*/
+                    for(int j = 0; j < obfus.size(); j++ ){
+                        Obfuscator ob = obFactory.constructObfuscator(obfus.get(j));
+                        if(null != ob){
+                            chunk.accept(ob);
+                            if(debug){
+                                chunk.accept(new LuaUnparser(new PrintStream("./debug/"+obfus.get(j)), !debug)); //this unparses the file
+                            }
+                        } else {
+                            logger.warn("could not build: " + obfus.get(j));
+                        }
+                    }
+                    
+                    chunk.accept(new LuaUnparser(out, !debug)); //this unparses the file
                     //} 
 
                 } catch (FileNotFoundException | ParseException | SecurityException ex) {

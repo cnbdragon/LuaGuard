@@ -71,6 +71,10 @@ public class JCommanderLuaGuard {
             descriptionKey = "force")
     private boolean force;
     
+    @Parameter(names = "-debug", 
+            descriptionKey = "debug")
+    private boolean debug = false;
+    
     @ParametersDelegate
         public DelegateLog delegate = new DelegateLog();
     
@@ -100,5 +104,8 @@ public class JCommanderLuaGuard {
     }
     public int getVersion() {
         return version;
+    }
+    public boolean getDebug() {
+        return debug;
     }
 }

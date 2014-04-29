@@ -35,11 +35,11 @@ public class ObfuscatorFactory {
      * @return Obfuscator object
      */
     public Obfuscator constructObfuscator(String name) {
-        logger.debug("obfuscator factory: cunstructObfuscator");
+        logger.debug("Construct Obfuscator");
         Obfuscator obf = null;
         if (name.equalsIgnoreCase("fpo")) {
             obf = new FunctionParameterObfuscator();
-            logger.debug("build fpo");
+            logger.debug("Build fpo");
         }
         
         return obf;
