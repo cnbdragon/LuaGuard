@@ -215,7 +215,8 @@ static Logger logger = LogManager.getLogger("GLOBAL"/*LuaGuard.class.getName()*/
                         if(null != ob){
                             chunk.accept(ob);
                             if(debug){
-                                chunk.accept(new LuaUnparser(new PrintStream("./debug/"+obfus.get(j)), !debug)); //this unparses the file
+                                //TODO
+                                //chunk.accept(new LuaUnparser(new PrintStream("./debug/"+obfus.get(j)), !debug)); //this unparses the file
                             }
                         } else {
                             logger.warn("could not build: " + obfus.get(j));
