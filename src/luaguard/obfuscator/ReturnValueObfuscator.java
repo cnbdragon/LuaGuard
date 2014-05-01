@@ -92,7 +92,7 @@ public class ReturnValueObfuscator extends NameResolver {
      */
     @Override
     public void visit(FuncBody n) {
-        if (!Return.class.isInstance(n.block.stats.get(n.block.stats.size()-1).getClass())) {
+        if (!Return.class.isInstance(n.block.stats.get(n.block.stats.size()-1))) {
             n.block.add(new Return(null));
         }
         super.visit(n);
@@ -112,14 +112,16 @@ public class ReturnValueObfuscator extends NameResolver {
         // Vararg return: do not want to risk changing behaviour
         if (rv.isVararg) return;
         
+        // Make void functions return
         if (null == n.values) {
-            // TODO
+            n.values = new ArrayList();
         }
         
-        // Add args to return statement
+        // Add variable to the return statement that is not already returned
         for (Object var : scope.namedVariables.keySet()) {
             if (!rv.isVarReturned(var.toString())) {
-                // TODO
+                n.values.add(Exp.nameprefix(var.toString()));
+                break;
             }
         }
     }
