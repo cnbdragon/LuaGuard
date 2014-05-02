@@ -40,4 +40,11 @@ public class ObfuscatorFactoryTest {
         Assert.assertTrue("Wrong obfuscator constructed", 
                 ReturnValueObfuscator.class.equals(obf.getClass()));
     }
+    
+    @Test
+    public void FunctionCallObfuscatorTest() {
+        Obfuscator obf = factory.constructObfuscator("fco");
+        Assert.assertTrue("Wrong obfuscator constructed", 
+                FunctionCallObfuscator.class.equals(obf.getClass()));
+    }
 }

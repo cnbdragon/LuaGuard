@@ -17,6 +17,7 @@ package luaguard.obfuscator;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Random;
 import java.util.Set;
 import org.luaj.vm2.ast.Exp;
 import org.luaj.vm2.ast.Exp.FuncCall;
@@ -118,8 +119,9 @@ public class ReturnValueObfuscator extends NameResolver {
         }
         
         // Add variable to the return statement that is not already returned
+        Random rnd = new Random();
         for (Object var : scope.namedVariables.keySet()) {
-            if (!rv.isVarReturned(var.toString())) {
+            if (!rv.isVarReturned(var.toString()) && rnd.nextBoolean()) {
                 n.values.add(Exp.nameprefix(var.toString()));
                 break;
             }
