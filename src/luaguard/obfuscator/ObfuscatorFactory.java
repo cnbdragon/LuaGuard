@@ -41,6 +41,10 @@ public class ObfuscatorFactory {
             obf = new FunctionParameterObfuscator();
             logger.debug("Build fpo");
         }
+        else if (name.equalsIgnoreCase("rvo")) {
+            obf = new ReturnValueObfuscator();
+            logger.debug("Build rvo");
+        }
         
         return obf;
         
