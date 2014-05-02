@@ -23,14 +23,21 @@ public class ObfuscatorFactoryTest {
     
     @Test
     public void NullReturnTest() {
-        Obfuscator obfFac = factory.constructObfuscator("Does not exist");
-        Assert.assertNull("Non-null obfuscator", obfFac);
+        Obfuscator obf = factory.constructObfuscator("Does not exist");
+        Assert.assertNull("Non-null obfuscator", obf);
     }
     
     @Test
     public void FunctionParameterObfuscatorTest() {
-        Obfuscator obfFac = factory.constructObfuscator("fpo");
+        Obfuscator obf = factory.constructObfuscator("fpo");
         Assert.assertTrue("Wrong obfuscator constructed", 
-                FunctionParameterObfuscator.class.equals(obfFac.getClass()));
+                FunctionParameterObfuscator.class.equals(obf.getClass()));
+    }
+    
+    @Test
+    public void ReturnValueObfuscatorTest() {
+        Obfuscator obf = factory.constructObfuscator("rvo");
+        Assert.assertTrue("Wrong obfuscator constructed", 
+                ReturnValueObfuscator.class.equals(obf.getClass()));
     }
 }

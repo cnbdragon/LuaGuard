@@ -37,10 +37,15 @@ public class FunctionParameterObfuscatorTest {
     }
     
     @Test
-    public void classesTest() throws FileNotFoundException, ParseException, IOException {
+    public void classesBehaviourTest() throws FileNotFoundException, ParseException, IOException {
         String path = "../test/classes.lua";
         Assert.assertTrue("Different behaviour",
                BehaviourHarness.isSameOutput(path, obf));
+    }
+
+    @Test
+    public void classesSourceCodeTest() throws FileNotFoundException, ParseException, IOException {
+        String path = "../test/classes.lua";
         Assert.assertTrue("Identity transformation", 
                !TransformationHarness.isSameSourceCode(path, obf));
     }
