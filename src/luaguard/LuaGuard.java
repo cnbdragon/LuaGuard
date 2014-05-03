@@ -17,7 +17,7 @@
 package luaguard;
 
 import com.beust.jcommander.JCommander;
-import java.io.File;
+import com.beust.jcommander.ParameterException;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -92,14 +92,21 @@ static Logger logger = LogManager.getLogger("GLOBAL"/*LuaGuard.class.getName()*/
         //mainCommander.setDescriptionsBundle(hints);
 
         //parse the commandline
-        mainCommander.parse(argv);
+        try {
+            mainCommander.parse(argv);
+        } catch (ParameterException ex){
+            mainCommander.usage();
+            System.out.println(ex.getLocalizedMessage());
+            logger.warn(ex.getLocalizedMessage());
+            System.exit(1);
+        }
 
         //this is where we deal with the arguments from the cli
         if (jclg.getHelp()) {
             mainCommander.usage();
         } else if (jclg.getAbout()) {
             System.out.println(hints.getString("aboutText"));
-        } else if (true) { // to be here we have to have a vailid command with a
+        } else if (mainCommander.getParameters().size() > 0 /* true*/) { // to be here we have to have a vailid command with a
                            // -file and a -obfuscator
             
             //change log level from commandline
@@ -144,12 +151,17 @@ static Logger logger = LogManager.getLogger("GLOBAL"/*LuaGuard.class.getName()*/
             /*list of input files*/
             List<String> files = jclg.getfiles();
             /*list of output files*/
-            List<String> outputs = jclg.getOutput();
+            List<String> outputs = jclg.getOutput();            
             /**/
             PrintStream out;
 
             //file utility
             ListFilesUtility fileUtil = new ListFilesUtility();
+            if(fileUtil.sameFile(files,outputs)){
+                System.out.println("Files in input and output are the same");
+                logger.fatal("Files in input and output are the same");
+                System.exit(1);
+            }
             
             /*iterate over the input files*/
             for (int i = 0; i < files.size(); i++) {
@@ -231,7 +243,7 @@ static Logger logger = LogManager.getLogger("GLOBAL"/*LuaGuard.class.getName()*/
                 }
             }
             
-        }
+        } 
         
     }
     
