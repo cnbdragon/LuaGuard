@@ -67,6 +67,17 @@ public class ReturnValueObfuscator extends NameResolver {
     
     }
     
+    private Random rnd;
+    
+    public ReturnValueObfuscator() {
+        super();
+    }
+    
+    public ReturnValueObfuscator(Random rnd) {
+        super();
+        this.rnd = rnd;
+    }
+    
     /**
      * Ignore Function call names
      * 
@@ -119,7 +130,6 @@ public class ReturnValueObfuscator extends NameResolver {
         }
         
         // Add variable to the return statement that is not already returned
-        Random rnd = new Random();
         for (Object var : scope.namedVariables.keySet()) {
             if (!rv.isVarReturned(var.toString()) && rnd.nextBoolean()) {
                 n.values.add(Exp.nameprefix(var.toString()));

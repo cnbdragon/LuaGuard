@@ -26,9 +26,6 @@ import org.luaj.vm2.ast.Name;
 import org.luaj.vm2.ast.ParList;
 import org.luaj.vm2.ast.Stat;
 
-//import org.slf4j.Logger;
-//import org.slf4j.LoggerFactory;
-
 /**
  *
  * @author JWulf

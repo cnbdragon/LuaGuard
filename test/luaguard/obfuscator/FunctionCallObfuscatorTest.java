@@ -16,6 +16,7 @@
 package luaguard.obfuscator;
 
 import harness.BehaviourHarness;
+import harness.DeterministicRandom;
 import harness.TransformationHarness;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -33,7 +34,7 @@ public class FunctionCallObfuscatorTest {
     
     @Before
     public void setup() {
-        obf = new FunctionCallObfuscator();
+        obf = new FunctionCallObfuscator(new DeterministicRandom());
     }
     
     @Test

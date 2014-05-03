@@ -34,57 +34,70 @@ import org.luaj.vm2.ast.Visitor;
  */
 public class FunctionCallObfuscator extends NameResolver {
 
-        private static class NameVisitor extends Visitor {
-            String name;
-            
-            public NameVisitor() {
-                name = "";
-            }
-            
-            @Override
-            public void visit(NameExp n) {
-                name = n.name.name;
-            }
-            
-            @Override
-            public void visit(FieldExp n) {
-                name = n.name.name;
-            }
-            
-            @Override
-            public void visit(IndexExp n) {}
-            
-            
+    private static class NameVisitor extends Visitor {
+        String name;
+
+        public NameVisitor() {
+            name = "";
         }
-    
-        private static class ArgumentVisitor extends Visitor {
-        
+
+        @Override
+        public void visit(NameExp n) {
+            name = n.name.name;
+        }
+
+        @Override
+        public void visit(FieldExp n) {
+            name = n.name.name;
+        }
+
+        @Override
+        public void visit(IndexExp n) {}
+
+
+    }
+
+    private static class ArgumentVisitor extends Visitor {
+
         private Set<String> names;
-        
+
         public ArgumentVisitor() {
             names = new HashSet<String>();
         }
-        
+
         @Override
         public void visit(NameExp n) {
            names.add(n.name.name);
         }
-        
-        
+
+
         public boolean isVarPassed(String name) {
             return names.contains(name);
         }
     }
     
     private Set<String> blacklist;
+    private Random rnd;
     
     public FunctionCallObfuscator() {
         this.blacklist = new HashSet<String>();
         this.blacklist.add("print");
+        this.rnd = new Random();
     }
     
     public FunctionCallObfuscator(Set<String> blacklist) {
         this.blacklist = blacklist;
+    }
+    
+    public FunctionCallObfuscator(Random rnd) {
+        this.blacklist = new HashSet<String>();
+        this.blacklist.add("print");
+        this.rnd = rnd;
+    }
+    
+    public FunctionCallObfuscator(Set<String> blacklist, Random rnd) {
+        this.blacklist = blacklist;
+        this.rnd = rnd;
     }
     
     /**
@@ -129,7 +142,6 @@ public class FunctionCallObfuscator extends NameResolver {
         }
         
         // Add variable to the return statement that is not already returned
-        Random rnd = new Random();
         for (Object var : scope.namedVariables.keySet()) {
             if (!av.isVarPassed(var.toString()) && rnd.nextBoolean()) {
                 n.exps.add(Exp.nameprefix(var.toString()));

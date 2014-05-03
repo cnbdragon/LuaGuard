@@ -26,6 +26,13 @@ public class ObfuscatorFactoryTest {
         Obfuscator obf = factory.constructObfuscator("Does not exist");
         Assert.assertNull("Non-null obfuscator", obf);
     }
+
+    @Test
+    public void IdentityObfuscatorTest() {
+        Obfuscator obf = factory.constructObfuscator("none");
+        Assert.assertTrue("Wrong obfuscator constructed", 
+                IdentityObfuscator.class.equals(obf.getClass()));
+    }
     
     @Test
     public void FunctionParameterObfuscatorTest() {

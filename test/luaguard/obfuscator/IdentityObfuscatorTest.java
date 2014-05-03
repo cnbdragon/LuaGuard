@@ -16,7 +16,6 @@
 package luaguard.obfuscator;
 
 import harness.BehaviourHarness;
-import harness.DeterministicRandom;
 import harness.TransformationHarness;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -29,13 +28,13 @@ import org.luaj.vm2.parser.ParseException;
  *
  * @author jgs
  */
-public class ReturnValueObfuscatorTest {
+public class IdentityObfuscatorTest {
     private Obfuscator obf;
     
     @Before
     public void setup() {
-        obf = new ReturnValueObfuscator(new DeterministicRandom());
-    }    
+        obf = new IdentityObfuscator();
+    }
     
     @Test
     public void classesBehaviourTest() throws FileNotFoundException, ParseException, IOException {
@@ -48,6 +47,6 @@ public class ReturnValueObfuscatorTest {
     public void classesSourceCodeTest() throws FileNotFoundException, ParseException, IOException {
         String path = "../test/classes.lua";
         Assert.assertTrue("Identity transformation", 
-               !TransformationHarness.isSameSourceCode(path, obf));
+               TransformationHarness.isSameSourceCode(path, obf));
     }
 }
