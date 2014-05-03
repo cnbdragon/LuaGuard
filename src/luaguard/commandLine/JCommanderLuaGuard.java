@@ -64,6 +64,7 @@ public class JCommanderLuaGuard {
 
     @Parameter(names = {"-o", "-obfu", "-obfuscator"}, 
             required = true, 
+            variableArity = true,
             descriptionKey = "obfuscator")
     private List<String> obfus;
     

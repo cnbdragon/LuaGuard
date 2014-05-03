@@ -16,6 +16,12 @@
 package luaguard.commandLine;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.List;
+import luaguard.LuaGuard;
 
 /**
  *
@@ -110,5 +116,23 @@ public class ListFilesUtility {
         final String directoryWindows ="C://test";
  
         listFilesUtil.listFilesAndFolders(directoryWindows);
+    }
+    
+    public boolean sameFile(List<String> l1, List<String> l2) {
+
+        for (int i = 0; i < l1.size(); i++) {
+            for (int j = 0; j < l2.size(); j++) {
+                Path p1 = Paths.get(l1.get(i));
+                Path p2 = Paths.get(l2.get(j));
+                try {
+                    if (Files.isSameFile(p1, p2)) {
+                        return true;
+                    }
+                } catch (IOException ex) {
+                    java.util.logging.Logger.getLogger(LuaGuard.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+                }
+            }
+        }
+        return false;
     }
 }
