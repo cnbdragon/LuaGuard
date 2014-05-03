@@ -37,7 +37,10 @@ public class ObfuscatorFactory {
     public Obfuscator constructObfuscator(String name) {
         logger.debug("Construct Obfuscator");
         Obfuscator obf = null;
-        if (name.equalsIgnoreCase("fpo")) {
+         if (name.equalsIgnoreCase("none")) {
+            obf = new IdentityObfuscator();
+            logger.debug("Build none");
+        } else if (name.equalsIgnoreCase("fpo")) {
             obf = new FunctionParameterObfuscator();
             logger.debug("Build fpo");
         }
