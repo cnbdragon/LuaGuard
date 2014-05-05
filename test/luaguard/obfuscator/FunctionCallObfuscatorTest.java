@@ -20,6 +20,7 @@ import harness.DeterministicRandom;
 import harness.TransformationHarness;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import luaguard.traversal.FunctionDeclarationVisitor;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -30,16 +31,18 @@ import org.luaj.vm2.parser.ParseException;
  * @author jgs
  */
 public class FunctionCallObfuscatorTest {
-    private Obfuscator obf;
     
     @Before
     public void setup() {
-        obf = new FunctionCallObfuscator(new DeterministicRandom());
+
     }
     
     @Test
     public void classesBehaviourTest() throws FileNotFoundException, ParseException, IOException {
         String path = "../test/classes.lua";
+        FunctionDeclarationVisitor fdv = new FunctionDeclarationVisitor();
+        TransformationHarness.setupRun(path, fdv);
+        Obfuscator obf = new FunctionCallObfuscator(new DeterministicRandom(), fdv.funcPar);
         Assert.assertTrue("Different behaviour",
                BehaviourHarness.isSameOutput(path, obf));
     }
@@ -47,20 +50,29 @@ public class FunctionCallObfuscatorTest {
     @Test
     public void classesSourceCodeTest() throws FileNotFoundException, ParseException, IOException {
         String path = "../test/classes.lua";
+        FunctionDeclarationVisitor fdv = new FunctionDeclarationVisitor();
+        TransformationHarness.setupRun(path, fdv);
+        Obfuscator obf = new FunctionCallObfuscator(new DeterministicRandom(), fdv.funcPar);
         Assert.assertTrue("Identity transformation", 
                !TransformationHarness.isSameSourceCode(path, obf));
     }
     
     @Test
     public void classes2BehaviourTest() throws FileNotFoundException, ParseException, IOException {
-        String path = "../test/classes2.lua";
+        String path = "../test/classes.lua";
+        FunctionDeclarationVisitor fdv = new FunctionDeclarationVisitor();
+        TransformationHarness.setupRun(path, fdv);
+        Obfuscator obf = new FunctionCallObfuscator(new DeterministicRandom(), fdv.funcPar);
         Assert.assertTrue("Different behaviour",
                BehaviourHarness.isSameOutput(path, obf));
     }
 
     @Test
     public void classes2SourceCodeTest() throws FileNotFoundException, ParseException, IOException {
-        String path = "../test/classes2.lua";
+        String path = "../test/classes.lua";
+        FunctionDeclarationVisitor fdv = new FunctionDeclarationVisitor();
+        TransformationHarness.setupRun(path, fdv);
+        Obfuscator obf = new FunctionCallObfuscator(new DeterministicRandom(), fdv.funcPar);
         Assert.assertTrue("Identity transformation", 
                !TransformationHarness.isSameSourceCode(path, obf));
     }

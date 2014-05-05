@@ -16,7 +16,9 @@
 package luaguard.obfuscator;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 import org.luaj.vm2.ast.Exp;
@@ -26,6 +28,8 @@ import org.luaj.vm2.ast.Exp.IndexExp;
 import org.luaj.vm2.ast.Exp.MethodCall;
 import org.luaj.vm2.ast.Exp.NameExp;
 import org.luaj.vm2.ast.FuncArgs;
+import org.luaj.vm2.ast.ParList;
+import org.luaj.vm2.ast.Stat.FuncDef;
 import org.luaj.vm2.ast.Visitor;
 
 /**
@@ -34,6 +38,9 @@ import org.luaj.vm2.ast.Visitor;
  */
 public class FunctionCallObfuscator extends NameResolver {
 
+    /**
+     * Visits all NameExp nodes in order to construct the name of a function.
+     */
     private static class NameVisitor extends Visitor {
         String name;
 
@@ -57,6 +64,9 @@ public class FunctionCallObfuscator extends NameResolver {
 
     }
 
+    /**
+     * Visits all arguments in a function and collects the names of variables used.
+     */
     private static class ArgumentVisitor extends Visitor {
 
         private Set<String> names;
@@ -77,21 +87,26 @@ public class FunctionCallObfuscator extends NameResolver {
     }
     
     private Set<String> blacklist;
+    private Map<String, ParList> fPar;
     private Random rnd;
     
     public FunctionCallObfuscator() {
         this.blacklist = new HashSet<String>();
         this.blacklist.add("print");
+        this.fPar = new HashMap<String, ParList>();
         this.rnd = new Random();
     }
     
-    public FunctionCallObfuscator(Set<String> blacklist) {
+    public FunctionCallObfuscator(Set<String> blacklist, Map<String, ParList> fPar) {
         this.blacklist = blacklist;
+        this.fPar = fPar;
+        this.rnd = new Random();
     }
     
-    public FunctionCallObfuscator(Random rnd) {
+    public FunctionCallObfuscator(Random rnd, Map<String, ParList> fPar) {
         this.blacklist = new HashSet<String>();
         this.blacklist.add("print");
+        this.fPar = fPar;
         this.rnd = rnd;
     }
     
@@ -101,19 +116,33 @@ public class FunctionCallObfuscator extends NameResolver {
     }
     
     /**
-     * Ignore functions in the blacklist
+     * Ignore functions in the blacklist 
+     * and function calls with fewer arguments than parameters or functions with varargs.
      * 
      * @param n MethodCall node
      */
     @Override
     public void visit(MethodCall n) {
-        if (!blacklist.contains(n.name)) {
-            n.args.accept(this);
+        
+        // Check function parameters
+        if (fPar.containsKey(n.name)) {
+            ParList p = fPar.get(n.name);
+            if ((null != p.names && null != n.args.exps && n.args.exps.size() < p.names.size()) 
+                    || p.isvararg)
+                return;
         }
+        
+        // Check blacklist
+        if (blacklist.contains(n.name)) {
+            return;
+        }
+        
+        n.args.accept(this);
     }
     
     /**
-     * Ignore functions in the blacklist
+     * Ignore functions in the blacklist 
+     * and function calls with fewer arguments than parameters or functions with varargs.
      * 
      * @param n FuncCall node
      */
@@ -122,9 +151,20 @@ public class FunctionCallObfuscator extends NameResolver {
         NameVisitor nv = new NameVisitor();
         n.lhs.accept(nv);
         
-        if (!blacklist.contains(nv.name)) {
-            n.args.accept(this);
+        // Check function parameters
+        if (fPar.containsKey(nv.name)) {
+            ParList p = fPar.get(nv.name);
+            if ((null != p.names && null != n.args.exps && n.args.exps.size() < p.names.size()) 
+                    || p.isvararg)
+                return;
         }
+        
+        // Check blacklist
+        if (blacklist.contains(nv.name)) {
+            return;
+        }
+        
+        n.args.accept(this);
     }
     
     /**

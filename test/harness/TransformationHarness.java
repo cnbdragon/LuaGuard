@@ -24,6 +24,7 @@ import java.io.PrintStream;
 import luaguard.obfuscator.Obfuscator;
 import luaguard.unparser.LuaUnparser;
 import org.luaj.vm2.ast.Chunk;
+import org.luaj.vm2.ast.Visitor;
 import org.luaj.vm2.parser.LuaParser;
 import org.luaj.vm2.parser.ParseException;
 
@@ -70,5 +71,20 @@ public class TransformationHarness {
         after = baos.toString();    // output from 2nd run
         
         return before.equals(after); 
+    }
+    
+    /**
+     * Performs a traversal of the AST of a program with the supplied visitor.
+     * 
+     * @param path path to file to test
+     * @param v visitor
+     * @throws FileNotFoundException
+     * @throws ParseException 
+     */
+    public static void setupRun(String path, Visitor v) throws FileNotFoundException, ParseException {
+        LuaParser parser = new LuaParser(new FileInputStream(path));
+        Chunk chunk = parser.Chunk();
+        if (null != v)
+            chunk.accept(v);
     }
 }
