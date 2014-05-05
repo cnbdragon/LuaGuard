@@ -36,7 +36,7 @@ import org.luaj.vm2.ast.Stat;
 public class FunctionParameterObfuscator extends Obfuscator {
     
     final Logger logger = LogManager.getLogger("GLOBAL");
-    
+        
     /**
      * Modifies the function body such that all parameters are varargs.
      * Starting statements are select function calls
@@ -47,7 +47,7 @@ public class FunctionParameterObfuscator extends Obfuscator {
     public void visit(FuncBody n) {
         
         // No parameters to obfuscate
-        if (null == n.parlist.names) return;
+        if (null == n.parlist.names || n.parlist.isvararg) return;
         
         // Add select statements
         List<Stat> selectStats = new ArrayList<Stat>();
