@@ -160,7 +160,7 @@ public class LuaUnparser extends Visitor {
     // if-then condition/block
     out.print("if ");
     n.ifexp.accept(this);
-    out.print(" then");
+    out.print(" then ");
     newline();
     n.ifblock.accept(this);
     newline();
@@ -170,7 +170,7 @@ public class LuaUnparser extends Visitor {
       for(int i = 0; i < n.elseifexps.size(); i++) {
         out.print("elseif ");
         ((Exp)n.elseifexps.get(i)).accept(this);
-        out.print(" then");
+        out.print(" then ");
         newline();
         ((Block)n.elseifblocks.get(i)).accept(this);
         newline();
@@ -179,7 +179,7 @@ public class LuaUnparser extends Visitor {
 
     // else block
     if(null != n.elseblock) {
-      out.print("else");
+      out.print(" else ");
       newline();
       n.elseblock.accept(this);
       newline();

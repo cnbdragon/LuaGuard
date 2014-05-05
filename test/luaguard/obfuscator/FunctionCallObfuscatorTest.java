@@ -50,5 +50,19 @@ public class FunctionCallObfuscatorTest {
         Assert.assertTrue("Identity transformation", 
                !TransformationHarness.isSameSourceCode(path, obf));
     }
+    
+    @Test
+    public void classes2BehaviourTest() throws FileNotFoundException, ParseException, IOException {
+        String path = "../test/classes2.lua";
+        Assert.assertTrue("Different behaviour",
+               BehaviourHarness.isSameOutput(path, obf));
+    }
+
+    @Test
+    public void classes2SourceCodeTest() throws FileNotFoundException, ParseException, IOException {
+        String path = "../test/classes2.lua";
+        Assert.assertTrue("Identity transformation", 
+               !TransformationHarness.isSameSourceCode(path, obf));
+    }
 }
 
