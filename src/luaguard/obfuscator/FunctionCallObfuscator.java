@@ -92,7 +92,6 @@ public class FunctionCallObfuscator extends NameResolver {
     
     public FunctionCallObfuscator() {
         this.blacklist = new HashSet<String>();
-        this.blacklist.add("print");
         this.fPar = new HashMap<String, ParList>();
         this.rnd = new Random();
     }
@@ -105,7 +104,6 @@ public class FunctionCallObfuscator extends NameResolver {
     
     public FunctionCallObfuscator(Random rnd, Map<String, ParList> fPar) {
         this.blacklist = new HashSet<String>();
-        this.blacklist.add("print");
         this.fPar = fPar;
         this.rnd = rnd;
     }
@@ -124,20 +122,9 @@ public class FunctionCallObfuscator extends NameResolver {
     @Override
     public void visit(MethodCall n) {
         
-        // Check function parameters
-        if (fPar.containsKey(n.name)) {
-            ParList p = fPar.get(n.name);
-            if ((null != p.names && null != n.args.exps && n.args.exps.size() < p.names.size()) 
-                    || p.isvararg)
-                return;
+        if (isChangePermitted(n.name, n.args)) {
+            n.args.accept(this);
         }
-        
-        // Check blacklist
-        if (blacklist.contains(n.name)) {
-            return;
-        }
-        
-        n.args.accept(this);
     }
     
     /**
@@ -151,20 +138,9 @@ public class FunctionCallObfuscator extends NameResolver {
         NameVisitor nv = new NameVisitor();
         n.lhs.accept(nv);
         
-        // Check function parameters
-        if (fPar.containsKey(nv.name)) {
-            ParList p = fPar.get(nv.name);
-            if ((null != p.names && null != n.args.exps && n.args.exps.size() < p.names.size()) 
-                    || p.isvararg)
-                return;
+        if (isChangePermitted(nv.name, n.args)) {
+            n.args.accept(this);
         }
-        
-        // Check blacklist
-        if (blacklist.contains(nv.name)) {
-            return;
-        }
-        
-        n.args.accept(this);
     }
     
     /**
@@ -188,5 +164,21 @@ public class FunctionCallObfuscator extends NameResolver {
                 break;
             }
         }
-    }   
+    }
+    
+    private boolean isChangePermitted(String name, FuncArgs args) {
+                // If the function parameters are unknown or function is blacklisted, then stop
+        if (!fPar.containsKey(name) || blacklist.contains(name)) {
+            return false;
+        }
+        
+        ParList p = fPar.get(name);
+        
+        // If the function is varargs or function call has fewer args than the prototype, then stop
+        if ((null != p.names && null != args.exps && args.exps.size() < p.names.size()) 
+            || p.isvararg)
+            return false;
+        
+        return true;
+    }
 }
