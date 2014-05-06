@@ -15,6 +15,8 @@
  */
 package luaguard.obfuscator;
 
+import java.util.LinkedList;
+import java.util.List;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
@@ -37,23 +39,31 @@ public class ObfuscatorFactory {
     public Obfuscator constructObfuscator(String name) {
         logger.debug("Construct Obfuscator");
         Obfuscator obf = null;
-         if (name.equalsIgnoreCase("none")) {
+        if (name.equalsIgnoreCase("none")) {
             obf = new IdentityObfuscator();
             logger.debug("Build none");
         } else if (name.equalsIgnoreCase("fpo")) {
             obf = new FunctionParameterObfuscator();
             logger.debug("Build fpo");
-        }
-        else if (name.equalsIgnoreCase("rvo")) {
+        } else if (name.equalsIgnoreCase("rvo")) {
             obf = new ReturnValueObfuscator();
             logger.debug("Build rvo");
-        }
-        else if (name.equalsIgnoreCase("fco")) {
+        } else if (name.equalsIgnoreCase("fco")) {
             obf = new FunctionCallObfuscator();
             logger.debug("Build fco");
         }
-        
+
         return obf;
         
+    }
+    
+    public List<String> getObfuscatorList(){
+        List temp = new LinkedList();
+        temp.add("none");
+        temp.add("fpo");
+        temp.add("rvo");
+        temp.add("fco");
+        
+        return temp;
     }
 }
