@@ -93,6 +93,8 @@ public class FunctionCallObfuscator extends NameResolver {
     public FunctionCallObfuscator() {
         this.blacklist = new HashSet<String>();
         this.blacklist.add("print");
+        this.blacklist.add("sort");
+        this.blacklist.add("insert");
         this.fPar = new HashMap<String, ParList>();
         this.rnd = new Random();
     }
@@ -106,6 +108,8 @@ public class FunctionCallObfuscator extends NameResolver {
     public FunctionCallObfuscator(Random rnd, Map<String, ParList> fPar) {
         this.blacklist = new HashSet<String>();
         this.blacklist.add("print");
+        this.blacklist.add("sort");
+        this.blacklist.add("insert");
         this.fPar = fPar;
         this.rnd = rnd;
     }

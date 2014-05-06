@@ -84,8 +84,7 @@ public class LuaUnparser extends Visitor {
    */
   @Override
   public void visit(DoBlock n) {
-    out.print("do");
-    if (isCompressed) out.print(" ");
+    out.print("do ");
     newline();
     n.block.accept(this);
     newline();
@@ -99,7 +98,7 @@ public class LuaUnparser extends Visitor {
    */
   @Override
     public void visit(LocalAssign n) {
-        out.print("local ");
+        out.print(" local ");
 
         // Variables
         int numNames = n.names.size();

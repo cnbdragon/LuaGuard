@@ -39,7 +39,7 @@ public class FunctionCallObfuscatorTest {
     
     @Test
     public void classesBehaviourTest() throws FileNotFoundException, ParseException, IOException {
-        String path = "../test/classes.lua";
+        String path = "Lua/classes.lua";
         FunctionDeclarationVisitor fdv = new FunctionDeclarationVisitor();
         TransformationHarness.setupRun(path, fdv);
         Obfuscator obf = new FunctionCallObfuscator(new DeterministicRandom(), fdv.funcPar);
@@ -49,7 +49,7 @@ public class FunctionCallObfuscatorTest {
 
     @Test
     public void classesSourceCodeTest() throws FileNotFoundException, ParseException, IOException {
-        String path = "../test/classes.lua";
+        String path = "Lua/classes.lua";
         FunctionDeclarationVisitor fdv = new FunctionDeclarationVisitor();
         TransformationHarness.setupRun(path, fdv);
         Obfuscator obf = new FunctionCallObfuscator(new DeterministicRandom(), fdv.funcPar);
@@ -59,7 +59,7 @@ public class FunctionCallObfuscatorTest {
     
     @Test
     public void classes2BehaviourTest() throws FileNotFoundException, ParseException, IOException {
-        String path = "../test/classes.lua";
+        String path = "Lua/classes2.lua";
         FunctionDeclarationVisitor fdv = new FunctionDeclarationVisitor();
         TransformationHarness.setupRun(path, fdv);
         Obfuscator obf = new FunctionCallObfuscator(new DeterministicRandom(), fdv.funcPar);
@@ -69,7 +69,27 @@ public class FunctionCallObfuscatorTest {
 
     @Test
     public void classes2SourceCodeTest() throws FileNotFoundException, ParseException, IOException {
-        String path = "../test/classes.lua";
+        String path = "Lua/classes2.lua";
+        FunctionDeclarationVisitor fdv = new FunctionDeclarationVisitor();
+        TransformationHarness.setupRun(path, fdv);
+        Obfuscator obf = new FunctionCallObfuscator(new DeterministicRandom(), fdv.funcPar);
+        Assert.assertTrue("Identity transformation", 
+               !TransformationHarness.isSameSourceCode(path, obf));
+    }
+    
+    @Test
+    public void factorsBehaviourTest() throws FileNotFoundException, ParseException, IOException {
+        String path = "Lua/factors.lua";
+        FunctionDeclarationVisitor fdv = new FunctionDeclarationVisitor();
+        TransformationHarness.setupRun(path, fdv);
+        Obfuscator obf = new FunctionCallObfuscator(new DeterministicRandom(), fdv.funcPar);
+        Assert.assertTrue("Different behaviour",
+               BehaviourHarness.isSameOutput(path, obf));
+    }
+
+    @Test
+    public void factorsSourceCodeTest() throws FileNotFoundException, ParseException, IOException {
+        String path = "Lua/factors.lua";
         FunctionDeclarationVisitor fdv = new FunctionDeclarationVisitor();
         TransformationHarness.setupRun(path, fdv);
         Obfuscator obf = new FunctionCallObfuscator(new DeterministicRandom(), fdv.funcPar);

@@ -34,12 +34,50 @@ import junit.framework.Assert;
 public class LuaUnparserTest {
     
     @Test
-    public void sourceCodeIdentityTest() throws FileNotFoundException, ParseException, IOException {
-        String path = "../test/classes.lua";
+    public void classesIdentitySourceTest() throws FileNotFoundException, ParseException, IOException {
+        String path = "Lua/classes.lua";
+        Assert.assertTrue("Different behaviour", 
+                TransformationHarness.isSameSourceCode(path, null));
+    }
+
+    @Test
+    public void classesIdentityBehaviourTest() throws FileNotFoundException, ParseException, IOException {
+        String path = "Lua/classes.lua";
         Assert.assertTrue("Different behaviour", 
                 TransformationHarness.isSameSourceCode(path, null));
         Assert.assertTrue("Not identity transformation", 
                 BehaviourHarness.isSameOutput(path, null));
     }
+    
+    @Test
+    public void classes2IdentitySourceTest() throws FileNotFoundException, ParseException, IOException {
+        String path = "Lua/classes2.lua";
+        Assert.assertTrue("Different behaviour", 
+                TransformationHarness.isSameSourceCode(path, null));
+    }
 
+    @Test
+    public void classes2IdentityBehaviourTest() throws FileNotFoundException, ParseException, IOException {
+        String path = "Lua/classes2.lua";
+        Assert.assertTrue("Different behaviour", 
+                TransformationHarness.isSameSourceCode(path, null));
+        Assert.assertTrue("Not identity transformation", 
+                BehaviourHarness.isSameOutput(path, null));
+    }
+    
+    @Test
+    public void factorsIdentitySourceTest() throws FileNotFoundException, ParseException, IOException {
+        String path = "Lua/factors.lua";
+        Assert.assertTrue("Different behaviour", 
+                TransformationHarness.isSameSourceCode(path, null));
+    }
+
+    @Test
+    public void factorsIdentityBehaviourTest() throws FileNotFoundException, ParseException, IOException {
+        String path = "Lua/factors.lua";
+        Assert.assertTrue("Different behaviour", 
+                TransformationHarness.isSameSourceCode(path, null));
+        Assert.assertTrue("Not identity transformation", 
+                BehaviourHarness.isSameOutput(path, null));
+    }
 }
