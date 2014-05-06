@@ -75,8 +75,6 @@ public class LuaUnparserTest {
     @Test
     public void factorsIdentityBehaviourTest() throws FileNotFoundException, ParseException, IOException {
         String path = "Lua/factors.lua";
-        Assert.assertTrue("Different behaviour", 
-                TransformationHarness.isSameSourceCode(path, null));
         Assert.assertTrue("Not identity transformation", 
                 BehaviourHarness.isSameOutput(path, null));
     }
