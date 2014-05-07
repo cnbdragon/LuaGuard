@@ -30,6 +30,7 @@ import luaguard.commandLine.JCommanderLuaGuard;
 import luaguard.commandLine.ListFilesUtility;
 import luaguard.obfuscator.Obfuscator;
 import luaguard.obfuscator.ObfuscatorFactory;
+import luaguard.traversal.FunctionDeclarationVisitor;
 import luaguard.unparser.*;
 import org.apache.log4j.FileAppender;
 import org.apache.log4j.Layout;
@@ -211,6 +212,13 @@ static Logger logger = LogManager.getLogger("GLOBAL"/*LuaGuard.class.getName()*/
 
                     LuaParser parser = new LuaParser(new FileInputStream(file));
                     Chunk chunk = parser.Chunk(); // this parses the file
+                    
+                    /* now we will do pre processing traversals
+                     *
+                    */
+                    
+                    FunctionDeclarationVisitor fdv = new FunctionDeclarationVisitor();
+                    chunk.accept(fdv);
 
                     /* this is were we would put the obfuscators.
                      * this will probably be a loop structure of some type.
@@ -223,7 +231,7 @@ static Logger logger = LogManager.getLogger("GLOBAL"/*LuaGuard.class.getName()*/
                     
                     /*iterate throught list of obfuscators*/
                     for(int j = 0; j < obfus.size(); j++ ){
-                        Obfuscator ob = obFactory.constructObfuscator(obfus.get(j));
+                        Obfuscator ob = obFactory.constructObfuscator(obfus.get(j),fdv.funcPar);
                         if(null != ob){
                             chunk.accept(ob);
                             if(debug){

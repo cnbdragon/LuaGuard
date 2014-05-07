@@ -17,8 +17,11 @@ package luaguard.obfuscator;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Random;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+import org.luaj.vm2.ast.ParList;
 
 /**
  *
@@ -34,9 +37,10 @@ public class ObfuscatorFactory {
      * Constructs an obfuscator object given the obfuscator's name
      * 
      * @param name Name of the obfuscation to perform
+     * @param funcs
      * @return Obfuscator object
      */
-    public Obfuscator constructObfuscator(String name) {
+    public Obfuscator constructObfuscator(String name, Map<String,ParList> funcs) {
         logger.debug("Construct Obfuscator");
         Obfuscator obf = null;
         if (name.equalsIgnoreCase("none")) {
@@ -49,7 +53,7 @@ public class ObfuscatorFactory {
             obf = new ReturnValueObfuscator();
             logger.debug("Build rvo");
         } else if (name.equalsIgnoreCase("fco")) {
-            obf = new FunctionCallObfuscator();
+            obf = new FunctionCallObfuscator(new Random(), funcs);
             logger.debug("Build fco");
         }
 
