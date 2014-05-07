@@ -123,13 +123,19 @@ public class ListFilesUtility {
         for (int i = 0; i < l1.size(); i++) {
             for (int j = 0; j < l2.size(); j++) {
                 Path p1 = Paths.get(l1.get(i));
+                File f1 = new File(l1.get(i));
                 Path p2 = Paths.get(l2.get(j));
-                try {
-                    if (Files.isSameFile(p1, p2)) {
-                        return true;
+                File f2 = new File(l2.get(j));
+                if (f1.exists() && f2.exists()) {
+                    try {
+
+                        if (Files.isSameFile(p1, p2)) {
+                            return true;
+                        }
+
+                    } catch (IOException ex) {
+                        java.util.logging.Logger.getLogger(LuaGuard.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
                     }
-                } catch (IOException ex) {
-                    java.util.logging.Logger.getLogger(LuaGuard.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
                 }
             }
         }
