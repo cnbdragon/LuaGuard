@@ -47,7 +47,9 @@ public class FunctionParameterObfuscator extends Obfuscator {
     public void visit(FuncBody n) {
         
         // No parameters to obfuscate
-        if (null == n.parlist.names || n.parlist.isvararg) return;
+        if (null == n.parlist.names)
+            n.parlist.names = ParList.EMPTY_NAMELIST;
+        
         
         // Add select statements
         List<Stat> selectStats = new ArrayList<Stat>();
@@ -57,21 +59,26 @@ public class FunctionParameterObfuscator extends Obfuscator {
             
             // Assignment argument
             List<Exp> assignExps = new ArrayList<Exp>();
+
+            if (n.parlist.isvararg) {
+                // Remove non-vararg arguments from arg table
+                List<Exp> funcExps = new ArrayList<Exp>();
+                funcExps.add(Exp.nameprefix("arg"));
+                funcExps.add(Exp.numberconstant(Integer.toString(1)));
+                assignExps.add(Exp.functionop(Exp.fieldop(Exp.nameprefix("table"), "remove"), 
+                        FuncArgs.explist(funcExps)));
+            }
+            else {
+                // Index arg table (implicit vararg table)
+                assignExps.add(Exp.indexop(Exp.nameprefix("arg"), 
+                            Exp.numberconstant(Integer.toString(i+1))));
+            }
             
-            // Select function arguments
-            List<Exp> funcExps = new ArrayList<Exp>();
-            funcExps.add(Exp.numberconstant(Integer.toString(i+1)));
-            funcExps.add(Exp.nameprefix("..."));
-            
-            // Produce select function call
-            assignExps.add(Exp.functionop(Exp.nameprefix("select"),
-                           FuncArgs.explist(funcExps)));
-            
-            // Add select assignment to statements list
+            // Add assignments to statements list
             selectStats.add(Stat.localassignment(args, assignExps));
         }
         
-        // Add selects and change to varargs
+        // Add index/remove assignments and change to varargs
         n.block.stats.addAll(0, selectStats);
         n.parlist = new ParList(ParList.EMPTY_NAMELIST, true);
         
