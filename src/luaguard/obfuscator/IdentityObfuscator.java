@@ -15,16 +15,8 @@
  */
 package luaguard.obfuscator;
 
-import java.util.ArrayList;
-import java.util.List;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
-import org.luaj.vm2.ast.Exp;
-import org.luaj.vm2.ast.FuncArgs;
-import org.luaj.vm2.ast.FuncBody;
-import org.luaj.vm2.ast.Name;
-import org.luaj.vm2.ast.ParList;
-import org.luaj.vm2.ast.Stat;
 
 /**
  *

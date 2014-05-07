@@ -17,14 +17,12 @@
 package luaguard.unparser;
 
 import java.io.PrintStream;
-import java.io.*;
 import java.util.List;
 
 import org.luaj.vm2.ast.*;
 import org.luaj.vm2.ast.Exp.*;
 import org.luaj.vm2.ast.Stat.*;
 import org.luaj.vm2.Lua;
-import org.luaj.vm2.LuaString;
 import org.apache.log4j.Logger;
 import org.apache.log4j.LogManager;
 

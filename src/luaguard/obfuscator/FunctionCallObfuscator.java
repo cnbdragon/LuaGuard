@@ -29,7 +29,6 @@ import org.luaj.vm2.ast.Exp.MethodCall;
 import org.luaj.vm2.ast.Exp.NameExp;
 import org.luaj.vm2.ast.FuncArgs;
 import org.luaj.vm2.ast.ParList;
-import org.luaj.vm2.ast.Stat.FuncDef;
 import org.luaj.vm2.ast.Visitor;
 
 /**
