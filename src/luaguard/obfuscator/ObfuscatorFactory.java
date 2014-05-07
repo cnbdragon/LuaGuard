@@ -15,6 +15,7 @@
  */
 package luaguard.obfuscator;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -32,6 +33,10 @@ public class ObfuscatorFactory {
     Logger logger = LogManager.getLogger("GLOBAL");
     
     public ObfuscatorFactory() {}
+    
+    public Obfuscator constructObfuscator(String name) {
+        return constructObfuscator(name, new HashMap<String,ParList>());
+    }
     
     /**
      * Constructs an obfuscator object given the obfuscator's name
