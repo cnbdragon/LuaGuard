@@ -29,7 +29,6 @@ import org.luaj.vm2.ast.ParList;
  * @author Joshua Stein
  */
 public class ObfuscatorFactory {
-    
     Logger logger = LogManager.getLogger("GLOBAL");
     
     public ObfuscatorFactory() {}
