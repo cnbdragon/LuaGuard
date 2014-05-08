@@ -100,7 +100,7 @@ public class FunctionCallObfuscator extends NameResolver {
         this.fPar = fPar;
         this.rnd = new Random();
     }
-    
+       
     public FunctionCallObfuscator(Random rnd, Map<String, ParList> fPar) {
         this.blacklist = new HashSet<String>();
         this.fPar = fPar;

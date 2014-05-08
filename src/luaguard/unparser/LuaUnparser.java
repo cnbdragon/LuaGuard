@@ -58,6 +58,8 @@ public class LuaUnparser extends Visitor {
   @Override
   public void visit(Block n) {
 
+    if (null == n.stats) return;
+      
     // Block statements
     int numStats = n.stats.size();
     if (numStats > 0) {
@@ -337,11 +339,13 @@ public class LuaUnparser extends Visitor {
     }
     // Expressions
     int numVals = n.values.size();
-    for(int i = 0; i < numVals - 1; i++) {
-      ((Exp)n.values.get(i)).accept(this);
-      out.print(",");
+    if (numVals > 0) {
+        for(int i = 0; i < numVals - 1; i++) {
+          ((Exp)n.values.get(i)).accept(this);
+          out.print(",");
+        }
+        ((Exp)n.values.get(numVals - 1)).accept(this);
     }
-    ((Exp)n.values.get(numVals - 1)).accept(this);
   }
 
   /****

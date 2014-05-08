@@ -71,6 +71,7 @@ public class ReturnValueObfuscator extends NameResolver {
     
     public ReturnValueObfuscator() {
         super();
+        this.rnd = new Random();
     }
     
     public ReturnValueObfuscator(Random rnd) {

@@ -26,7 +26,7 @@ public class RenamerTest {
         String file = "Lua/factors.lua";
         LuaParser parser = new LuaParser(new FileInputStream(file));
         Chunk chunk = parser.Chunk();
-        FunRenamerObfu renamer1 = new FunRenamerObfu();
+        FunRenamerObfuscator renamer1 = new FunRenamerObfuscator();
 //        VarRenamerObfu renamer2 = new VarRenamerObfu();
         chunk.accept(renamer1);
 //        chunk.accept(renamer2);

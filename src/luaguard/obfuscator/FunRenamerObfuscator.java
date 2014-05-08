@@ -7,6 +7,8 @@ package luaguard.obfuscator;
 
 import java.util.HashMap;
 import java.util.List;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.luaj.vm2.ast.Name;
 import org.luaj.vm2.ast.Stat.FuncDef;
 import org.luaj.vm2.ast.Stat.LocalFuncDef;
@@ -15,12 +17,13 @@ import org.luaj.vm2.ast.Stat.LocalFuncDef;
  *
  * @author Will
  */
-public class FunRenamerObfu extends Obfuscator {
+public class FunRenamerObfuscator extends Obfuscator {
     
-    private HashMap<String,String> dict;
-    private String base = "OTOSOTE";
+    Logger logger = LogManager.getLogger("GLOBAL");
+    private final HashMap<String,String> dict;
+    private final String base = "OTOSOTE";
     
-    FunRenamerObfu(){
+    FunRenamerObfuscator(){
         dict = new HashMap<>();
     }
     

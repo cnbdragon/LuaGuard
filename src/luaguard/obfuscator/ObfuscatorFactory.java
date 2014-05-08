@@ -15,8 +15,14 @@
  */
 package luaguard.obfuscator;
 
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+import org.luaj.vm2.ast.ParList;
 
 /**
  *
@@ -28,39 +34,56 @@ public class ObfuscatorFactory {
     
     public ObfuscatorFactory() {}
     
+    public Obfuscator constructObfuscator(String name) {
+        return constructObfuscator(name, new HashMap<String,ParList>());
+    }
+    
     /**
      * Constructs an obfuscator object given the obfuscator's name
      * 
      * @param name Name of the obfuscation to perform
+     * @param funcs
      * @return Obfuscator object
      */
-    public Obfuscator constructObfuscator(String name) {
+    public Obfuscator constructObfuscator(String name, Map<String,ParList> funcs) {
         logger.debug("Construct Obfuscator");
         Obfuscator obf = null;
-         if (name.equalsIgnoreCase("none")) {
+        if (name.equalsIgnoreCase("none")) {
             obf = new IdentityObfuscator();
             logger.debug("Build none");
         } else if (name.equalsIgnoreCase("fpo")) {
             obf = new FunctionParameterObfuscator();
             logger.debug("Build fpo");
-        }
-        else if (name.equalsIgnoreCase("rvo")) {
+        } else if (name.equalsIgnoreCase("rvo")) {
             obf = new ReturnValueObfuscator();
             logger.debug("Build rvo");
-        }
-        else if (name.equalsIgnoreCase("fco")) {
-            obf = new FunctionCallObfuscator();
+        } else if (name.equalsIgnoreCase("fco")) {
+            obf = new FunctionCallObfuscator(new Random(), funcs);
             logger.debug("Build fco");
-        }
-        else if (name.equalsIgnoreCase("fro")){
-            obf = new FunRenamerObfu();
+        } else if (name.equalsIgnoreCase("vro")) {
+            obf = new VarRenamerObfuscator();
+            logger.debug("Build vro");
+        } else if (name.equalsIgnoreCase("jso")) {
+            obf = new JunkStatObfuscator();
+            logger.debug("Build jso");
+        } else if (name.equalsIgnoreCase("fro")) {
+            obf = new FunRenamerObfuscator();
             logger.debug("Build fro");
-        }
-        else if (name.equalsIgnoreCase("vro")){
-            obf = new VarRenamerObfu();
-        }
-        
+        } 
+
         return obf;
         
+    }
+    
+    public List<String> getObfuscatorList(){
+        List temp = new LinkedList();
+        temp.add("none");
+        temp.add("fpo");
+        temp.add("rvo");
+        temp.add("fco");
+        temp.add("jso");
+        temp.add("vro");
+        temp.add("fro");
+        return temp;
     }
 }

@@ -74,15 +74,12 @@ public class testingGUI extends javax.swing.JFrame {
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setResizable(false);
 
-        jTextField1.setText("jTextField1");
+        jLabel1.setText("Inout");
 
-        jLabel1.setText("jLabel1");
+        jLabel2.setText("Output");
 
-        jLabel2.setText("jLabel2");
-
-        jTextField2.setText("jTextField2");
-
-        Select.setText("Select");
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("luaguard/i18n/CommandLineHints"); // NOI18N
+        Select.setText(bundle.getString("Select")); // NOI18N
         Select.setToolTipText("Select the file to Obfuscate");
         Select.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -90,7 +87,8 @@ public class testingGUI extends javax.swing.JFrame {
             }
         });
 
-        jButton3.setText("jButton3");
+        jButton3.setText(bundle.getString("Select")); // NOI18N
+        jButton3.setToolTipText("Select the output file to place the Obfuscated code.");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -99,9 +97,9 @@ public class testingGUI extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(21, 21, 21)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel2))
-                .addGap(18, 18, Short.MAX_VALUE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 55, Short.MAX_VALUE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jTextField1)
                     .addComponent(jTextField2, javax.swing.GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE))
@@ -128,7 +126,7 @@ public class testingGUI extends javax.swing.JFrame {
         );
 
         jList1.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            String[] strings = { "item 1", "item2" };
             public int getSize() { return strings.length; }
             public Object getElementAt(int i) { return strings[i]; }
         });
@@ -146,18 +144,21 @@ public class testingGUI extends javax.swing.JFrame {
 
         jButton1.setFont(new java.awt.Font("DejaVu Sans Condensed", 0, 12)); // NOI18N
         jButton1.setText(" > ");
-        jButton1.setToolTipText("Add The selected Obfuscator to the list");
+        jButton1.setToolTipText(bundle.getString("add")); // NOI18N
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
         });
 
-        jButton4.setText("jButton4");
+        jButton4.setText(bundle.getString("Reset")); // NOI18N
+        jButton4.setToolTipText(bundle.getString("ResetTip")); // NOI18N
 
-        jButton5.setText("jButton5");
+        jButton5.setText(bundle.getString("Obfuscate")); // NOI18N
+        jButton5.setToolTipText(bundle.getString("ObfuscateTip")); // NOI18N
 
         jButton6.setText(">>");
+        jButton6.setToolTipText(bundle.getString("addAll")); // NOI18N
         jButton6.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton6ActionPerformed(evt);
@@ -166,6 +167,7 @@ public class testingGUI extends javax.swing.JFrame {
 
         jButton7.setFont(new java.awt.Font("DejaVu Sans Condensed", 0, 12)); // NOI18N
         jButton7.setText("<");
+        jButton7.setToolTipText(bundle.getString("remove")); // NOI18N
         jButton7.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton7ActionPerformed(evt);
@@ -174,6 +176,7 @@ public class testingGUI extends javax.swing.JFrame {
 
         jButton8.setFont(new java.awt.Font("DejaVu Sans Condensed", 0, 12)); // NOI18N
         jButton8.setText("<<");
+        jButton8.setToolTipText(bundle.getString("removeAll")); // NOI18N
         jButton8.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton8ActionPerformed(evt);
@@ -196,10 +199,9 @@ public class testingGUI extends javax.swing.JFrame {
                     .addComponent(jButton7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1))
-                .addContainerGap(19, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1)))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -254,7 +256,7 @@ public class testingGUI extends javax.swing.JFrame {
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(35, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

@@ -1,3 +1,4 @@
 INFO  [luaguard.LuaGuard]: Init Logging
 INFO  [luaguard.LuaGuard]: Start up
-INFO  [luaguard.LuaGuard]: Command: [-o, fro, vro, -file, Lua/classes.lua]
+INFO  [luaguard.LuaGuard]: Command: []
+WARN  [luaguard.LuaGuard]: The following options are required: -o, -obfu, -obfuscator -file, -files 
