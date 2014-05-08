@@ -69,7 +69,10 @@ public class ObfuscatorFactory {
         } else if (name.equalsIgnoreCase("fro")) {
             obf = new FunRenamerObfuscator();
             logger.debug("Build fro");
-        } 
+        } else if (name.equalsIgnoreCase("ro"))  {
+            obf = new RenamerObfuscator();
+            logger.debug("Build ro");
+        }
 
         return obf;
         

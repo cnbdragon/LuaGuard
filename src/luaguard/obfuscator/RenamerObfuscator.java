@@ -22,13 +22,13 @@ import org.luaj.vm2.ast.Stat.LocalFuncDef;
  *
  * @author Will
  */
-public class FunRenamerObfuscator extends Obfuscator {
+public class RenamerObfuscator extends Obfuscator {
     
     Logger logger = LogManager.getLogger("GLOBAL");
     private HashMap<String,String> dict;
     private String base = "OTOSOTE";
     
-    FunRenamerObfuscator(){
+    RenamerObfuscator(){
         dict = new HashMap<>();
     }
     
@@ -59,6 +59,28 @@ public class FunRenamerObfuscator extends Obfuscator {
                 tempname = dict.get(oldname);
             }
             nm.name = tempname;
+    }
+    
+    @Override
+    public void visit(Stat.Assign stat){
+        for(int i =0; i< stat.vars.size(); i++){
+            if(stat.vars.get(i).toString().contains("$NameExp")){
+                NameExp name = (NameExp) stat.vars.get(i);
+                String oldname = name.name.name;
+                String tempname;
+                if(dict.containsKey(oldname)){
+                    tempname = dict.get(oldname);
+                }
+                else{
+                    tempname = base + dict.size()*2;
+                    dict.put(oldname,tempname);
+                }
+                name.name.name = tempname;
+            }
+            System.out.println(stat.vars.get(i)+" "+stat.beginLine);
+        }
+        visitVars(stat.vars);
+	visitExps(stat.exps);
     }
     
     

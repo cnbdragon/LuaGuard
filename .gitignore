@@ -4,3 +4,5 @@
 /nbproject/private/
 /build/
 /Lua/lua.exe
+/Lua/lua52.dll
+/Lua/luac.exe
