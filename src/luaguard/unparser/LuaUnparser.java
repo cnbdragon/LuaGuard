@@ -197,7 +197,7 @@ public class LuaUnparser extends Visitor {
     // condition
     out.print("while ");
     n.exp.accept(this);
-    out.print(" do");
+    out.print(" do ");
     newline();
 
     // block
@@ -250,7 +250,7 @@ public class LuaUnparser extends Visitor {
     }
 
     // block
-    out.print(" do");
+    out.print(" do ");
     newline();
     n.block.accept(this);
     newline();
@@ -285,7 +285,7 @@ public class LuaUnparser extends Visitor {
     ((Exp)n.exps.get(numExps-1)).accept(this);
 
     // block
-    out.print(" do");
+    out.print(" do ");
     newline();
     n.block.accept(this);
     newline();
