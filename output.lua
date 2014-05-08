@@ -1,0 +1,1 @@
+Account={};Account.__index=Account;function OTOSOTE0.create(balance) local acnt={};setmetatable(acnt,Account);acnt.balance=balance;return acnt;end;function OTOSOTE0:withdraw(amount)self.balance=self.balance - amount;end;acc=Account.create(1000);print(acc.balance);acc:withdraw(100);print(acc.balance);

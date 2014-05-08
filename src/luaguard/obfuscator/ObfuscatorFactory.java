@@ -52,6 +52,13 @@ public class ObfuscatorFactory {
             obf = new FunctionCallObfuscator();
             logger.debug("Build fco");
         }
+        else if (name.equalsIgnoreCase("fro")){
+            obf = new FunRenamerObfu();
+            logger.debug("Build fro");
+        }
+        else if (name.equalsIgnoreCase("vro")){
+            obf = new VarRenamerObfu();
+        }
         
         return obf;
         

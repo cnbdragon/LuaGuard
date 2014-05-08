@@ -7,12 +7,10 @@ package luaguard.obfuscator;
 
 import java.util.HashMap;
 import java.util.List;
-import org.luaj.vm2.ast.Block;
 import org.luaj.vm2.ast.Exp;
 import org.luaj.vm2.ast.Exp.NameExp;
 import org.luaj.vm2.ast.Exp.VarExp;
 import org.luaj.vm2.ast.Name;
-import org.luaj.vm2.ast.Stat;
 import org.luaj.vm2.ast.Stat.Assign;
 import org.luaj.vm2.ast.Stat.LocalAssign;
 
@@ -22,13 +20,13 @@ import org.luaj.vm2.ast.Stat.LocalAssign;
  */
 public class VarRenamerObfu extends Obfuscator{
     //function name dictionary
-    private HashMap<String, String> dict;
-    private String base = "OTOSOTE";//fobfuscator name base
+    private final HashMap<String, String> dict;
+    private final String base = "OTOSOTE";//fobfuscator name base
     /**
      * Constructor of the variable renamer obfuscator
      */
     public VarRenamerObfu(){
-        dict = new HashMap<String, String>();
+        dict = new HashMap<>();
     }
     /**
      * If meet a new name than check its name in the hashmap, if it exists,
@@ -39,14 +37,13 @@ public class VarRenamerObfu extends Obfuscator{
     public void visit(Name name) {
         if(name == null) return;
         String oldName = name.name;
-        String tempname = null;
+        String tempname = oldName;
         //if the name is in dictionary
         if(dict.containsKey(oldName)){
             tempname = dict.get(oldName);
             name.name = tempname;
         }
-        if(name.variable != null)
-            name.variable.name = tempname;
+        name.variable.name = tempname;
     }
     /**
      * Rename the variable name in local assignment
@@ -59,6 +56,7 @@ public class VarRenamerObfu extends Obfuscator{
         if(la == null) return;
         //variable
         for(int j = 0; j < la.names.size(); j++){
+            
             String oldName = ((Name)(la.names.get(j))).name; 
             //nsolver.resolveNameReference(((Name)(la.names.get(j))));
             
@@ -107,7 +105,7 @@ public class VarRenamerObfu extends Obfuscator{
                 tempname = base + (dict.size()*2+1);
                 dict.put(oldName, tempname);
                 tempname = oldName;
-            }        
+            }
             ((NameExp)(as.vars.get(i))).name.name = tempname;
             ((VarExp)as.vars.get(i)).accept(this);
         }
