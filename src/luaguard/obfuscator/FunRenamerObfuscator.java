@@ -1,6 +1,8 @@
 package luaguard.obfuscator;
 import java.util.HashMap;
 import java.util.List;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.luaj.vm2.ast.Block;
 import org.luaj.vm2.ast.Exp;
 import org.luaj.vm2.ast.Exp.FuncCall;
@@ -20,6 +22,8 @@ import org.luaj.vm2.ast.Stat.LocalFuncDef;
  *
  */
 public class FunRenamerObfuscator extends Obfuscator{
+    Logger logger = LogManager.getLogger("GLOBAL");
+    
     //function name dictionary
     private HashMap<String, String> dict;
     private String base = "OTOSOTE";//fobfuscator name base
@@ -41,7 +45,7 @@ public class FunRenamerObfuscator extends Obfuscator{
         List<Stat> l = b.stats;
         //traverse the statement and change the function name
         for(int i =0; i<l.size(); i++){
-            System.out.println(l.get(i).getClass().toString()+" "+l.get(i).beginLine);
+            logger.debug(l.get(i).getClass().toString()+" "+l.get(i).beginLine);
             //System.out.print(" " + l.get(i).beginLine + l.get(i).getClass().getName() + "\n");
             //rename the funcion definition
             if(l.get(i).getClass().getName().contains("$FuncDef")){
