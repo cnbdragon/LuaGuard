@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Yafei Yao, Jianbin Feng, Jinke Peng.
+ * Copyright 2014 Joshua Stein.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,25 +16,33 @@
 package luaguard.obfuscator;
 
 import harness.BehaviourHarness;
+import harness.DeterministicRandom;
 import harness.TransformationHarness;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import luaguard.traversal.FunctionDeclarationVisitor;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.luaj.vm2.parser.ParseException;
 
+/**
+ *
+ * @author jgs
+ */
 public class JunkStatObfuscatorTest {
-    private Obfuscator obf;
     
     @Before
     public void setup() {
-        obf = new JunkStatObfuscator();
+
     }
     
     @Test
     public void classesBehaviourTest() throws FileNotFoundException, ParseException, IOException {
         String path = "Lua/classes.lua";
+        FunctionDeclarationVisitor fdv = new FunctionDeclarationVisitor();
+        TransformationHarness.setupRun(path, fdv);
+        Obfuscator obf = new JunkStatObfuscator();
         Assert.assertTrue("Different behaviour",
                BehaviourHarness.isSameOutput(path, obf));
     }
@@ -42,6 +50,9 @@ public class JunkStatObfuscatorTest {
     @Test
     public void classesSourceCodeTest() throws FileNotFoundException, ParseException, IOException {
         String path = "Lua/classes.lua";
+        FunctionDeclarationVisitor fdv = new FunctionDeclarationVisitor();
+        TransformationHarness.setupRun(path, fdv);
+        Obfuscator obf = new JunkStatObfuscator();
         Assert.assertTrue("Identity transformation", 
                !TransformationHarness.isSameSourceCode(path, obf));
     }
@@ -49,6 +60,9 @@ public class JunkStatObfuscatorTest {
     @Test
     public void classes2BehaviourTest() throws FileNotFoundException, ParseException, IOException {
         String path = "Lua/classes2.lua";
+        FunctionDeclarationVisitor fdv = new FunctionDeclarationVisitor();
+        TransformationHarness.setupRun(path, fdv);
+        Obfuscator obf = new JunkStatObfuscator();;
         Assert.assertTrue("Different behaviour",
                BehaviourHarness.isSameOutput(path, obf));
     }
@@ -56,6 +70,9 @@ public class JunkStatObfuscatorTest {
     @Test
     public void classes2SourceCodeTest() throws FileNotFoundException, ParseException, IOException {
         String path = "Lua/classes2.lua";
+        FunctionDeclarationVisitor fdv = new FunctionDeclarationVisitor();
+        TransformationHarness.setupRun(path, fdv);
+        Obfuscator obf = new JunkStatObfuscator();
         Assert.assertTrue("Identity transformation", 
                !TransformationHarness.isSameSourceCode(path, obf));
     }
@@ -63,6 +80,9 @@ public class JunkStatObfuscatorTest {
     @Test
     public void factorsBehaviourTest() throws FileNotFoundException, ParseException, IOException {
         String path = "Lua/factors.lua";
+        FunctionDeclarationVisitor fdv = new FunctionDeclarationVisitor();
+        TransformationHarness.setupRun(path, fdv);
+        Obfuscator obf = new JunkStatObfuscator();
         Assert.assertTrue("Different behaviour",
                BehaviourHarness.isSameOutput(path, obf));
     }
@@ -70,7 +90,11 @@ public class JunkStatObfuscatorTest {
     @Test
     public void factorsSourceCodeTest() throws FileNotFoundException, ParseException, IOException {
         String path = "Lua/factors.lua";
+        FunctionDeclarationVisitor fdv = new FunctionDeclarationVisitor();
+        TransformationHarness.setupRun(path, fdv);
+        Obfuscator obf = new JunkStatObfuscator();
         Assert.assertTrue("Identity transformation", 
                !TransformationHarness.isSameSourceCode(path, obf));
     }
 }
+

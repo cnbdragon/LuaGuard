@@ -60,7 +60,16 @@ public class ObfuscatorFactory {
         } else if (name.equalsIgnoreCase("fco")) {
             obf = new FunctionCallObfuscator(new Random(), funcs);
             logger.debug("Build fco");
-        }
+        } else if (name.equalsIgnoreCase("vro")) {
+            obf = new VarRenamerObfuscator();
+            logger.debug("Build vro");
+        } else if (name.equalsIgnoreCase("jso")) {
+            obf = new JunkStatObfuscator();
+            logger.debug("Build jso");
+        } else if (name.equalsIgnoreCase("fro")) {
+            obf = new FunRenamerObfuscator();
+            logger.debug("Build fro");
+        } 
 
         return obf;
         
@@ -72,7 +81,9 @@ public class ObfuscatorFactory {
         temp.add("fpo");
         temp.add("rvo");
         temp.add("fco");
-        
+        temp.add("jso");
+        temp.add("vro");
+        temp.add("fro");
         return temp;
     }
 }

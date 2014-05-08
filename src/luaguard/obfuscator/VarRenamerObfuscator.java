@@ -20,14 +20,14 @@ import org.luaj.vm2.ast.Stat.LocalAssign;
  * Obfuscator to modify the variables
  * @author Hanqing & Will
  */
-public class VarRenamerObfu extends Obfuscator{
+public class VarRenamerObfuscator extends Obfuscator{
     //function name dictionary
     private HashMap<String, String> dict;
     private String base = "OTOSOTE";//fobfuscator name base
     /**
      * Constructor of the variable renamer obfuscator
      */
-    public VarRenamerObfu(){
+    public VarRenamerObfuscator(){
         dict = new HashMap<String, String>();
     }
     /**

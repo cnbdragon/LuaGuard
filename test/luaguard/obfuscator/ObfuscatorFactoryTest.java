@@ -65,4 +65,26 @@ public class ObfuscatorFactoryTest {
         Assert.assertTrue("Wrong obfuscator constructed", 
                 FunctionCallObfuscator.class.equals(obf.getClass()));
     }
+    
+     @Test
+    public void VarRenamerObfuscatorTest() {
+        Obfuscator obf = factory.constructObfuscator("vro");
+        Assert.assertTrue("Wrong obfuscator constructed", 
+                VarRenamerObfuscator.class.equals(obf.getClass()));
+    }
+    
+    @Test
+    public void JunkStatObfuscatorTest() {
+        Obfuscator obf = factory.constructObfuscator("jso");
+        Assert.assertTrue("Wrong obfuscator constructed", 
+                JunkStatObfuscator.class.equals(obf.getClass()));
+    }
+    
+    @Test
+    public void FunRenamerObfuscatorTest() {
+        Obfuscator obf = factory.constructObfuscator("fro");
+        Assert.assertTrue("Wrong obfuscator constructed", 
+                FunRenamerObfuscator.class.equals(obf.getClass()));
+    }
+     
 }

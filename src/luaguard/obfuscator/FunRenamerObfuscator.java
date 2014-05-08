@@ -19,14 +19,14 @@ import org.luaj.vm2.ast.Stat.LocalFuncDef;
  * @author Hanqing and Will
  *
  */
-public class FunRenamerObfu extends Obfuscator{
+public class FunRenamerObfuscator extends Obfuscator{
     //function name dictionary
     private HashMap<String, String> dict;
     private String base = "OTOSOTE";//fobfuscator name base
     /**
      * Constructor of the function renamer obfuscator
      */
-    public FunRenamerObfu(){
+    public FunRenamerObfuscator(){
         dict = new HashMap<String, String>();
     }    
     
