@@ -17,6 +17,7 @@ package luaguard.obfuscator;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.luaj.vm2.Lua;
 import org.luaj.vm2.LuaNumber;
 import org.luaj.vm2.ast.Block;
 import org.luaj.vm2.ast.Exp;
@@ -59,7 +60,7 @@ public class JunkStatObfuscator extends Obfuscator{
        //make an State of WhileDo
        //build an predicate with an variable and constant
        Constant end=new Constant(LuaNumber.valueOf(40));
-       Exp predicate=new BinopExp(var1,25,end);
+       Exp predicate=new BinopExp(var1,Lua.OP_LT,end);
        
        //build Block in the WhileDo State
        Block InWhile=new Block();
