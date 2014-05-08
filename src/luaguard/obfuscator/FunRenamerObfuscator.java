@@ -31,7 +31,10 @@ public class FunRenamerObfuscator extends Obfuscator {
     FunRenamerObfuscator(){
         dict = new HashMap<>();
     }
-    
+    /**
+     * Renames function definition
+     * @param fd 
+     */
     @Override
     public void visit(FuncDef fd){
         String oldname = fd.name.name.name;
@@ -48,7 +51,7 @@ public class FunRenamerObfuscator extends Obfuscator {
     }
 
     /**
-     *
+     * Renames names that have already been defined
      * @param nm
      */
     @Override
@@ -61,7 +64,10 @@ public class FunRenamerObfuscator extends Obfuscator {
             nm.name = tempname;
     }
     
-    
+    /**
+     * Renames function calls
+     * @param fc 
+     */
     @Override
     public void visit(FuncCall fc){
         for(int i=0; i<fc.args.exps.size(); i++){
@@ -77,6 +83,26 @@ public class FunRenamerObfuscator extends Obfuscator {
         }
         fc.lhs.accept(this);
         fc.args.accept(this);
+    }
+    
+    /**
+     * Renames Local Function Definitions
+     * @param stat 
+     */
+    @Override
+    public void visit(LocalFuncDef stat){
+        String oldname = stat.name.name;
+        String tempname;
+        if(dict.containsKey(oldname)){
+            tempname = dict.get(oldname);
+        }
+        else{
+            tempname = base + dict.size()*2;
+            dict.put(oldname, tempname);
+        }
+        stat.name.name = tempname;
+	visit(stat.name);
+	stat.body.accept(this);
     }
 }
     
