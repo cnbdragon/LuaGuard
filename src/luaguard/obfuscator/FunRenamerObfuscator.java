@@ -30,51 +30,8 @@ public class FunRenamerObfuscator extends Obfuscator{
         dict = new HashMap<String, String>();
     }    
     
-    
-    
-//    public void visist(FuncDef fd){
-//        String oldname = fd.name.name.name;
-//        String tempname = null;
-//        if(dict.containsKey(oldname)){
-//            tempname = dict.get(oldname);
-//        }
-//        else{
-//            tempname = base + dict.size()*2;
-//            dict.put(oldname, tempname);
-//        }
-//        FuncName nm = new FuncName(tempname);
-//        FuncDef newfunc = new FuncDef(nm, fd.body);
-//        fd = newfunc;
-//        fd.body.accept(this);
-//    }
-    
-    
-//    public void visist(LocalFuncDef fd){
-//        String oldname = fd.name.name;
-//        String tempname = null;
-//        String oldvar = fd.name.variable.name;
-//        System.out.println("Name " +oldname);
-//        System.out.println("var  "+ oldvar);
-//        fd.body.accept(this);
-//    }
     /**
-     * Overrides Functon call to modify the function calls in the ast
-     * @param stat
-     */
-//    public void visit(Name name){
-//        String oldname = name.name;
-//        String tempname = null;
-//        if(dict.containsKey(oldname)){
-//            tempname = dict.get(oldname);
-//        }
-//        else{
-//            tempname = name.name;
-//        }
-//        name.name= tempname;
-//        
-//    }
-    /**
-     * Override the visit block to modify all function statment inside the block
+     * Override the visit block to modify all function statement inside the block
      * @param n
      */
     @Override
@@ -104,8 +61,7 @@ public class FunRenamerObfuscator extends Obfuscator{
                 //replace with the new function
                 l.set(i, newfun);
             }
-//            
-//            //rename the function call
+            //rename the function call
             if(l.get(i).getClass().getName().contains("$FuncCallStat")){
                 FuncCallStat old = (FuncCallStat)l.get(i);
                 if(old.funccall.isfunccall()){
@@ -131,7 +87,7 @@ public class FunRenamerObfuscator extends Obfuscator{
                     
                 }
             }
-//            rename the funcion definition
+            //rename the funcion definition
             if(l.get(i).getClass().getName().contains("$LocalFuncDef")){
                 LocalFuncDef old = (LocalFuncDef)l.get(i);
                 System.out.print(l.get(i).getClass().getName());
