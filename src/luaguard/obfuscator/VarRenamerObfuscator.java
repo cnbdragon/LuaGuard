@@ -7,12 +7,10 @@ package luaguard.obfuscator;
 
 import java.util.HashMap;
 import java.util.List;
-import org.luaj.vm2.ast.Block;
 import org.luaj.vm2.ast.Exp;
 import org.luaj.vm2.ast.Exp.NameExp;
 import org.luaj.vm2.ast.Exp.VarExp;
 import org.luaj.vm2.ast.Name;
-import org.luaj.vm2.ast.Stat;
 import org.luaj.vm2.ast.Stat.Assign;
 import org.luaj.vm2.ast.Stat.LocalAssign;
 
@@ -23,7 +21,8 @@ import org.luaj.vm2.ast.Stat.LocalAssign;
 public class VarRenamerObfuscator extends Obfuscator{
     //function name dictionary
     private HashMap<String, String> dict;
-    private String base = "OTOSOTE";//fobfuscator name base
+    //fobfuscator name base
+    private String base = "OTOSOTE";
     /**
      * Constructor of the variable renamer obfuscator
      */
