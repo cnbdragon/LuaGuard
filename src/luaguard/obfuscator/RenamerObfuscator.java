@@ -77,7 +77,6 @@ public class RenamerObfuscator extends Obfuscator {
                 }
                 name.name.name = tempname;
             }
-            System.out.println(stat.vars.get(i)+" "+stat.beginLine);
         }
         visitVars(stat.vars);
 	visitExps(stat.exps);
@@ -101,17 +100,4 @@ public class RenamerObfuscator extends Obfuscator {
         fc.args.accept(this);
     }
 }
-    
-
-
-
-//    @Override
-//    public void visit(LocalFuncDef fd){
-//        String oldname = fd.name.name;
-//        String tempname = null;
-//        String oldvar = fd.name.variable.name;
-//        System.out.println("Name " +oldname);
-//        System.out.println("var  "+ oldvar);
-//        fd.body.accept(this);
-//    }
     

@@ -80,16 +80,3 @@ public class FunRenamerObfuscator extends Obfuscator {
     }
 }
     
-
-
-
-//    @Override
-//    public void visit(LocalFuncDef fd){
-//        String oldname = fd.name.name;
-//        String tempname = null;
-//        String oldvar = fd.name.variable.name;
-//        System.out.println("Name " +oldname);
-//        System.out.println("var  "+ oldvar);
-//        fd.body.accept(this);
-//    }
-    
