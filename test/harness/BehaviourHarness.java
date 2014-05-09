@@ -43,7 +43,7 @@ public class BehaviourHarness {
      * @throws IOException
      * @throws ParseException 
      */
-    public static boolean isSameOutput(String path, Obfuscator obf) throws IOException, ParseException {
+    public static boolean isSameOutput(String path, Obfuscator obf) throws IOException, ParseException, InterruptedException {
         
         // I/O for reading output & parsing from a string
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -57,6 +57,9 @@ public class BehaviourHarness {
         // Retrieve output behaviour of the original program (before)
         Process process = new ProcessBuilder("/usr/local/bin/lua", path).start();
         is = process.getInputStream();
+        
+        // Program crash = test failure
+        if (process.waitFor() != 0) return false;
         
         before = "";
         int c;
@@ -75,6 +78,9 @@ public class BehaviourHarness {
         process = new ProcessBuilder("/usr/local/bin/lua", "-e", prog).start();
         is = process.getInputStream();
         
+        // Program crash = test failure
+        if (process.waitFor() != 0) return false;
+
         after = "";
         while ((c = is.read()) != -1){
             after += (char)c;
