@@ -45,7 +45,7 @@ public class RenamerObfuscator extends Obfuscator {
             tempname = dict.get(oldname);
         }
         else{
-            tempname = base + dict.size()*2;
+            tempname = base + dict.size();
             dict.put(oldname, tempname);
         }
         fd.name.name.name = tempname;
@@ -84,7 +84,7 @@ public class RenamerObfuscator extends Obfuscator {
                 tempname = dict.get(oldName);
             }else{
                 //create new entry
-                tempname = base + (dict.size() * 2 + 1);
+                tempname = base + (dict.size());
                 //put the new hashmap entry
                 dict.put(oldName, tempname);
             }
@@ -105,7 +105,7 @@ public class RenamerObfuscator extends Obfuscator {
     /**
      * Rename the variable name in local assignment
      * 
-     * @param la LocalAssign, the ast node object
+     * @param stat
      */
     @Override
     public void visit(Stat.Assign stat){
@@ -118,7 +118,7 @@ public class RenamerObfuscator extends Obfuscator {
                     tempname = dict.get(oldname);
                 }
                 else{
-                    tempname = base + dict.size()*2;
+                    tempname = oldname;
                     dict.put(oldname,tempname);
                 }
                 name.name.name = tempname;
@@ -163,7 +163,7 @@ public class RenamerObfuscator extends Obfuscator {
             tempname = dict.get(oldname);
         }
         else{
-            tempname = base + dict.size()*2;
+            tempname = base + dict.size();
             dict.put(oldname, tempname);
         }
         stat.name.name = tempname;
