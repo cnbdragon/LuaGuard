@@ -18,6 +18,7 @@ package luaguard.obfuscator;
 import harness.BehaviourHarness;
 import harness.DeterministicRandom;
 import harness.TransformationHarness;
+import harness.exception.ProgramCrashException;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import luaguard.traversal.FunctionDeclarationVisitor;
@@ -32,17 +33,16 @@ import org.luaj.vm2.parser.ParseException;
  */
 public class VarRenamerObfuscatorTest {
     
+    Obfuscator obf;
+    
     @Before
     public void setup() {
-
+        obf = new VarRenamerObfuscator();
     }
     
     @Test
-    public void classesBehaviourTest() throws FileNotFoundException, ParseException, IOException {
+    public void classesBehaviourTest() throws FileNotFoundException, ParseException, IOException, InterruptedException, ProgramCrashException {
         String path = "Lua/classes.lua";
-        FunctionDeclarationVisitor fdv = new FunctionDeclarationVisitor();
-        TransformationHarness.setupRun(path, fdv);
-        Obfuscator obf = new VarRenamerObfuscator();
         Assert.assertTrue("Different behaviour",
                BehaviourHarness.isSameOutput(path, obf));
     }
@@ -50,19 +50,13 @@ public class VarRenamerObfuscatorTest {
     @Test
     public void classesSourceCodeTest() throws FileNotFoundException, ParseException, IOException {
         String path = "Lua/classes.lua";
-        FunctionDeclarationVisitor fdv = new FunctionDeclarationVisitor();
-        TransformationHarness.setupRun(path, fdv);
-        Obfuscator obf = new VarRenamerObfuscator();
         Assert.assertTrue("Identity transformation", 
                !TransformationHarness.isSameSourceCode(path, obf));
     }
     
     @Test
-    public void classes2BehaviourTest() throws FileNotFoundException, ParseException, IOException {
+    public void classes2BehaviourTest() throws FileNotFoundException, ParseException, IOException, InterruptedException, ProgramCrashException {
         String path = "Lua/classes2.lua";
-        FunctionDeclarationVisitor fdv = new FunctionDeclarationVisitor();
-        TransformationHarness.setupRun(path, fdv);
-        Obfuscator obf = new VarRenamerObfuscator();;
         Assert.assertTrue("Different behaviour",
                BehaviourHarness.isSameOutput(path, obf));
     }
@@ -70,19 +64,13 @@ public class VarRenamerObfuscatorTest {
     @Test
     public void classes2SourceCodeTest() throws FileNotFoundException, ParseException, IOException {
         String path = "Lua/classes2.lua";
-        FunctionDeclarationVisitor fdv = new FunctionDeclarationVisitor();
-        TransformationHarness.setupRun(path, fdv);
-        Obfuscator obf = new VarRenamerObfuscator();
         Assert.assertTrue("Identity transformation", 
                !TransformationHarness.isSameSourceCode(path, obf));
     }
     
     @Test
-    public void factorsBehaviourTest() throws FileNotFoundException, ParseException, IOException {
+    public void factorsBehaviourTest() throws FileNotFoundException, ParseException, IOException, InterruptedException, ProgramCrashException {
         String path = "Lua/factors.lua";
-        FunctionDeclarationVisitor fdv = new FunctionDeclarationVisitor();
-        TransformationHarness.setupRun(path, fdv);
-        Obfuscator obf = new VarRenamerObfuscator();
         Assert.assertTrue("Different behaviour",
                BehaviourHarness.isSameOutput(path, obf));
     }
@@ -90,9 +78,6 @@ public class VarRenamerObfuscatorTest {
     @Test
     public void factorsSourceCodeTest() throws FileNotFoundException, ParseException, IOException {
         String path = "Lua/factors.lua";
-        FunctionDeclarationVisitor fdv = new FunctionDeclarationVisitor();
-        TransformationHarness.setupRun(path, fdv);
-        Obfuscator obf = new VarRenamerObfuscator();
         Assert.assertTrue("Identity transformation", 
                !TransformationHarness.isSameSourceCode(path, obf));
     }

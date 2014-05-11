@@ -17,6 +17,7 @@ package luaguard.obfuscator;
 
 import harness.BehaviourHarness;
 import harness.TransformationHarness;
+import harness.exception.ProgramCrashException;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import org.junit.Assert;
@@ -37,7 +38,7 @@ public class FunctionParameterObfuscatorTest {
     }
     
     @Test
-    public void classesBehaviourTest() throws FileNotFoundException, ParseException, IOException {
+    public void classesBehaviourTest() throws FileNotFoundException, ParseException, IOException, InterruptedException, ProgramCrashException {
         String path = "Lua/classes.lua";
         Assert.assertTrue("Different behaviour",
                BehaviourHarness.isSameOutput(path, obf));
@@ -51,7 +52,7 @@ public class FunctionParameterObfuscatorTest {
     }
     
     @Test
-    public void classes2BehaviourTest() throws FileNotFoundException, ParseException, IOException {
+    public void classes2BehaviourTest() throws FileNotFoundException, ParseException, IOException, InterruptedException, ProgramCrashException {
         String path = "Lua/classes2.lua";
         Assert.assertTrue("Different behaviour",
                BehaviourHarness.isSameOutput(path, obf));
@@ -65,7 +66,7 @@ public class FunctionParameterObfuscatorTest {
     }
     
     @Test
-    public void factorsBehaviourTest() throws FileNotFoundException, ParseException, IOException {
+    public void factorsBehaviourTest() throws FileNotFoundException, ParseException, IOException, InterruptedException, ProgramCrashException {
         String path = "Lua/factors.lua";
         Assert.assertTrue("Different behaviour",
                BehaviourHarness.isSameOutput(path, obf));

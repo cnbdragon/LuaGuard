@@ -15,6 +15,7 @@
  */
 package harness;
 
+import harness.exception.ProgramCrashException;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
@@ -42,8 +43,10 @@ public class BehaviourHarness {
      * @return true if output behaviour is the same, false otherwise
      * @throws IOException
      * @throws ParseException 
+     * @throws java.lang.InterruptedException 
+     * @throws harness.exception.ProgramCrashException 
      */
-    public static boolean isSameOutput(String path, Obfuscator obf) throws IOException, ParseException, InterruptedException {
+    public static boolean isSameOutput(String path, Obfuscator obf) throws IOException, ParseException, InterruptedException, ProgramCrashException {
         
         // I/O for reading output & parsing from a string
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -59,7 +62,7 @@ public class BehaviourHarness {
         is = process.getInputStream();
         
         // Program crash = test failure
-        if (process.waitFor() != 0) return false;
+        if (process.waitFor() != 0) throw new ProgramCrashException();
         
         before = "";
         int c;
