@@ -20,7 +20,6 @@ import harness.TransformationHarness;
 import harness.exception.ProgramCrashException;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import luaguard.traversal.FunctionDeclarationVisitor;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
