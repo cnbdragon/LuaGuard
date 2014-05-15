@@ -43,9 +43,11 @@ public class VarRenamerObfuscator extends Obfuscator{
         if(dict.containsKey(oldName)){
             tempname = dict.get(oldName);
             name.name = tempname;
+        }else{
+            dict.put(oldName,oldName);
         }
-        if(name.variable != null)
-            name.variable.name = tempname;
+        /*if(name.variable != null)
+            name.variable.name = tempname;*/
     }
     /**
      * Rename the variable name in local assignment
@@ -59,8 +61,6 @@ public class VarRenamerObfuscator extends Obfuscator{
         //variable
         for(int j = 0; j < la.names.size(); j++){
             String oldName = ((Name)(la.names.get(j))).name; 
-            //nsolver.resolveNameReference(((Name)(la.names.get(j))));
-            
             String tempname;
             //if the name is in dictionary
             if(dict.containsKey(oldName)){
@@ -72,9 +72,6 @@ public class VarRenamerObfuscator extends Obfuscator{
                 dict.put(oldName, tempname);
             }
             ((Name)(la.names.get(j))).name = tempname;
-            //Variable v = ((Name)(la.names.get(j))).variable;
-           // if(v == null) return;
-           // v.name = tempname;
         }
         //check the right side
         if (null != la.values ) {
@@ -93,29 +90,23 @@ public class VarRenamerObfuscator extends Obfuscator{
     
     @Override
     public void visit(Assign as){
-        //check empty error
-        if(as == null) return;
-        // Variables
-        List<VarExp> vars = as.vars;
-        for(int i = 0; i < vars.size(); i++) {
-            if(as.vars.get(i).getClass().toString().contains("NameExp")){
-                String oldName = ((NameExp)(as.vars.get(i))).name.name;
+        
+        for(int i =0; i< as.vars.size(); i++){
+            if(as.vars.get(i).toString().contains("$NameExp")){
+                NameExp name = (NameExp) as.vars.get(i);
+                String oldname = name.name.name;
                 String tempname;
-                if(dict.containsKey(oldName)){
-                    tempname = dict.get(oldName);
-                }else{
-                    tempname = base + (dict.size()*2+1);
-                    dict.put(oldName, tempname);
-                    tempname = oldName;
-                }        
-                ((NameExp)(as.vars.get(i))).name.name = tempname;
-                ((VarExp)as.vars.get(i)).accept(this);
+                if(dict.containsKey(oldname)){
+                    tempname = dict.get(oldname);
+                }
+                else{
+                    tempname = oldname;
+                    dict.put(oldname,tempname);
+                }
+                name.name.name = tempname;
             }
         }
-        // Expressions
-        int numExps = as.exps.size();
-        for(int i = 0; i < numExps; i++) {
-            ((Exp)as.exps.get(i)).accept(this);
-        }
+        visitVars(as.vars);
+	visitExps(as.exps);
     }
 }

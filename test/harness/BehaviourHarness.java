@@ -58,7 +58,7 @@ public class BehaviourHarness {
         String before, after;   // program output before and after applying the obfuscation
         
         // Retrieve output behaviour of the original program (before)
-        Process process = new ProcessBuilder("/usr/local/bin/lua", path).start();
+        Process process = new ProcessBuilder("C:\\Users\\Nevermore\\Desktop\\lua5.1.exe", path).start();
         is = process.getInputStream();
         
         // Program crash = test failure
@@ -78,7 +78,7 @@ public class BehaviourHarness {
         chunk.accept(new LuaUnparser(ps));
         
         String prog = baos.toString();
-        process = new ProcessBuilder("/usr/local/bin/lua", "-e", prog).start();
+        process = new ProcessBuilder("C:\\Users\\Nevermore\\Desktop\\lua5.1.exe", "-e", prog).start();
         is = process.getInputStream();
         
         // Program crash = test failure
