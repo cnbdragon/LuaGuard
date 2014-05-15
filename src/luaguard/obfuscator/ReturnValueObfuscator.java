@@ -16,6 +16,7 @@
 package luaguard.obfuscator;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Random;
@@ -28,6 +29,7 @@ import org.luaj.vm2.ast.Exp.MethodCall;
 import org.luaj.vm2.ast.Exp.NameExp;
 import org.luaj.vm2.ast.FuncBody;
 import org.luaj.vm2.ast.NameScope;
+import org.luaj.vm2.ast.Stat.Assign;
 import org.luaj.vm2.ast.Stat.Return;
 import org.luaj.vm2.ast.Visitor;
 
@@ -37,6 +39,50 @@ import org.luaj.vm2.ast.Visitor;
  */
 public class ReturnValueObfuscator extends NameResolver {
 
+    /**
+     * Collects information on function usage and function properties. 
+     * 1) Collects the number of variables that appear on the left side of an assignment
+     */
+    private static class FuncUsageVisitor extends Visitor {
+        
+        public Map<String, Integer> funcUsageSize;
+        
+        public FuncUsageVisitor() {
+            funcUsageSize = new HashMap<String, Integer>();
+        }
+        
+        @Override
+        public void visit(Assign n) {
+            if (1 == n.exps.size()) {
+                String name = null;
+                
+                // Get function name
+                if (FuncCall.class.equals(n.exps.get(0).getClass())) {
+                    NameVisitor nv = new NameVisitor();
+                    ((FuncCall)n.exps.get(0)).lhs.accept(nv);
+                    name = nv.getName();
+                }
+                else if (MethodCall.class.equals(n.exps.get(0).getClass())) {
+                    name = ((MethodCall)n.exps.get(0)).name;
+                }
+                
+                // Add function return (usage) to the map
+                if (null != name) {
+                    int currSize = n.vars.size();
+                    if (funcUsageSize.containsKey(name)) {
+                        currSize = Math.max(currSize, funcUsageSize.get(name));
+                    }
+                    funcUsageSize.put(name, currSize);
+                }
+            }
+        }
+        
+    }
+    
+    
+    /**
+     * Collects all functions that appear inside function calls
+     */
     private static class FuncInFuncVisitor extends Visitor {
 
         private Set<String> names;
@@ -114,6 +160,7 @@ public class ReturnValueObfuscator extends NameResolver {
     }
 
     private Set<String> funcsInFunc;
+    public Map<String, Integer> funcUsages;
     private Random rnd;
 
     public ReturnValueObfuscator() {
@@ -125,19 +172,23 @@ public class ReturnValueObfuscator extends NameResolver {
         super();
         this.rnd = rnd;
     }
-    /*
-     @Override
-     public void visit(Chunk n) {
 
-     // Determine which functions are used inside function calls
-     FuncInFuncVisitor fifv = new FuncInFuncVisitor();
-     n.accept(fifv);
-     funcsInFunc = fifv.names;
+    @Override
+    public void visit(Chunk n) {
 
-     // Modify the remainder of the code
-     n.block.accept(this);
-     }
-     */
+        // Determine which functions are used inside function calls
+        FuncInFuncVisitor fifv = new FuncInFuncVisitor();
+        n.accept(fifv);
+        funcsInFunc = fifv.names;
+        
+        // Determine how function returns are used
+        FuncUsageVisitor fuv = new FuncUsageVisitor();
+        n.accept(fuv);
+        funcUsages = fuv.funcUsageSize;
+
+        // Modify the remainder of the code
+        n.block.accept(this);
+    }
 
     /**
      * Ignore Function call names
@@ -146,6 +197,12 @@ public class ReturnValueObfuscator extends NameResolver {
      */
     @Override
     public void visit(FuncCall n) {
+        NameVisitor nv = new NameVisitor();
+        n.lhs.accept(nv);
+
+        if (funcsInFunc.contains(nv.getName())) {
+            return;
+        }
     }
 
     /**
@@ -155,6 +212,9 @@ public class ReturnValueObfuscator extends NameResolver {
      */
     @Override
     public void visit(MethodCall n) {
+        if (funcsInFunc.contains(n.name)) {
+            return;
+        }
     }
 
     /**
@@ -165,9 +225,9 @@ public class ReturnValueObfuscator extends NameResolver {
      */
     @Override
     public void visit(FuncBody n) {
-//        if (!Return.class.isInstance(n.block.stats.get(n.block.stats.size() - 1))) {
-//            n.block.add(new Return(null));
-//        }
+        if (!Return.class.isInstance(n.block.stats.get(n.block.stats.size() - 1))) {
+            n.block.add(new Return(null));
+        }
         super.visit(n);
     }
 
@@ -199,12 +259,13 @@ public class ReturnValueObfuscator extends NameResolver {
         }
 
         if (retScope != null) {
-            
+
             // Expand variable set, if possible
             Map namedVars = retScope.namedVariables;
-            if (retScope.outerScope != null)
+            if (retScope.outerScope != null) {
                 namedVars.putAll(retScope.outerScope.namedVariables);
-            
+            }
+
             // Add variable to the return statement that is not already returned
             for (Object var : namedVars.keySet()) {
                 if (!rv.isVarReturned(var.toString()) && rnd.nextBoolean()) {
