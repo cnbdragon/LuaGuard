@@ -40,8 +40,7 @@ import org.luaj.vm2.ast.Visitor;
 public class ReturnValueObfuscator extends NameResolver {
 
     /**
-     * Collects information on function usage and function properties. 
-     * 1) Collects the number of variables that appear on the left side of an assignment
+     * Collects the number of variables that appear on the left side of an assignment
      */
     private static class FuncUsageVisitor extends Visitor {
         
