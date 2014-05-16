@@ -180,6 +180,9 @@ public class ReturnValueObfuscator extends NameResolver {
         
     }
     
+    /**
+     * Collects all variables that are used in a return statement
+     */
     private static class ReturnVisitor extends Visitor {
         
         private Set<String> names;
@@ -282,13 +285,17 @@ public class ReturnValueObfuscator extends NameResolver {
     public void visit(FuncDef n) {
         String name = NameVisitor.funcName(n.name);
         
+        // All functions are given at least one return statement
         if (!Return.class.isInstance(n.body.block.stats.get(n.body.block.stats.size() - 1))) {
             n.body.block.add(new Return(null));
         }
         
+        // Function returns are only modified if it is safe 
+        // (# on the left of assignment <= # returned by function)
+        // Not used within a function call
         if (funcUsages.containsKey(name) && funcReturns.containsKey(name)
                 && funcUsages.get(name) <= funcReturns.get(name)
-                && funcReturns.get(name) != -1) {
+                && funcReturns.get(name) != -1 && !funcsInFunc.contains(name)) {
             n.body.accept(this);
         }
     }
