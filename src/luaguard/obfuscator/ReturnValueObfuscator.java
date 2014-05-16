@@ -272,17 +272,27 @@ public class ReturnValueObfuscator extends NameResolver {
     /**
      * Adds return statement to a function if the last statement is not a
      * return. i.e. turns void functions into non-void
+     * 
+     * Note: Does NOT add return values to functions with a variable number of returns
+     *   or if a function call assignment has more variables on the left than are returned.
      *
-     * @param n FuncBody node
+     * @param n FuncDef node
      */
     @Override
-    public void visit(FuncBody n) {
-        if (!Return.class.isInstance(n.block.stats.get(n.block.stats.size() - 1))) {
-            n.block.add(new Return(null));
+    public void visit(FuncDef n) {
+        String name = NameVisitor.funcName(n.name);
+        
+        if (!Return.class.isInstance(n.body.block.stats.get(n.body.block.stats.size() - 1))) {
+            n.body.block.add(new Return(null));
         }
-        super.visit(n);
+        
+        if (funcUsages.containsKey(name) && funcReturns.containsKey(name)
+                && funcUsages.get(name) <= funcReturns.get(name)
+                && funcReturns.get(name) != -1) {
+            n.body.accept(this);
+        }
     }
-
+    
     /**
      * Add variables to return statement that are not already returned. Does not
      * change return values for vararg returns.
