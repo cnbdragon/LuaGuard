@@ -23,8 +23,20 @@ import java.util.Random;
  */
 public class DeterministicRandom extends Random{
     
+    private boolean rndBool;
+    
+    public DeterministicRandom() {
+        super();
+        rndBool = true;
+    }
+    
+    @Override
     public boolean nextBoolean() {
-        return true;
+        return rndBool;
+    }
+    
+    public void setRndBool(boolean bool) {
+        rndBool = bool;
     }
     
 }
