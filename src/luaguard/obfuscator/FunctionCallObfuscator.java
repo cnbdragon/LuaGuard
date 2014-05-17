@@ -21,6 +21,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
+import luaguard.traversal.NameVisitor;
 import org.luaj.vm2.ast.Exp;
 import org.luaj.vm2.ast.Exp.FieldExp;
 import org.luaj.vm2.ast.Exp.FuncCall;
@@ -36,32 +37,6 @@ import org.luaj.vm2.ast.Visitor;
  * @author jgs
  */
 public class FunctionCallObfuscator extends NameResolver {
-
-    /**
-     * Visits all NameExp nodes in order to construct the name of a function.
-     */
-    private static class NameVisitor extends Visitor {
-        String name;
-
-        public NameVisitor() {
-            name = "";
-        }
-
-        @Override
-        public void visit(NameExp n) {
-            name = n.name.name;
-        }
-
-        @Override
-        public void visit(FieldExp n) {
-            name = n.name.name;
-        }
-
-        @Override
-        public void visit(IndexExp n) {}
-
-
-    }
 
     /**
      * Visits all arguments in a function and collects the names of variables used.
@@ -137,7 +112,7 @@ public class FunctionCallObfuscator extends NameResolver {
         NameVisitor nv = new NameVisitor();
         n.lhs.accept(nv);
         
-        if (isChangePermitted(nv.name, n.args)) {
+        if (isChangePermitted(nv.getName(), n.args)) {
             n.args.accept(this);
         }
     }

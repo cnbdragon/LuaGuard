@@ -37,7 +37,7 @@ public class ReturnValueObfuscatorTest {
     public void setup() {
         obf = new ReturnValueObfuscator(new DeterministicRandom());
     }    
-    
+   
     @Test
     public void classesBehaviourTest() throws FileNotFoundException, ParseException, IOException, InterruptedException, ProgramCrashException {
         String path = "Lua/classes.lua";
@@ -65,7 +65,21 @@ public class ReturnValueObfuscatorTest {
         Assert.assertTrue("Identity transformation", 
                !TransformationHarness.isSameSourceCode(path, obf));
     }
-    
+   
+    @Test
+    public void functionsBehaviourTest() throws FileNotFoundException, ParseException, IOException, InterruptedException, ProgramCrashException {
+        String path = "Lua/functions.lua";
+        Assert.assertTrue("Different behaviour",
+               BehaviourHarness.isSameOutput(path, obf));
+    }
+
+    @Test
+    public void functionsSourceCodeTest() throws FileNotFoundException, ParseException, IOException {
+        String path = "Lua/functions.lua";
+        Assert.assertTrue("Identity transformation", 
+               !TransformationHarness.isSameSourceCode(path, obf));
+    }    
+
     @Test
     public void factorsBehaviourTest() throws FileNotFoundException, ParseException, IOException, InterruptedException, ProgramCrashException {
         String path = "Lua/factors.lua";
@@ -73,11 +87,11 @@ public class ReturnValueObfuscatorTest {
                BehaviourHarness.isSameOutput(path, obf));
     }
 
-    // Source code should not change, i.e. no variables in scope can be added to the return
     @Test
     public void factorsSourceCodeTest() throws FileNotFoundException, ParseException, IOException {
         String path = "Lua/factors.lua";
         Assert.assertTrue("Identity transformation", 
-               TransformationHarness.isSameSourceCode(path, obf));
+               !TransformationHarness.isSameSourceCode(path, obf));
     }
+
 }
