@@ -57,12 +57,11 @@ public class JunkStatObfuscator extends Obfuscator{
        //build assignment with the two variables has been build
        Assign assigns=new Assign(vars,exps);
        
-       //make an State of WhileDo
        //build an predicate with an variable and constant
        Constant end=new Constant(LuaNumber.valueOf(40));
        Exp predicate=new BinopExp(var1,Lua.OP_LT,end);
        
-       //build Block in the WhileDo State
+       //build and add Block in the WhileDo State
        Block InWhile=new Block();
        Exp rsd1=new BinopExp(var1,13,var2);
        Exp rsd2=new BinopExp(var2,13,var2);
@@ -76,7 +75,7 @@ public class JunkStatObfuscator extends Obfuscator{
        //add the assignments for the two variables 
        b.stats.add(l.size()/3,assigns);
        
-       //add the state of WhileDo 
+       //add WhileDo state 
        b.stats.add(l.size()/2+1,junkWhile);
     }
 
