@@ -21,7 +21,9 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
+import luaguard.traversal.FunctionDeclarationVisitor;
 import luaguard.traversal.NameVisitor;
+import org.luaj.vm2.ast.Chunk;
 import org.luaj.vm2.ast.Exp;
 import org.luaj.vm2.ast.Exp.FieldExp;
 import org.luaj.vm2.ast.Exp.FuncCall;
@@ -70,21 +72,31 @@ public class FunctionCallObfuscator extends NameResolver {
         this.rnd = new Random();
     }
     
-    public FunctionCallObfuscator(Set<String> blacklist, Map<String, ParList> fPar) {
+    public FunctionCallObfuscator(Set<String> blacklist) {
         this.blacklist = blacklist;
-        this.fPar = fPar;
         this.rnd = new Random();
     }
        
-    public FunctionCallObfuscator(Random rnd, Map<String, ParList> fPar) {
+    public FunctionCallObfuscator(Random rnd) {
         this.blacklist = new HashSet<String>();
-        this.fPar = fPar;
         this.rnd = rnd;
     }
     
     public FunctionCallObfuscator(Set<String> blacklist, Random rnd) {
         this.blacklist = blacklist;
         this.rnd = rnd;
+    }
+    
+    @Override
+    public void visit(Chunk n) {
+        
+        // Collect function parameters
+        FunctionDeclarationVisitor fdv = new FunctionDeclarationVisitor();
+        n.block.accept(fdv);
+        fPar = fdv.funcPar;
+        
+        // Modify the remainder of the code
+        n.block.accept(this);
     }
     
     /**
