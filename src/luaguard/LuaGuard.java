@@ -216,9 +216,7 @@ static Logger logger = LogManager.getLogger("GLOBAL"/*LuaGuard.class.getName()*/
                     /* now we will do pre processing traversals
                      *
                     */
-                    
-                    FunctionDeclarationVisitor fdv = new FunctionDeclarationVisitor();
-                    chunk.accept(fdv);
+
 
                     /* this is were we would put the obfuscators.
                      * this will probably be a loop structure of some type.
@@ -231,7 +229,7 @@ static Logger logger = LogManager.getLogger("GLOBAL"/*LuaGuard.class.getName()*/
                     
                     /*iterate throught list of obfuscators*/
                     for(int j = 0; j < obfus.size(); j++ ){
-                        Obfuscator ob = obFactory.constructObfuscator(obfus.get(j),fdv.funcPar);
+                        Obfuscator ob = obFactory.constructObfuscator(obfus.get(j));
                         if(null != ob){
                             chunk.accept(ob);
                             if(debug){

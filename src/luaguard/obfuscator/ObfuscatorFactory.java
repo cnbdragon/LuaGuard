@@ -33,10 +33,6 @@ public class ObfuscatorFactory {
     
     public ObfuscatorFactory() {}
     
-    public Obfuscator constructObfuscator(String name) {
-        return constructObfuscator(name, new HashMap<String,ParList>());
-    }
-    
     /**
      * Constructs an obfuscator object given the obfuscator's name
      * 
@@ -44,7 +40,7 @@ public class ObfuscatorFactory {
      * @param funcs
      * @return Obfuscator object
      */
-    public Obfuscator constructObfuscator(String name, Map<String,ParList> funcs) {
+    public Obfuscator constructObfuscator(String name) {
         logger.debug("Construct Obfuscator");
         Obfuscator obf = null;
         if (name.equalsIgnoreCase("none")) {
@@ -57,7 +53,7 @@ public class ObfuscatorFactory {
             obf = new ReturnValueObfuscator();
             logger.debug("Build rvo");
         } else if (name.equalsIgnoreCase("fco")) {
-            obf = new FunctionCallObfuscator(new Random(), funcs);
+            obf = new FunctionCallObfuscator(new Random());
             logger.debug("Build fco");
         } else if (name.equalsIgnoreCase("vro")) {
             obf = new VarRenamerObfuscator();

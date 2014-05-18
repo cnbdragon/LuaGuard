@@ -31,6 +31,7 @@ import org.luaj.vm2.parser.ParseException;
  * @author jgs
  */
 public class ReturnValueObfuscatorTest {
+    
     private Obfuscator obf;
     
     @Before
