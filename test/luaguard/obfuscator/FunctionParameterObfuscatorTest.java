@@ -30,6 +30,7 @@ import org.luaj.vm2.parser.ParseException;
  * @author jgs
  */
 public class FunctionParameterObfuscatorTest {
+    
     private Obfuscator obf;
     
     @Before

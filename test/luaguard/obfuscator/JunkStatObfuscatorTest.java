@@ -33,7 +33,7 @@ import org.luaj.vm2.parser.ParseException;
  */
 public class JunkStatObfuscatorTest {
     
-    Obfuscator obf;
+    private Obfuscator obf;
     
     @Before
     public void setup() {
