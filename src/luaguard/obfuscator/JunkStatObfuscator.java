@@ -36,7 +36,6 @@ public class JunkStatObfuscator extends Obfuscator{
         if (b.stats == null) {
             return;
         }
-
        List<Stat> l = b.stats;
        //add two variables for junk block 
        NameExp var1=new NameExp("_unusual1");
