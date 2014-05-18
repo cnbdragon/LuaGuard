@@ -43,14 +43,7 @@ public class FunctionDeclarationVisitor extends Visitor {
      */
     @Override
     public void visit(FuncDef n) {
-        // Build name
-        String name = n.name.name.name;
-        if (null != n.name.method) {
-            name = n.name.method;
-        }
-        else if (null != n.name.dots && n.name.dots.size() > 0) {
-            name = n.name.dots.get(n.name.dots.size()-1).toString();
-        }
+        String name = NameVisitor.funcName(n.name);
         
         // Add to map
         funcPar.put(name, new ParList(n.body.parlist.names, n.body.parlist.isvararg));

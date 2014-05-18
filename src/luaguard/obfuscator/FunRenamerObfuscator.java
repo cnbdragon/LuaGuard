@@ -6,10 +6,13 @@
 package luaguard.obfuscator;
 
 import java.util.HashMap;
+import java.util.List;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+import org.luaj.vm2.ast.Exp.AnonFuncDef;
 import org.luaj.vm2.ast.Exp.FuncCall;
 import org.luaj.vm2.ast.Exp.NameExp;
+import org.luaj.vm2.ast.Exp.PrimaryExp;
 import org.luaj.vm2.ast.Name;
 import org.luaj.vm2.ast.Stat;
 import org.luaj.vm2.ast.Stat.FuncDef;
@@ -28,50 +31,23 @@ public class FunRenamerObfuscator extends Obfuscator {
     FunRenamerObfuscator(){
         dict = new HashMap<>();
     }
-    
-       /**
-     * Rename the variable name in local assignment
-     * 
-     * @param la LocalAssign, the ast node object
-     */
-    @Override
-    public void visit(Stat.Assign stat){
-        for(int i =0; i< stat.vars.size(); i++){
-            if(stat.vars.get(i).toString().contains("$NameExp")){
-                NameExp name = (NameExp) stat.vars.get(i);
-                String oldname = name.name.name;
-                String tempname;
-                if(dict.containsKey(oldname)){
-                    tempname = dict.get(oldname);
-                }
-                else{
-                    tempname = base + dict.size()*2;
-                    dict.put(oldname,tempname);
-                }
-                name.name.name = tempname;
-            }
-        }
-        visitVars(stat.vars);
-	visitExps(stat.exps);
-    }
-    
     /**
      * Renames function definition
      * @param fd 
      */
     @Override
     public void visit(FuncDef fd){
-        String oldname = fd.name.name.name;
-        String tempname;
-        if(dict.containsKey(oldname)){
-            tempname = dict.get(oldname);
-        }
-        else{
-            tempname = base + dict.size()*2;
-            dict.put(oldname, tempname);
-        }
-        fd.name.name.name = tempname;
-        fd.body.accept(this);
+            String oldname = fd.name.name.name;
+            String tempname;
+            if(dict.containsKey(oldname)){
+                tempname = dict.get(oldname);
+            }
+            else{
+                tempname = base + dict.size()*2;
+                dict.put(oldname, tempname);
+            }
+            fd.name.name.name = tempname;
+            fd.body.accept(this);
     }
 
     /**
@@ -85,9 +61,12 @@ public class FunRenamerObfuscator extends Obfuscator {
             if(dict.containsKey(oldname)){
                 tempname = dict.get(oldname);
             }
+            else{
+                dict.put(oldname,oldname);
+            }
             nm.name = tempname;
     }
-    
+
     /**
      * Renames function calls
      * @param fc 
@@ -102,6 +81,9 @@ public class FunRenamerObfuscator extends Obfuscator {
                 if(dict.containsKey(oldname)){
                     tempname = dict.get(oldname);
                     name.name.name = tempname;
+                }
+                else{
+                    dict.put(oldname,oldname);
                 }
             }
         }

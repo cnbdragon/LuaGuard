@@ -54,8 +54,8 @@ public class FunctionCallObfuscatorTest {
         FunctionDeclarationVisitor fdv = new FunctionDeclarationVisitor();
         TransformationHarness.setupRun(path, fdv);
         Obfuscator obf = new FunctionCallObfuscator(new DeterministicRandom(), fdv.funcPar);
-        Assert.assertTrue("Identity transformation", 
-               !TransformationHarness.isSameSourceCode(path, obf));
+        Assert.assertFalse("Identity transformation", 
+               TransformationHarness.isSameSourceCode(path, obf));
     }
     
     @Test
@@ -74,8 +74,8 @@ public class FunctionCallObfuscatorTest {
         FunctionDeclarationVisitor fdv = new FunctionDeclarationVisitor();
         TransformationHarness.setupRun(path, fdv);
         Obfuscator obf = new FunctionCallObfuscator(new DeterministicRandom(), fdv.funcPar);
-        Assert.assertTrue("Identity transformation", 
-               !TransformationHarness.isSameSourceCode(path, obf));
+        Assert.assertFalse("Identity transformation", 
+               TransformationHarness.isSameSourceCode(path, obf));
     }
     
     @Test
@@ -94,8 +94,8 @@ public class FunctionCallObfuscatorTest {
         FunctionDeclarationVisitor fdv = new FunctionDeclarationVisitor();
         TransformationHarness.setupRun(path, fdv);
         Obfuscator obf = new FunctionCallObfuscator(new DeterministicRandom(), fdv.funcPar);
-        Assert.assertTrue("Identity transformation", 
-               !TransformationHarness.isSameSourceCode(path, obf));
+        Assert.assertFalse("Identity transformation", 
+               TransformationHarness.isSameSourceCode(path, obf));
     }
 }
 

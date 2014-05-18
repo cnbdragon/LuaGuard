@@ -47,8 +47,8 @@ public class FunctionParameterObfuscatorTest {
     @Test
     public void classesSourceCodeTest() throws FileNotFoundException, ParseException, IOException {
         String path = "Lua/classes.lua";
-        Assert.assertTrue("Identity transformation", 
-               !TransformationHarness.isSameSourceCode(path, obf));
+        Assert.assertFalse("Identity transformation", 
+               TransformationHarness.isSameSourceCode(path, obf));
     }
     
     @Test
@@ -61,8 +61,8 @@ public class FunctionParameterObfuscatorTest {
     @Test
     public void classes2SourceCodeTest() throws FileNotFoundException, ParseException, IOException {
         String path = "Lua/classes2.lua";
-        Assert.assertTrue("Identity transformation", 
-               !TransformationHarness.isSameSourceCode(path, obf));
+        Assert.assertFalse("Identity transformation", 
+               TransformationHarness.isSameSourceCode(path, obf));
     }
     
     @Test
@@ -75,7 +75,7 @@ public class FunctionParameterObfuscatorTest {
     @Test
     public void factorsSourceCodeTest() throws FileNotFoundException, ParseException, IOException {
         String path = "Lua/factors.lua";
-        Assert.assertTrue("Identity transformation", 
-               !TransformationHarness.isSameSourceCode(path, obf));
+        Assert.assertFalse("Identity transformation", 
+               TransformationHarness.isSameSourceCode(path, obf));
     }
 }

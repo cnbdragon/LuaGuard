@@ -19,10 +19,12 @@ import harness.exception.ProgramCrashException;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
+import java.util.Properties;
 import luaguard.obfuscator.Obfuscator;
 import luaguard.unparser.LuaUnparser;
 import org.luaj.vm2.ast.Chunk;
@@ -35,8 +37,48 @@ import org.luaj.vm2.parser.ParseException;
  */
 public class BehaviourHarness {
     
+    public enum LuaVersion {Lua5_1, Lua5_2};
+    
+    private static class TestProperties {
+        
+        private Properties prop;
+        
+        public TestProperties() {
+            prop = new Properties();
+            
+            String propFile = "lua.properties";
+            
+            try {
+                prop.load(new FileInputStream(propFile));
+            }
+            catch (FileNotFoundException e) {
+                System.err.println("File not found: " + propFile);
+                e.printStackTrace();
+            }
+            catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        
+        public String luaPath(LuaVersion lv) {
+            String version = "Lua5_1";
+            switch(lv) {
+                case Lua5_2:
+                    version = "Lua5_2";
+                    break;
+                default:
+            }
+            
+            return prop.getProperty(version);
+        }
+        
+    }
+    
+    private static final TestProperties tp = new TestProperties();
+    
     /**
      * Compares the output behaviour of a file before and after obfuscation.
+     * Assumes Lua 5.1
      * 
      * @param path path to file to test
      * @param obf obfuscator, null if no obfuscation is to be performed
@@ -47,6 +89,22 @@ public class BehaviourHarness {
      * @throws harness.exception.ProgramCrashException 
      */
     public static boolean isSameOutput(String path, Obfuscator obf) throws IOException, ParseException, InterruptedException, ProgramCrashException {
+        return isSameOutput(path, obf, LuaVersion.Lua5_1);
+    }
+
+    /**
+     * Compares the output behaviour of a file before and after obfuscation.
+     * 
+     * @param path path to file to test
+     * @param obf obfuscator, null if no obfuscation is to be performed
+     * @param lv Enum for the version of Lua that should be run
+     * @return true if output behaviour is the same, false otherwise
+     * @throws IOException
+     * @throws ParseException 
+     * @throws java.lang.InterruptedException 
+     * @throws harness.exception.ProgramCrashException 
+     */
+    public static boolean isSameOutput(String path, Obfuscator obf, LuaVersion lv) throws IOException, ParseException, InterruptedException, ProgramCrashException {
         
         // I/O for reading output & parsing from a string
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -58,7 +116,7 @@ public class BehaviourHarness {
         String before, after;   // program output before and after applying the obfuscation
         
         // Retrieve output behaviour of the original program (before)
-        Process process = new ProcessBuilder("C:\\Users\\Nevermore\\Desktop\\lua5.1.exe", path).start();
+        Process process = new ProcessBuilder(tp.luaPath(lv), path).start();
         is = process.getInputStream();
         
         // Program crash = test failure
@@ -78,7 +136,7 @@ public class BehaviourHarness {
         chunk.accept(new LuaUnparser(ps));
         
         String prog = baos.toString();
-        process = new ProcessBuilder("C:\\Users\\Nevermore\\Desktop\\lua5.1.exe", "-e", prog).start();
+        process = new ProcessBuilder(tp.luaPath(lv), "-e", prog).start();
         is = process.getInputStream();
         
         // Program crash = test failure
