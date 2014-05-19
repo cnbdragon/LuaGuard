@@ -24,6 +24,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 import luaguard.obfuscator.Obfuscator;
 import luaguard.unparser.LuaUnparser;
@@ -89,14 +91,16 @@ public class BehaviourHarness {
      * @throws harness.exception.ProgramCrashException 
      */
     public static boolean isSameOutput(String path, Obfuscator obf) throws IOException, ParseException, InterruptedException, ProgramCrashException {
-        return isSameOutput(path, obf, LuaVersion.Lua5_1);
+        List<Obfuscator> obfList = new ArrayList<Obfuscator>();
+        obfList.add(obf);
+        return isSameOutput(path, obfList, LuaVersion.Lua5_1);
     }
 
     /**
      * Compares the output behaviour of a file before and after obfuscation.
      * 
      * @param path path to file to test
-     * @param obf obfuscator, null if no obfuscation is to be performed
+     * @param obfList List of obfuscators
      * @param lv Enum for the version of Lua that should be run
      * @return true if output behaviour is the same, false otherwise
      * @throws IOException
@@ -104,7 +108,7 @@ public class BehaviourHarness {
      * @throws java.lang.InterruptedException 
      * @throws harness.exception.ProgramCrashException 
      */
-    public static boolean isSameOutput(String path, Obfuscator obf, LuaVersion lv) throws IOException, ParseException, InterruptedException, ProgramCrashException {
+    public static boolean isSameOutput(String path, List<Obfuscator> obfList, LuaVersion lv) throws IOException, ParseException, InterruptedException, ProgramCrashException {
         
         // I/O for reading output & parsing from a string
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -131,8 +135,10 @@ public class BehaviourHarness {
         // Retrieve output behaviour of the obfuscated program (after)
         LuaParser parser = new LuaParser(new FileInputStream(path));
         Chunk chunk = parser.Chunk();
-        if (null != obf)
-            chunk.accept(obf);
+        for (Obfuscator obf : obfList) {
+            if (null != obf)
+                chunk.accept(obf);
+        }
         chunk.accept(new LuaUnparser(ps));
         
         String prog = baos.toString();
