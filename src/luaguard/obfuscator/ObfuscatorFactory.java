@@ -15,14 +15,13 @@
  */
 package luaguard.obfuscator;
 
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
-import org.luaj.vm2.ast.ParList;
 
 /**
  *
@@ -74,7 +73,7 @@ public class ObfuscatorFactory {
     }
     
     public List<String> getObfuscatorList(){
-        List temp = new LinkedList();
+        List<String> temp = new ArrayList<String>();
         temp.add("none");
         temp.add("fpo");
         temp.add("rvo");

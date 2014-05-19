@@ -38,7 +38,7 @@ public class LuaUnparserTest {
     public void classesIdentitySourceTest() throws FileNotFoundException, ParseException, IOException {
         String path = "Lua/classes.lua";
         Assert.assertTrue("Not identity transformation", 
-                TransformationHarness.isSameSourceCode(path, null));
+                TransformationHarness.isSameSourceCode(path));
     }
 
     @Test
@@ -52,7 +52,7 @@ public class LuaUnparserTest {
     public void classes2IdentitySourceTest() throws FileNotFoundException, ParseException, IOException {
         String path = "Lua/classes2.lua";
         Assert.assertTrue("Not identity transformation", 
-                TransformationHarness.isSameSourceCode(path, null));
+                TransformationHarness.isSameSourceCode(path));
     }
 
     @Test
@@ -66,7 +66,7 @@ public class LuaUnparserTest {
     public void factorsIdentitySourceTest() throws FileNotFoundException, ParseException, IOException {
         String path = "Lua/factors.lua";
         Assert.assertTrue("Not identity transformation", 
-                TransformationHarness.isSameSourceCode(path, null));
+                TransformationHarness.isSameSourceCode(path));
     }
 
     @Test
@@ -87,6 +87,6 @@ public class LuaUnparserTest {
     public void functionsIdentityTest() throws FileNotFoundException, ParseException, IOException {
         String path = "Lua/functions.lua";
         org.junit.Assert.assertTrue("Identity transformation", 
-               TransformationHarness.isSameSourceCode(path, null));
+               TransformationHarness.isSameSourceCode(path));
     }
 }

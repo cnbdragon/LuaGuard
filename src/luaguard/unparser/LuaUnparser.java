@@ -615,7 +615,7 @@ public class LuaUnparser extends Visitor {
    */
   @Override
   public void visit(FuncArgs n) {
-    if (null != n.exps) {
+    if (null != n.exps && n.exps.size() > 0) {
       int numExps = n.exps.size();
       for(int i = 0; i < numExps - 1; i++) {
         ((Exp)n.exps.get(i)).accept(this);
