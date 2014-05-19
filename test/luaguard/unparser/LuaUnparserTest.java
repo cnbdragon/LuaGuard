@@ -75,4 +75,18 @@ public class LuaUnparserTest {
         Assert.assertTrue("Different behaviour", 
                 BehaviourHarness.isSameOutput(path, null));
     }
+
+    @Test
+    public void functionsIdentityBehaviourTest() throws FileNotFoundException, ParseException, IOException, InterruptedException, ProgramCrashException {
+        String path = "Lua/functions.lua";
+        org.junit.Assert.assertTrue("Different behaviour",
+               BehaviourHarness.isSameOutput(path, null));
+    }
+
+    @Test
+    public void functionsIdentityTest() throws FileNotFoundException, ParseException, IOException {
+        String path = "Lua/functions.lua";
+        org.junit.Assert.assertTrue("Identity transformation", 
+               TransformationHarness.isSameSourceCode(path, null));
+    }
 }

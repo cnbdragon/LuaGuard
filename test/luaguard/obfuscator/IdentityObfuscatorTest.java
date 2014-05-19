@@ -80,4 +80,18 @@ public class IdentityObfuscatorTest {
         Assert.assertTrue("Identity transformation", 
                TransformationHarness.isSameSourceCode(path, obf));
     }
+    
+    @Test
+    public void functionsBehaviourTest() throws FileNotFoundException, ParseException, IOException, InterruptedException, ProgramCrashException {
+        String path = "Lua/functions.lua";
+        Assert.assertTrue("Different behaviour",
+               BehaviourHarness.isSameOutput(path, obf));
+    }
+
+    @Test
+    public void functionsSourceCodeTest() throws FileNotFoundException, ParseException, IOException {
+        String path = "Lua/functions.lua";
+        Assert.assertTrue("Identity transformation", 
+               TransformationHarness.isSameSourceCode(path, obf));
+    }
 }
