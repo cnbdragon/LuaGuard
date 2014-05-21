@@ -20,43 +20,45 @@ import java.util.List;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.luaj.vm2.ast.Exp;
+import org.luaj.vm2.ast.Exp.NameExp;
+import org.luaj.vm2.ast.Exp.VarargsExp;
 import org.luaj.vm2.ast.FuncArgs;
 import org.luaj.vm2.ast.FuncBody;
 import org.luaj.vm2.ast.Name;
 import org.luaj.vm2.ast.ParList;
 import org.luaj.vm2.ast.Stat;
+import org.luaj.vm2.ast.Stat.Return;
 
 //import org.slf4j.Logger;
 //import org.slf4j.LoggerFactory;
-
 /**
  *
  * @author Joshua Stein
  */
 public class FunctionParameterObfuscator extends Obfuscator {
-    
+
     final Logger logger = LogManager.getLogger("GLOBAL");
-        
+
     /**
-     * Modifies the function body such that all parameters are varargs.
-     * Starting statements are select function calls
-     * 
+     * Modifies the function body such that all parameters are varargs. Starting
+     * statements are select function calls
+     *
      * @param n FuncBody node
      */
     @Override
     public void visit(FuncBody n) {
-        
+
         // No parameters to obfuscate
-        if (null == n.parlist.names)
+        if (null == n.parlist.names) {
             n.parlist.names = ParList.EMPTY_NAMELIST;
-        
-        
+        }
+
         // Add select statements
         List<Stat> selectStats = new ArrayList<Stat>();
         for (int i = 0; i < n.parlist.names.size(); i++) {
             List<Name> args = new ArrayList<Name>();
-            args.add((Name)n.parlist.names.get(i));
-            
+            args.add((Name) n.parlist.names.get(i));
+
             // Assignment argument
             List<Exp> assignExps = new ArrayList<Exp>();
 
@@ -65,24 +67,48 @@ public class FunctionParameterObfuscator extends Obfuscator {
                 List<Exp> funcExps = new ArrayList<Exp>();
                 funcExps.add(Exp.nameprefix("arg"));
                 funcExps.add(Exp.numberconstant(Integer.toString(1)));
-                assignExps.add(Exp.functionop(Exp.fieldop(Exp.nameprefix("table"), "remove"), 
+                assignExps.add(Exp.functionop(Exp.fieldop(Exp.nameprefix("table"), "remove"),
                         FuncArgs.explist(funcExps)));
-            }
-            else {
+            } else {
                 // Index arg table (implicit vararg table)
-                assignExps.add(Exp.indexop(Exp.nameprefix("arg"), 
-                            Exp.numberconstant(Integer.toString(i+1))));
+                assignExps.add(Exp.indexop(Exp.nameprefix("arg"),
+                        Exp.numberconstant(Integer.toString(i + 1))));
             }
-            
+
             // Add assignments to statements list
             selectStats.add(Stat.localassignment(args, assignExps));
         }
-        
+
         // Add index/remove assignments and change to varargs
         n.block.stats.addAll(0, selectStats);
         n.parlist = new ParList(ParList.EMPTY_NAMELIST, true);
-        
+
         // Recurse
         n.block.accept(this);
-    }   
+    }
+
+    @Override
+    public void visit(FuncArgs n) {
+        unpackVarargs(n.exps);
+    }
+    
+    @Override
+    public void visit(Return n) {
+        unpackVarargs(n.values);
+    }
+     
+    private void unpackVarargs(List<Exp> lst) {
+        if (null != lst) {
+            int length = lst.size();
+            for (int i = 0; i < length; i++) {
+                if (VarargsExp.class.isInstance(lst.get(i))) {
+                    NameExp unpackExp = Exp.nameprefix("unpack");
+                    List<Exp> funcArgList = new ArrayList<Exp>();
+                    funcArgList.add(Exp.nameprefix("arg"));
+                    FuncArgs fArgs = new FuncArgs(funcArgList);
+                    lst.set(i, Exp.functionop(unpackExp, fArgs));
+                }
+            }
+        }
+    }
 }
