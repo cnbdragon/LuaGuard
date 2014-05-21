@@ -42,7 +42,7 @@ public class MultipleObfuscatorsTest {
     public void setup() {
         obfList = new ArrayList<Obfuscator>();
         ObfuscatorFactory obfFactory = new ObfuscatorFactory();
-        obfNames = obfFactory.getObfuscatorList();
+        obfNames = ObfuscatorFactory.getObfuscatorList();
         for (String name : obfNames) {
             obfList.add(obfFactory.constructObfuscator(name));
         }
