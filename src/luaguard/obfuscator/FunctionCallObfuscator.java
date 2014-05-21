@@ -162,7 +162,8 @@ public class FunctionCallObfuscator extends NameResolver {
         
         // If the function is varargs or function call has fewer args than the prototype, then stop
         if ((null != p.names && null != args.exps && args.exps.size() < p.names.size()) 
-            || p.isvararg)
+            || p.isvararg
+            || (null == args.exps && null != p.names))
             return false;
         
         return true;
