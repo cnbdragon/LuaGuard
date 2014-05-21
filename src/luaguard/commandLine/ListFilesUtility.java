@@ -102,10 +102,20 @@ public class ListFilesUtility {
         }
     }
  
+    /**
+     *
+     * @param directoryName
+     * @return
+     */
     public boolean exists(String directoryName){
         File directory = new File(directoryName);
         return directory.exists();
     }
+
+    /**
+     *
+     * @param args
+     */
     public static void main (String[] args){
  
         ListFilesUtility listFilesUtil = new ListFilesUtility();
@@ -118,6 +128,12 @@ public class ListFilesUtility {
         listFilesUtil.listFilesAndFolders(directoryWindows);
     }
     
+    /**
+     *
+     * @param l1
+     * @param l2
+     * @return
+     */
     public boolean sameFile(List<String> l1, List<String> l2) {
 
         for (int i = 0; i < l1.size(); i++) {

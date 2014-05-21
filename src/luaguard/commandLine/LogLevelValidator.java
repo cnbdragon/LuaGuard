@@ -13,7 +13,14 @@ import com.beust.jcommander.ParameterException;
  * @author jwulf
  */
 public class LogLevelValidator implements IParameterValidator {
- @Override
+
+    /**
+     *
+     * @param name
+     * @param value
+     * @throws ParameterException
+     */
+    @Override
  public void validate(String name, String value)
       throws ParameterException {
     int n = Integer.parseInt(value);

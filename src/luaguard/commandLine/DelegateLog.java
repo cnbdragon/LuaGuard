@@ -22,7 +22,11 @@ public class DelegateLog {
             descriptionKey = "log")
     private Integer verbose = 6;
     
-     public int getL() {
+    /**
+     *
+     * @return
+     */
+    public int getL() {
         return verbose;
     }
 }

@@ -31,8 +31,8 @@ public class JCommanderLuaGuard {
     private List<String> paramaters = new ArrayList<String>();
 
     @Parameter(names = {"-v","-ver","-version"},
-            descriptionKey = "version"/*,
-     required = true*/)
+            descriptionKey = "version",
+            hidden = true)
     private Integer version;
     //this allows us to guard certain obfuscators.
     
@@ -45,6 +45,18 @@ public class JCommanderLuaGuard {
             descriptionKey = "about",
             help = true)
     private boolean about;
+    
+    @Parameter(names = {"-$", "--list"},
+            descriptionKey = "list",
+            help = true,
+            hidden = true)
+    private boolean list;
+    
+    @Parameter(names = {"-%", "--map"},
+            descriptionKey = "map",
+            help = true,
+            hidden = true)
+    private boolean map;
     
     @Parameter(names = {"-file", "-files"}, 
             variableArity = true, 
@@ -76,37 +88,97 @@ public class JCommanderLuaGuard {
             descriptionKey = "debug")
     private boolean debug = false;
     
+    /**
+     *
+     */
     @ParametersDelegate
         public DelegateLog delegate = new DelegateLog();
     
+    /**
+     *
+     * @return
+     */
     public List<String> getfiles(){
         return files;
     } 
+
+    /**
+     *
+     * @return
+     */
     public List<String> getOutput(){
         return outputfiles;
     }
+
+    /**
+     *
+     * @return
+     */
     public List<String> getBlacklist(){
         return blacklist;
     }
+
+    /**
+     *
+     * @return
+     */
     public List<String> getObfuscators(){
         return obfus;
     }
+
+    /**
+     *
+     * @return
+     */
     public boolean getForce(){
         return force;
     }
+
+    /**
+     *
+     * @return
+     */
     public int getLog(){
         return delegate.getL();
     }
+
+    /**
+     *
+     * @return
+     */
     public boolean getHelp() {
         return help;
     }
+
+    /**
+     *
+     * @return
+     */
     public boolean getAbout() {
         return about;
     }
+
+    /**
+     *
+     * @return
+     */
     public int getVersion() {
         return version;
     }
+
+    /**
+     *
+     * @return
+     */
     public boolean getDebug() {
         return debug;
+    }
+    
+    public boolean getList() {
+        return list;
+    }
+    
+    public boolean getMap(){
+        return map;
     }
 }

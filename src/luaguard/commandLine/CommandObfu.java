@@ -58,24 +58,56 @@ public class CommandObfu {
             descriptionKey = "force")
     private boolean force;
     
+    /**
+     *
+     */
     @ParametersDelegate
         public DelegateLog delegate = new DelegateLog();
     
+    /**
+     *
+     * @return
+     */
     public List<String> getfiles(){
         return files;
     } 
+
+    /**
+     *
+     * @return
+     */
     public List<String> getOutput(){
         return outputfiles;
     }
+
+    /**
+     *
+     * @return
+     */
     public List<String> getBlacklist(){
         return blacklist;
     }
+
+    /**
+     *
+     * @return
+     */
     public List<String> getObfuscators(){
         return obfus;
     }
+
+    /**
+     *
+     * @return
+     */
     public boolean getForce(){
         return force;
     }
+
+    /**
+     *
+     * @return
+     */
     public int getLog(){
         return delegate.getL();
     }

@@ -22,15 +22,18 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Scanner;
+import luaguard.commandLine.BlacklistReader;
 import luaguard.commandLine.JCommanderLuaGuard;
 import luaguard.commandLine.ListFilesUtility;
 import luaguard.obfuscator.Obfuscator;
 import luaguard.obfuscator.ObfuscatorFactory;
-import luaguard.traversal.FunctionDeclarationVisitor;
 import luaguard.unparser.*;
 import org.apache.log4j.FileAppender;
 import org.apache.log4j.Layout;
@@ -105,8 +108,28 @@ static Logger logger = LogManager.getLogger("GLOBAL"/*LuaGuard.class.getName()*/
         //this is where we deal with the arguments from the cli
         if (jclg.getHelp()) {
             mainCommander.usage();
+            System.out.println(hints.getString("knownObfus"));
+            ObfuscatorFactory obFactory = new ObfuscatorFactory();
+            Map tem = obFactory.getObfuscatorMap();
+            for (Iterator it = tem.entrySet().iterator(); it.hasNext();) {
+                Map.Entry entry = (Map.Entry) it.next();
+                System.out.println(entry.getKey() + ", " + entry.getValue());
+            }
         } else if (jclg.getAbout()) {
             System.out.println(hints.getString("aboutText"));
+        }else if (jclg.getList()) { //return a list of the know obfuscators
+            ObfuscatorFactory obFactory = new ObfuscatorFactory();
+            List tem = obFactory.getObfuscatorList();
+            for (int i = 0 ; i < tem.size();i++){
+                System.out.println(tem.get(i));
+            }
+        }else if (jclg.getMap()) { //return a map of the know obfuscators
+            ObfuscatorFactory obFactory = new ObfuscatorFactory();
+            Map tem = obFactory.getObfuscatorMap();
+            for (Iterator it = tem.entrySet().iterator(); it.hasNext();) {
+                Map.Entry entry = (Map.Entry) it.next();
+                System.out.println(entry.getKey() + ", " + entry.getValue());
+            }
         } else if (mainCommander.getParameters().size() > 0 /* true*/) { // to be here we have to have a vailid command with a
                            // -file and a -obfuscator
             
@@ -225,11 +248,21 @@ static Logger logger = LogManager.getLogger("GLOBAL"/*LuaGuard.class.getName()*/
                     
                     List<String> obfus = jclg.getObfuscators();
                     List<String> blacklist = jclg.getBlacklist();
-                    
+                    BlacklistReader tempBLRead = new BlacklistReader();
+                    List<String> passingBL = new ArrayList();
+                    for (String blacklist1 : blacklist) {
+                        System.out.print("blacklist:");
+                        System.out.println(blacklist1);
+                        if (fileUtil.exists(blacklist1)){
+                            passingBL.addAll(tempBLRead.readFile(blacklist1));
+                        } else {
+                            System.out.println("file does not exist");
+                        }
+                    }
                     
                     /*iterate throught list of obfuscators*/
                     for(int j = 0; j < obfus.size(); j++ ){
-                        Obfuscator ob = obFactory.constructObfuscator(obfus.get(j));
+                        Obfuscator ob = obFactory.constructObfuscator(obfus.get(j), passingBL);
                         if(null != ob){
                             chunk.accept(ob);
                             if(debug){
