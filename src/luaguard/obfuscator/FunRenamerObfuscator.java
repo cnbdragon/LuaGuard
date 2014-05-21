@@ -30,6 +30,13 @@ public class FunRenamerObfuscator extends Obfuscator {
     FunRenamerObfuscator(){
         dict = new HashMap<>();
     }
+    
+    FunRenamerObfuscator(List<String> blacklist) {
+        dict = new HashMap<>();
+        for (String blacklist1  : blacklist) {
+            dict.put(blacklist1 , blacklist1 );
+        }
+    }
     /**
      * Renames function definition
      * @param fd 

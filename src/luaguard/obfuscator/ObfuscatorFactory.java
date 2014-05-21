@@ -76,7 +76,7 @@ public class ObfuscatorFactory {
             obf = new JunkStatObfuscator();
             logger.debug("Build jso");
         } else if (name.equalsIgnoreCase("fro")) {
-            obf = new FunRenamerObfuscator();
+            obf = new FunRenamerObfuscator(blacklist);
             logger.debug("Build fro");
         } else if (name.equalsIgnoreCase("ro"))  {
             obf = new RenamerObfuscator();
