@@ -19,6 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+import org.luaj.vm2.Lua;
+import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.ast.Exp;
 import org.luaj.vm2.ast.Exp.NameExp;
 import org.luaj.vm2.ast.Exp.VarargsExp;
@@ -55,6 +57,7 @@ public class FunctionParameterObfuscator extends Obfuscator {
 
         // Add select statements
         List<Stat> selectStats = new ArrayList<Stat>();
+        int adjustNBy = 0;
         for (int i = 0; i < n.parlist.names.size(); i++) {
             List<Name> args = new ArrayList<Name>();
             args.add((Name) n.parlist.names.get(i));
@@ -69,6 +72,7 @@ public class FunctionParameterObfuscator extends Obfuscator {
                 funcExps.add(Exp.numberconstant(Integer.toString(1)));
                 assignExps.add(Exp.functionop(Exp.fieldop(Exp.nameprefix("table"), "remove"),
                         FuncArgs.explist(funcExps)));
+                adjustNBy++;
             } else {
                 // Index arg table (implicit vararg table)
                 assignExps.add(Exp.indexop(Exp.nameprefix("arg"),
@@ -79,6 +83,19 @@ public class FunctionParameterObfuscator extends Obfuscator {
             selectStats.add(Stat.localassignment(args, assignExps));
         }
 
+        if (adjustNBy > 0) {
+            // Build Operation: arg.n = arg.n - adjustNum
+            Exp.VarExp argField = Exp.fieldop(Exp.nameprefix("arg"), "n");
+            Exp argOp = Exp.binaryexp(argField, Lua.OP_SUB, Exp.constant(LuaValue.valueOf(adjustNBy)));
+            
+            // Add statement to block
+            List<Exp.VarExp> vars = new ArrayList<Exp.VarExp>();
+            vars.add(argField);
+            List<Exp> ops = new ArrayList<Exp>();
+            ops.add(argOp);
+            selectStats.add(Stat.assignment(vars, ops));
+        }        
+        
         // Add index/remove assignments and change to varargs
         n.block.stats.addAll(0, selectStats);
         n.parlist = new ParList(ParList.EMPTY_NAMELIST, true);
@@ -105,6 +122,8 @@ public class FunctionParameterObfuscator extends Obfuscator {
                     NameExp unpackExp = Exp.nameprefix("unpack");
                     List<Exp> funcArgList = new ArrayList<Exp>();
                     funcArgList.add(Exp.nameprefix("arg"));
+                    funcArgList.add(Exp.constant(LuaValue.valueOf(1)));
+                    funcArgList.add(Exp.fieldop(Exp.nameprefix("arg"), "n"));
                     FuncArgs fArgs = new FuncArgs(funcArgList);
                     lst.set(i, Exp.functionop(unpackExp, fArgs));
                 }
