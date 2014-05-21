@@ -94,7 +94,7 @@ public class testingGUI extends javax.swing.JFrame {
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
 
-        jDialog1.setTitle("Error");
+        jDialog1.setTitle("Message");
         jDialog1.setBounds(new java.awt.Rectangle(225, 100, 225, 100));
         jDialog1.setMinimumSize(new java.awt.Dimension(225, 120));
         jDialog1.setModalityType(java.awt.Dialog.ModalityType.DOCUMENT_MODAL);
@@ -103,7 +103,7 @@ public class testingGUI extends javax.swing.JFrame {
         jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel8.setText("Please give valid input and output");
 
-        jButton10.setText("Cancel");
+        jButton10.setText("OK");
         jButton10.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton10ActionPerformed(evt);
@@ -125,7 +125,7 @@ public class testingGUI extends javax.swing.JFrame {
             jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jDialog1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton10)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -571,6 +571,7 @@ public class testingGUI extends javax.swing.JFrame {
             obfuscators.add(jTextField1.getText());
         }
         else{
+            jLabel8.setText("Please give valid input and output");
             jDialog1.setVisible(true);
             return;}
         if(!jTextField2.getText().isEmpty()){
@@ -578,6 +579,7 @@ public class testingGUI extends javax.swing.JFrame {
             obfuscators.add(jTextField2.getText());
         }
         else{
+            jLabel8.setText("Please give valid input and output");
             jDialog1.setVisible(true);
             return;}
         if(!jTextField3.getText().isEmpty()){
@@ -586,6 +588,11 @@ public class testingGUI extends javax.swing.JFrame {
         }
         obfuscators.add("-f");
         obfuscators.add("-o");
+        if(0 == model1.getSize()){
+            jLabel8.setText("Please select obfuscators");
+            jDialog1.setVisible(true);
+            return;
+        }
         for(int i=0; i < model1.getSize(); i++){
             temp = model1.get(i);
             switch (temp) {
@@ -624,7 +631,8 @@ public class testingGUI extends javax.swing.JFrame {
             command[i] = (String) obfuscators.get(i);
         }
         LuaGuard.main(command);
-
+        jLabel8.setText("Obfuscation Successful");
+        jDialog1.setVisible(true);
         //Call Command Line
 
         //jButton4.doClick();

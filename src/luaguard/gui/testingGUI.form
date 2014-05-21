@@ -6,7 +6,7 @@
     </Component>
     <Container class="javax.swing.JDialog" name="jDialog1">
       <Properties>
-        <Property name="title" type="java.lang.String" value="Error"/>
+        <Property name="title" type="java.lang.String" value="Message"/>
         <Property name="bounds" type="java.awt.Rectangle" editor="org.netbeans.beaninfo.editors.RectangleEditor">
           <Rectangle value="[225, 100, 225, 100]"/>
         </Property>
@@ -36,7 +36,7 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="1" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jLabel8" min="-2" pref="37" max="-2" attributes="0"/>
+                  <Component id="jLabel8" min="-2" pref="40" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jButton10" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="32767" attributes="0"/>
@@ -53,7 +53,7 @@
         </Component>
         <Component class="javax.swing.JButton" name="jButton10">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Cancel"/>
+            <Property name="text" type="java.lang.String" value="OK"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton10ActionPerformed"/>
