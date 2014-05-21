@@ -6,19 +6,18 @@
 
 package luaguard.gui;
 
-import java.io.File;
-import java.io.FileFilter;
+import java.awt.BorderLayout;
+import java.awt.dnd.DropTarget;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JList;
-import javax.swing.JComponent;
 import javax.swing.DefaultListModel;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import luaguard.LuaGuard;
 
 /**
  *
@@ -32,7 +31,7 @@ public class testingGUI extends javax.swing.JFrame {
     public testingGUI() {
         initComponents();
     }
-
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -42,19 +41,39 @@ public class testingGUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jFrame1 = new javax.swing.JFrame();
         jFileChooser1 = new javax.swing.JFileChooser();
-        jPanel3 = new javax.swing.JPanel();
+        jDialog1 = new javax.swing.JDialog();
+        jLabel8 = new javax.swing.JLabel();
+        jButton10 = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jTextField1 = new javax.swing.JTextField();
+        // Create the drag and drop listener
+        DragDrop DropListener1 = new DragDrop();
+
+        // Connect the label with a drag and drop listener
+        new DropTarget(jTextField1, DropListener1);
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jTextField2 = new javax.swing.JTextField();
+        // Create the drag and drop listener
+        DragDrop DropListener2 = new DragDrop();
+
+        // Connect the label with a drag and drop listener
+        new DropTarget(jTextField2, DropListener1);
         jButton1 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jTextField3 = new javax.swing.JTextField();
+        // Create the drag and drop listener
+        DragDrop DropListener3 = new DragDrop();
+
+        // Connect the label with a drag and drop listener
+        new DropTarget(jTextField3, DropListener1);
         jLabel3 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
@@ -66,6 +85,7 @@ public class testingGUI extends javax.swing.JFrame {
         jScrollPane4 = new javax.swing.JScrollPane();
         jList2 = new javax.swing.JList();
         jButton9 = new javax.swing.JButton();
+        jCheckBox1 = new javax.swing.JCheckBox();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -74,26 +94,41 @@ public class testingGUI extends javax.swing.JFrame {
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
 
-        javax.swing.GroupLayout jFrame1Layout = new javax.swing.GroupLayout(jFrame1.getContentPane());
-        jFrame1.getContentPane().setLayout(jFrame1Layout);
-        jFrame1Layout.setHorizontalGroup(
-            jFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
-        );
-        jFrame1Layout.setVerticalGroup(
-            jFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
-        );
+        jDialog1.setTitle("Error");
+        jDialog1.setBounds(new java.awt.Rectangle(225, 100, 225, 100));
+        jDialog1.setMinimumSize(new java.awt.Dimension(225, 120));
+        jDialog1.setModalityType(java.awt.Dialog.ModalityType.DOCUMENT_MODAL);
+        jDialog1.setResizable(false);
 
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
+        jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel8.setText("Please give valid input and output");
+
+        jButton10.setText("Cancel");
+        jButton10.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton10ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jDialog1Layout = new javax.swing.GroupLayout(jDialog1.getContentPane());
+        jDialog1.getContentPane().setLayout(jDialog1Layout);
+        jDialog1Layout.setHorizontalGroup(
+            jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jDialog1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton10, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
+        jDialog1Layout.setVerticalGroup(
+            jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jDialog1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton10)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -143,28 +178,53 @@ public class testingGUI extends javax.swing.JFrame {
             }
         });
 
+        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/luaguard/gui/OTOSOTE.png"))); // NOI18N
+        jLabel4.setPreferredSize(new java.awt.Dimension(125, 25));
+
+        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/luaguard/gui/Peking.png"))); // NOI18N
+
+        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/luaguard/gui/O.png"))); // NOI18N
+        jLabel6.setPreferredSize(new java.awt.Dimension(75, 75));
+
+        jLabel7.setFont(new java.awt.Font("Bella Donna", 0, 48)); // NOI18N
+        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabel7.setText("LuaGuard");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(21, 21, 21)
+                .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 55, Short.MAX_VALUE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 254, Short.MAX_VALUE)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jTextField3))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(10, 10, 10))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel7)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 95, Short.MAX_VALUE)
+                                .addComponent(jLabel5))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 254, Short.MAX_VALUE)
+                                    .addComponent(jTextField2, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jTextField3))))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(10, 10, 10))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -184,7 +244,15 @@ public class testingGUI extends javax.swing.JFrame {
                     .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton2))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel7)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         jButton2.getAccessibleContext().setAccessibleDescription("Select blacklist file for obfuscation");
@@ -238,11 +306,19 @@ public class testingGUI extends javax.swing.JFrame {
             }
         });
         jList1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jList1MouseClicked(evt);
+            }
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 jList1MousePressed(evt);
             }
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 jList1MouseReleased(evt);
+            }
+        });
+        jList1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jList1KeyReleased(evt);
             }
         });
         jScrollPane3.setViewportView(jList1);
@@ -257,6 +333,11 @@ public class testingGUI extends javax.swing.JFrame {
                 jList2MouseClicked(evt);
             }
         });
+        jList2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jList2KeyReleased(evt);
+            }
+        });
         jScrollPane4.setViewportView(jList2);
 
         jButton9.setText(">");
@@ -266,26 +347,38 @@ public class testingGUI extends javax.swing.JFrame {
             }
         });
 
+        jCheckBox1.setText("Add Line Breaks");
+        jCheckBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBox1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane4)
-                    .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, 85, Short.MAX_VALUE)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                .addContainerGap())
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jCheckBox1)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
+                            .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jButton6, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 75, Short.MAX_VALUE)
+                            .addComponent(jButton7, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jButton8, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jButton9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                        .addContainerGap(13, Short.MAX_VALUE))))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -302,11 +395,13 @@ public class testingGUI extends javax.swing.JFrame {
                         .addComponent(jButton8))
                     .addComponent(jScrollPane4)
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jCheckBox1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton5)
-                    .addComponent(jButton4))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jButton4)
+                    .addComponent(jButton5))
+                .addContainerGap())
         );
 
         jButton9.getAccessibleContext().setAccessibleDescription("Adds selected obfuscator to list");
@@ -345,7 +440,9 @@ public class testingGUI extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
@@ -360,7 +457,7 @@ public class testingGUI extends javax.swing.JFrame {
         if (chooser.isMultiSelectionEnabled())  {chooser.setMultiSelectionEnabled(false);}
         int returnVal = chooser.showOpenDialog(testingGUI.this);  
         if(returnVal == JFileChooser.APPROVE_OPTION)
-        {  
+        {
             System.out.println("DEBUG: You chose to open this file: " + chooser.getSelectedFile().getName());  
             jTextField1.setText(chooser.getSelectedFile().getPath() );  
 
@@ -407,6 +504,44 @@ public class testingGUI extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField3ActionPerformed
 
+    private void jButton9MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton9MouseClicked
+        // TODO add your handling code here:
+        model1.addElement((String) jList2.getSelectedValue());
+    }//GEN-LAST:event_jButton9MouseClicked
+
+    private void jList2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jList2MouseClicked
+        // TODO add your handling code here:
+        JList list = (JList)evt.getSource();
+        if(evt.getClickCount()%2==0){
+            model1.addElement((String) list.getSelectedValue());
+        }
+    }//GEN-LAST:event_jList2MouseClicked
+    
+    private void jList1MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jList1MouseReleased
+        // TODO add your handling code here:
+        mouseDragging = false;
+    }//GEN-LAST:event_jList1MouseReleased
+
+    private void jList1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jList1MousePressed
+        // TODO add your handling code here:
+        dragSourceIndex = jList1.getSelectedIndex();
+        mouseDragging = true;
+    }//GEN-LAST:event_jList1MousePressed
+
+    private void jList1MouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jList1MouseDragged
+        // TODO add your handling code here:
+        if (mouseDragging) {
+            int currentIndex = jList1.locationToIndex(evt.getPoint());
+            if (currentIndex != dragSourceIndex) {
+                int dragTargetIndex = jList1.getSelectedIndex();
+                String dragElement = model1.get(dragSourceIndex);
+                model1.remove(dragSourceIndex);
+                model1.add(dragTargetIndex, dragElement);
+                dragSourceIndex = currentIndex;
+            }
+        }
+    }//GEN-LAST:event_jList1MouseDragged
+
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
         // TODO add your handling code here:
         model1.removeAllElements();
@@ -429,60 +564,69 @@ public class testingGUI extends javax.swing.JFrame {
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         // TODO add your handling code here:
         List obfuscators = new ArrayList();
-        String temp,infile,outfile,blacklist,command;
-        infile      = "";
-        outfile     = "";
-        blacklist   = "";
-        command     = "";
+        String temp;
+        String[] command;
         if(!jTextField1.getText().isEmpty()){
-            infile = "-file "+ jTextField1.getText();
+            obfuscators.add("-file");
+            obfuscators.add(jTextField1.getText());
         }
+        else{
+            jDialog1.setVisible(true);
+            return;}
         if(!jTextField2.getText().isEmpty()){
-            outfile = " -out "+jTextField2.getText();
+            obfuscators.add("-out");
+            obfuscators.add(jTextField2.getText());
         }
-        else{return;}
+        else{
+            jDialog1.setVisible(true);
+            return;}
         if(!jTextField3.getText().isEmpty()){
-            blacklist = " -blacklist "+jTextField3.getText();
+            obfuscators.add("-blacklist");
+            obfuscators.add(jTextField3.getText());
         }
+        obfuscators.add("-f");
+        obfuscators.add("-o");
         for(int i=0; i < model1.getSize(); i++){
             temp = model1.get(i);
             switch (temp) {
                 case "Function Renamer":
-                    temp = "fro";
-                    break;
+                temp = "fro";
+                break;
                 case "Variable Reanamer":
-                    temp = "vro";
-                    break;
+                temp = "vro";
+                break;
                 case "Renamer":
-                    temp = "ro";
-                    break;
+                temp = "ro";
+                break;
                 case "Junk Code":
-                    temp = "jso";
-                    break;
+                temp = "jso";
+                break;
                 case "Return Value":
-                    temp = "rvo";
-                    break;
+                temp = "rvo";
+                break;
                 case "Function Parameter":
-                    temp = "fpo";
-                    break;
+                temp = "fpo";
+                break;
                 case "Identity":
-                    temp = "none";
-                    break;
+                temp = "none";
+                break;
                 case "Function Call":
-                    temp = "fco";
-                    break;
+                temp = "fco";
+                break;
             }
             obfuscators.add(temp);
         }
-        command = command.concat(infile+outfile+blacklist+" -f"+" -o");
-        for(int i=0; i<obfuscators.size(); i++){
-            command = command.concat(" "+obfuscators.get(i));
+        if(jCheckBox1.isSelected()){
+            obfuscators.add("-debug");
         }
-        
-        System.out.println(command);
+        command = new String[obfuscators.size()];
+        for(int i=0; i<obfuscators.size(); i++){
+            command[i] = (String) obfuscators.get(i);
+        }
+        LuaGuard.main(command);
+
         //Call Command Line
-        
-        
+
         //jButton4.doClick();
     }//GEN-LAST:event_jButton5ActionPerformed
 
@@ -494,46 +638,38 @@ public class testingGUI extends javax.swing.JFrame {
         model1.removeAllElements();
         jList1.clearSelection();
         jList2.clearSelection();
-
     }//GEN-LAST:event_jButton4ActionPerformed
 
-    private void jButton9MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton9MouseClicked
+    private void jCheckBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox1ActionPerformed
         // TODO add your handling code here:
-        model1.addElement((String) jList2.getSelectedValue());
-    }//GEN-LAST:event_jButton9MouseClicked
+    }//GEN-LAST:event_jCheckBox1ActionPerformed
 
-    private void jList1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jList1MousePressed
-        // TODO add your handling code here:
-        dragSourceIndex = jList1.getSelectedIndex();
-        mouseDragging = true;
-    }//GEN-LAST:event_jList1MousePressed
-
-    private void jList1MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jList1MouseReleased
-        // TODO add your handling code here:
-        mouseDragging = false;
-    }//GEN-LAST:event_jList1MouseReleased
-
-    private void jList1MouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jList1MouseDragged
-        // TODO add your handling code here:
-        if (mouseDragging) {
-                int currentIndex = jList1.locationToIndex(evt.getPoint());
-                if (currentIndex != dragSourceIndex) {
-                    int dragTargetIndex = jList1.getSelectedIndex();
-                    String dragElement = model1.get(dragSourceIndex);
-                    model1.remove(dragSourceIndex);
-                    model1.add(dragTargetIndex, dragElement);
-                    dragSourceIndex = currentIndex;
-                }
-            }
-    }//GEN-LAST:event_jList1MouseDragged
-
-    private void jList2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jList2MouseClicked
+    private void jList1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jList1MouseClicked
         // TODO add your handling code here:
         JList list = (JList)evt.getSource();
         if(evt.getClickCount()%2==0){
-            model1.addElement((String) list.getSelectedValue());
+            model1.removeElement((String) list.getSelectedValue());
         }
-    }//GEN-LAST:event_jList2MouseClicked
+    }//GEN-LAST:event_jList1MouseClicked
+
+    private void jList2KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jList2KeyReleased
+        // TODO add your handling code here:
+        if(KeyEvent.VK_RIGHT == evt.getKeyCode() || KeyEvent.VK_ENTER == evt.getKeyCode()){
+            model1.addElement((String) jList2.getSelectedValue());
+        }
+    }//GEN-LAST:event_jList2KeyReleased
+
+    private void jList1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jList1KeyReleased
+        // TODO add your handling code here:
+        if( !jList1.isSelectionEmpty() && KeyEvent.VK_LEFT == evt.getKeyCode() || KeyEvent.VK_BACK_SPACE == evt.getKeyCode() || KeyEvent.VK_DELETE == evt.getKeyCode()){
+            model1.remove(jList1.getSelectedIndex());
+        }
+    }//GEN-LAST:event_jList1KeyReleased
+
+    private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
+        // TODO add your handling code here:
+        jDialog1.setVisible(false);
+    }//GEN-LAST:event_jButton10ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -579,6 +715,7 @@ public class testingGUI extends javax.swing.JFrame {
     private int dragSourceIndex;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
@@ -587,11 +724,17 @@ public class testingGUI extends javax.swing.JFrame {
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
     private javax.swing.JButton jButton9;
+    private javax.swing.JCheckBox jCheckBox1;
+    private javax.swing.JDialog jDialog1;
     private javax.swing.JFileChooser jFileChooser1;
-    private javax.swing.JFrame jFrame1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JList jList1;
     private javax.swing.JList jList2;
     private javax.swing.JMenu jMenu1;
@@ -603,7 +746,6 @@ public class testingGUI extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JTextField jTextField1;

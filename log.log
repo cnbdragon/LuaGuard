@@ -1,3 +1,3 @@
 INFO  [luaguard.LuaGuard]: Init Logging
 INFO  [luaguard.LuaGuard]: Start up
-INFO  [luaguard.LuaGuard]: Command: [-obfu, -file, Lua/classes2.lua, -output, output.lua, -o, ro, -debug, true]
+INFO  [luaguard.LuaGuard]: Command: [-file, C:\Users\Will\Desktop\classes2.lua, -out, C:\Users\Will\Desktop\out.lua, -f, -o, fpo, vro, jso, ro, -debug]
