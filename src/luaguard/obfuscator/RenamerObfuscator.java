@@ -128,28 +128,6 @@ public class RenamerObfuscator extends Obfuscator {
 	visitExps(stat.exps);
     }
     
-    /**
-     * Visits FuncCall and changes name of funccall
-     * 
-     * @param fc 
-     */
-    @Override
-    public void visit(FuncCall fc){
-        for(int i=0; i<fc.args.exps.size(); i++){
-            if(fc.args.exps.get(i).getClass().getName().contains("$NameExp")){
-                NameExp name = (NameExp) fc.args.exps.get(i);
-                String oldname = name.name.name;
-                String tempname;
-                if(dict.containsKey(oldname)){
-                    tempname = dict.get(oldname);
-                    name.name.name = tempname;
-                }
-            }
-        }
-        fc.lhs.accept(this);
-        fc.args.accept(this);
-    }
-    
     
     /**
      * Renames local function definitions
