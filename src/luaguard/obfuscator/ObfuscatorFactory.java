@@ -40,7 +40,6 @@ public class ObfuscatorFactory {
      * Constructs an obfuscator object given the obfuscator's name
      * 
      * @param name Name of the obfuscation to perform
-     * @param blacklist
      * @return Obfuscator object
      */
     public Obfuscator constructObfuscator(String name) {
@@ -70,7 +69,7 @@ public class ObfuscatorFactory {
             obf = new FunctionCallObfuscator(new Random());
             logger.debug("Build fco");
         } else if (name.equalsIgnoreCase("vro")) {
-            obf = new VarRenamerObfuscator();
+            obf = new VarRenamerObfuscator(blacklist);
             logger.debug("Build vro");
         } else if (name.equalsIgnoreCase("jso")) {
             obf = new JunkStatObfuscator();

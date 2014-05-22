@@ -48,7 +48,7 @@ public class BlacklistReader {
             String nextToken = input.next();
             //or to process line by line
             //String nextLine = input.nextLine();
-            System.out.println(nextToken);
+            //System.out.println(nextToken);
             temp.add(nextToken);
         }
 

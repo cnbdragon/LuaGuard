@@ -251,8 +251,6 @@ static Logger logger = LogManager.getLogger("GLOBAL"/*LuaGuard.class.getName()*/
                     BlacklistReader tempBLRead = new BlacklistReader();
                     List<String> passingBL = new ArrayList();
                     for (String blacklist1 : blacklist) {
-                        System.out.print("blacklist:");
-                        System.out.println(blacklist1);
                         if (fileUtil.exists(blacklist1)){
                             passingBL.addAll(tempBLRead.readFile(blacklist1));
                         } else {

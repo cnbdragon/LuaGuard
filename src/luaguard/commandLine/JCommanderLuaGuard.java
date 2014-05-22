@@ -72,7 +72,7 @@ public class JCommanderLuaGuard {
 
     @Parameter(names = "-blacklist", 
             descriptionKey = "blacklist")
-    private List<String> blacklist;
+    private List<String> blacklist = Lists.newArrayList();
 
     @Parameter(names = {"-o", "-obfu", "-obfuscator"}, 
             required = true, 

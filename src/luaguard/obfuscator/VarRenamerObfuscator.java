@@ -23,11 +23,22 @@ public class VarRenamerObfuscator extends Obfuscator{
     private HashMap<String, String> dict;
     //fobfuscator name base
     private String base = "OTOSOTE";
+    
     /**
      * Constructor of the variable renamer obfuscator
      */
     public VarRenamerObfuscator(){
         dict = new HashMap<String, String>();
+    }
+    /**
+     * Constructor of the variable renamer obfuscator
+     * @param blacklist
+     */
+    public VarRenamerObfuscator(List<String> blacklist){
+        dict = new HashMap<>();
+        for (String blacklist1  : blacklist) {
+            dict.put(blacklist1 , blacklist1 );
+        }
     }
     /**
      * If meet a new name than check its name in the hashmap, if it exists,
