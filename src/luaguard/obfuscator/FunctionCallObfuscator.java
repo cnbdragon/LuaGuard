@@ -23,44 +23,19 @@ import java.util.Random;
 import java.util.Set;
 import luaguard.traversal.FunctionDeclarationVisitor;
 import luaguard.traversal.NameVisitor;
+import luaguard.traversal.ArgumentVisitor;
 import org.luaj.vm2.ast.Chunk;
 import org.luaj.vm2.ast.Exp;
-import org.luaj.vm2.ast.Exp.FieldExp;
 import org.luaj.vm2.ast.Exp.FuncCall;
-import org.luaj.vm2.ast.Exp.IndexExp;
 import org.luaj.vm2.ast.Exp.MethodCall;
-import org.luaj.vm2.ast.Exp.NameExp;
 import org.luaj.vm2.ast.FuncArgs;
 import org.luaj.vm2.ast.ParList;
-import org.luaj.vm2.ast.Visitor;
 
 /**
  *
  * @author jgs
  */
 public class FunctionCallObfuscator extends NameResolver {
-
-    /**
-     * Visits all arguments in a function and collects the names of variables used.
-     */
-    private static class ArgumentVisitor extends Visitor {
-
-        private Set<String> names;
-
-        public ArgumentVisitor() {
-            names = new HashSet<String>();
-        }
-
-        @Override
-        public void visit(NameExp n) {
-           names.add(n.name.name);
-        }
-
-
-        public boolean isVarPassed(String name) {
-            return names.contains(name);
-        }
-    }
     
     private Set<String> blacklist;
     private Map<String, ParList> fPar;
