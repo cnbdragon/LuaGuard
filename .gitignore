@@ -7,3 +7,5 @@
 /Lua/lua52.dll
 /Lua/luac.exe
 lua.properties
+/test/luaguard/LuaGuardTest.java
+/test/luaguard/commandline/ListFilesUtilityTest.java
