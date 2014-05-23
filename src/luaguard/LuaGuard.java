@@ -27,6 +27,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.ResourceBundle;
 import java.util.Scanner;
 import luaguard.commandLine.BlacklistReader;
@@ -260,7 +261,7 @@ static Logger logger = LogManager.getLogger("GLOBAL"/*LuaGuard.class.getName()*/
                     
                     /*iterate throught list of obfuscators*/
                     for(int j = 0; j < obfus.size(); j++ ){
-                        Obfuscator ob = obFactory.constructObfuscator(obfus.get(j), passingBL);
+                        Obfuscator ob = obFactory.constructObfuscator(obfus.get(j), passingBL, new Random());
                         if(null != ob){
                             chunk.accept(ob);
                             if(debug){

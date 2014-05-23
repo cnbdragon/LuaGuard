@@ -17,6 +17,7 @@ package luaguard.obfuscator;
 
 import harness.BehaviourHarness;
 import harness.BehaviourHarness.LuaVersion;
+import harness.DeterministicRandom;
 import harness.TransformationHarness;
 import harness.exception.ProgramCrashException;
 import java.io.FileNotFoundException;
@@ -24,6 +25,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -43,8 +45,10 @@ public class MultipleObfuscatorsTest {
         obfList = new ArrayList<Obfuscator>();
         ObfuscatorFactory obfFactory = new ObfuscatorFactory();
         obfNames = ObfuscatorFactory.getObfuscatorList();
+        List<String> blacklist = new ArrayList<String>();
+        Random rnd = new DeterministicRandom();
         for (String name : obfNames) {
-            obfList.add(obfFactory.constructObfuscator(name));
+            obfList.add(obfFactory.constructObfuscator(name, blacklist, rnd));
         }
     }
     
