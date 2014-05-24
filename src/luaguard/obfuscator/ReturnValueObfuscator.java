@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
@@ -51,16 +52,28 @@ public class ReturnValueObfuscator extends NameResolver {
     private Set<String> funcsInFunc;
     private Map<String, Integer> funcUsages;
     private Map<String, Integer> funcReturns;
+    private Set<String> blacklist;
     private Random rnd;
     
     public ReturnValueObfuscator() {
         super();
         this.rnd = new Random();
+        this.blacklist = new HashSet<String>();
     }
-    
-    public ReturnValueObfuscator(Random rnd) {
+ 
+   public ReturnValueObfuscator(Random rnd) {
         super();
         this.rnd = rnd;
+        this.blacklist = new HashSet<String>();
+    }
+    
+    public ReturnValueObfuscator(Random rnd, List<String> blacklist) {
+        super();
+        this.rnd = rnd;
+        this.blacklist = new HashSet<String>();
+        for (String name : blacklist) {
+            this.blacklist.add(name);
+        }
     }
     
     @Override
@@ -106,6 +119,27 @@ public class ReturnValueObfuscator extends NameResolver {
     /**
      * Adds return statement to a function if the last statement is not a
      * return. i.e. turns void functions into non-void
+     * Used for anonymous functions
+     * 
+     * Note: Does NOT add return values to functions with a variable number of returns
+     *   or if a function call assignment has more variables on the left than are returned.
+     *
+     * @param n Assign node
+     */
+    @Override
+    public void visit(Assign n) {
+        for (int i = 0; i < n.exps.size(); i++) {
+            NameVisitor nv = new NameVisitor();
+            ((Exp)n.vars.get(i)).accept(nv);
+            if (!blacklist.contains(nv.getName()) && Exp.AnonFuncDef.class.equals(n.exps.get(i).getClass())) {
+                ((Exp) n.exps.get(i)).accept(this);
+            }
+        }
+    }
+    
+    /**
+     * Adds return statement to a function if the last statement is not a
+     * return. i.e. turns void functions into non-void
      * 
      * Note: Does NOT add return values to functions with a variable number of returns
      *   or if a function call assignment has more variables on the left than are returned.
@@ -115,6 +149,9 @@ public class ReturnValueObfuscator extends NameResolver {
     @Override
     public void visit(FuncDef n) {
         String name = NameVisitor.funcName(n.name);
+        
+        if (blacklist.contains(name))
+            return;
         
         // All functions are given at least one return statement
         if (!Return.class.isInstance(n.body.block.stats.get(n.body.block.stats.size() - 1))) {

@@ -54,20 +54,20 @@ public class ObfuscatorFactory {
      * @param rnd
      * @return Obfuscator object
      */
-    public Obfuscator constructObfuscator(String name, Set blacklist, Random rnd) {
+    public Obfuscator constructObfuscator(String name, List blacklist, Random rnd) {
         logger.debug("Construct Obfuscator");
         Obfuscator obf = null;
         if (name.equalsIgnoreCase("none")) {
             obf = new IdentityObfuscator();
             logger.debug("Build none");
         } else if (name.equalsIgnoreCase("fpo")) {
-            obf = new FunctionParameterObfuscator();
+            obf = new FunctionParameterObfuscator(blacklist);
             logger.debug("Build fpo");
         } else if (name.equalsIgnoreCase("rvo")) {
-            obf = new ReturnValueObfuscator(rnd);
+            obf = new ReturnValueObfuscator(rnd, blacklist);
             logger.debug("Build rvo");
         } else if (name.equalsIgnoreCase("fco")) {
-            obf = new FunctionCallObfuscator(rnd);
+            obf = new FunctionCallObfuscator(rnd, blacklist);
             logger.debug("Build fco");
         } else if (name.equalsIgnoreCase("vro")) {
             obf = new VarRenamerObfuscator(blacklist);

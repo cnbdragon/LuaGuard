@@ -18,12 +18,13 @@ package luaguard.obfuscator;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
+import luaguard.traversal.ArgumentVisitor;
 import luaguard.traversal.FunctionDeclarationVisitor;
 import luaguard.traversal.NameVisitor;
-import luaguard.traversal.ArgumentVisitor;
 import org.luaj.vm2.ast.Chunk;
 import org.luaj.vm2.ast.Exp;
 import org.luaj.vm2.ast.Exp.FuncCall;
@@ -42,24 +43,37 @@ public class FunctionCallObfuscator extends NameResolver {
     private Random rnd;
     
     public FunctionCallObfuscator() {
+        super();
         this.blacklist = new HashSet<String>();
         this.fPar = new HashMap<String, ParList>();
         this.rnd = new Random();
     }
-    
-    public FunctionCallObfuscator(Set<String> blacklist) {
-        this.blacklist = blacklist;
-        this.rnd = new Random();
-    }
-       
+
     public FunctionCallObfuscator(Random rnd) {
+        super();
         this.blacklist = new HashSet<String>();
+        this.fPar = new HashMap<String, ParList>();
         this.rnd = rnd;
     }
     
-    public FunctionCallObfuscator(Set<String> blacklist, Random rnd) {
-        this.blacklist = blacklist;
+    public FunctionCallObfuscator(List<String> blacklist) {
+        super();
+        this.blacklist = new HashSet<String>();
+        this.fPar = new HashMap<String, ParList>();
+        this.rnd = new Random();
+        for (String name : blacklist) {
+            this.blacklist.add(name);
+        }
+    }
+    
+    public FunctionCallObfuscator(Random rnd, List<String> blacklist) {
+        super();
+        this.blacklist = new HashSet<String>();
+        this.fPar = new HashMap<String, ParList>();
         this.rnd = rnd;
+        for (String name : blacklist) {
+            this.blacklist.add(name);
+        }
     }
     
     @Override

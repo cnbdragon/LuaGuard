@@ -16,7 +16,10 @@
 package luaguard.obfuscator;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import luaguard.traversal.NameVisitor;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.luaj.vm2.Lua;
@@ -29,6 +32,8 @@ import org.luaj.vm2.ast.FuncBody;
 import org.luaj.vm2.ast.Name;
 import org.luaj.vm2.ast.ParList;
 import org.luaj.vm2.ast.Stat;
+import org.luaj.vm2.ast.Stat.Assign;
+import org.luaj.vm2.ast.Stat.FuncDef;
 import org.luaj.vm2.ast.Stat.Return;
 
 //import org.slf4j.Logger;
@@ -41,6 +46,47 @@ public class FunctionParameterObfuscator extends Obfuscator {
 
     final Logger logger = LogManager.getLogger("GLOBAL");
 
+    private Set<String> blacklist;
+    
+    public FunctionParameterObfuscator() {
+        super();
+        this.blacklist = new HashSet<String>();
+    }
+    
+    public FunctionParameterObfuscator(List<String> blacklist) {
+        super();
+        this.blacklist = new HashSet<String>();
+        for (String name : blacklist) {
+            this.blacklist.add(name);
+        }
+    }
+    
+    /**
+     * Determine if function is in the blacklist
+     * @param n FuncDef node
+     */
+    @Override
+    public void visit(FuncDef n) {
+        String name = NameVisitor.funcName(n.name);
+        if (!blacklist.contains(name))
+            n.body.accept(this);
+    }
+    
+    /**
+     * Determine if the anonymous function is in the blacklist
+     * @param n Assign node
+     */
+    @Override
+    public void visit(Assign n) {
+        for (int i = 0; i < n.exps.size(); i++) {
+            NameVisitor nv = new NameVisitor();
+            ((Exp)n.vars.get(i)).accept(nv);
+            if (!blacklist.contains(nv.getName()) && Exp.AnonFuncDef.class.equals(n.exps.get(i).getClass())) {
+                ((Exp) n.exps.get(i)).accept(this);
+            }
+        }
+    }    
+    
     /**
      * Modifies the function body such that all parameters are varargs. Starting
      * statements are select function calls

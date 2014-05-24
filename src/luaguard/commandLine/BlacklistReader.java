@@ -19,9 +19,9 @@ package luaguard.commandLine;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -31,11 +31,11 @@ import java.util.logging.Logger;
  */
 public class BlacklistReader {
 
-    public Set<String> readFile(String directoryName) {
+    public List<String> readFile(String directoryName) {
         File file = new File(directoryName);
         Scanner input = null;
         
-        Set<String> temp = new HashSet();
+        List<String> temp = new ArrayList();
         try {
             input = new Scanner(file);
             //input.useDelimiter("\\s+");
