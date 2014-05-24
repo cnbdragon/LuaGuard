@@ -54,7 +54,7 @@ public class ObfuscatorFactory {
      * @param rnd
      * @return Obfuscator object
      */
-    public Obfuscator constructObfuscator(String name, List blacklist, Random rnd) {
+    public Obfuscator constructObfuscator(String name, Set blacklist, Random rnd) {
         logger.debug("Construct Obfuscator");
         Obfuscator obf = null;
         if (name.equalsIgnoreCase("none")) {
