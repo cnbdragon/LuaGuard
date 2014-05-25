@@ -24,7 +24,13 @@ import java.io.File;
 
 
 public class FileFilterLuaGuardPlugin {
-     public boolean accepts(File pathname)
+
+    /**
+     *
+     * @param pathname
+     * @return
+     */
+    public boolean accepts(File pathname)
      {
           if (pathname.getName().toLowerCase().endsWith(".txt") && pathname.isFile())
           {

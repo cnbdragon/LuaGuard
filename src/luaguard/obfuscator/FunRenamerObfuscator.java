@@ -4,7 +4,6 @@
  */
 
 package luaguard.obfuscator;
-
 import java.util.HashMap;
 import java.util.List;
 import org.apache.log4j.LogManager;
@@ -30,6 +29,13 @@ public class FunRenamerObfuscator extends Obfuscator {
     
     FunRenamerObfuscator(){
         dict = new HashMap<>();
+    }
+    
+    FunRenamerObfuscator(List<String> blacklist) {
+        dict = new HashMap<>();
+        for (String blacklist1  : blacklist) {
+            dict.put(blacklist1 , blacklist1 );
+        }
     }
     /**
      * Renames function definition
@@ -65,30 +71,6 @@ public class FunRenamerObfuscator extends Obfuscator {
                 dict.put(oldname,oldname);
             }
             nm.name = tempname;
-    }
-
-    /**
-     * Renames function calls
-     * @param fc 
-     */
-    @Override
-    public void visit(FuncCall fc){
-        for(int i=0; i<fc.args.exps.size(); i++){
-            if(fc.args.exps.get(i).getClass().getName().contains("$NameExp")){
-                NameExp name = (NameExp) fc.args.exps.get(i);
-                String oldname = name.name.name;
-                String tempname;
-                if(dict.containsKey(oldname)){
-                    tempname = dict.get(oldname);
-                    name.name.name = tempname;
-                }
-                else{
-                    dict.put(oldname,oldname);
-                }
-            }
-        }
-        fc.lhs.accept(this);
-        fc.args.accept(this);
     }
     
     /**

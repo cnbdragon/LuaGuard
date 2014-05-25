@@ -31,6 +31,7 @@ import org.luaj.vm2.parser.ParseException;
  * @author jgs
  */
 public class ReturnValueObfuscatorTest {
+    
     private Obfuscator obf;
     
     @Before
@@ -65,21 +66,7 @@ public class ReturnValueObfuscatorTest {
         Assert.assertFalse("Identity transformation", 
                TransformationHarness.isSameSourceCode(path, obf));
     }
-   
-    @Test
-    public void functionsBehaviourTest() throws FileNotFoundException, ParseException, IOException, InterruptedException, ProgramCrashException {
-        String path = "Lua/functions.lua";
-        Assert.assertTrue("Different behaviour",
-               BehaviourHarness.isSameOutput(path, obf));
-    }
-
-    @Test
-    public void functionsSourceCodeTest() throws FileNotFoundException, ParseException, IOException {
-        String path = "Lua/functions.lua";
-        Assert.assertFalse("Identity transformation", 
-               TransformationHarness.isSameSourceCode(path, obf));
-    }    
-
+       
     @Test
     public void factorsBehaviourTest() throws FileNotFoundException, ParseException, IOException, InterruptedException, ProgramCrashException {
         String path = "Lua/factors.lua";
@@ -94,4 +81,17 @@ public class ReturnValueObfuscatorTest {
                TransformationHarness.isSameSourceCode(path, obf));
     }
 
+    @Test
+    public void functionsBehaviourTest() throws FileNotFoundException, ParseException, IOException, InterruptedException, ProgramCrashException {
+        String path = "Lua/functions.lua";
+        Assert.assertTrue("Different behaviour",
+               BehaviourHarness.isSameOutput(path, obf));
+    }
+
+    @Test
+    public void functionsSourceCodeTest() throws FileNotFoundException, ParseException, IOException {
+        String path = "Lua/functions.lua";
+        Assert.assertFalse("Identity transformation", 
+               TransformationHarness.isSameSourceCode(path, obf));
+    }
 }

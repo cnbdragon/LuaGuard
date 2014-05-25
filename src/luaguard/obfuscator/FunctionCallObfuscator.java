@@ -18,73 +18,74 @@ package luaguard.obfuscator;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
+import luaguard.traversal.ArgumentVisitor;
+import luaguard.traversal.FunctionDeclarationVisitor;
 import luaguard.traversal.NameVisitor;
+import org.luaj.vm2.ast.Chunk;
 import org.luaj.vm2.ast.Exp;
-import org.luaj.vm2.ast.Exp.FieldExp;
 import org.luaj.vm2.ast.Exp.FuncCall;
-import org.luaj.vm2.ast.Exp.IndexExp;
 import org.luaj.vm2.ast.Exp.MethodCall;
-import org.luaj.vm2.ast.Exp.NameExp;
 import org.luaj.vm2.ast.FuncArgs;
 import org.luaj.vm2.ast.ParList;
-import org.luaj.vm2.ast.Visitor;
 
 /**
  *
  * @author jgs
  */
 public class FunctionCallObfuscator extends NameResolver {
-
-    /**
-     * Visits all arguments in a function and collects the names of variables used.
-     */
-    private static class ArgumentVisitor extends Visitor {
-
-        private Set<String> names;
-
-        public ArgumentVisitor() {
-            names = new HashSet<String>();
-        }
-
-        @Override
-        public void visit(NameExp n) {
-           names.add(n.name.name);
-        }
-
-
-        public boolean isVarPassed(String name) {
-            return names.contains(name);
-        }
-    }
     
     private Set<String> blacklist;
     private Map<String, ParList> fPar;
     private Random rnd;
     
     public FunctionCallObfuscator() {
+        super();
         this.blacklist = new HashSet<String>();
         this.fPar = new HashMap<String, ParList>();
         this.rnd = new Random();
     }
-    
-    public FunctionCallObfuscator(Set<String> blacklist, Map<String, ParList> fPar) {
-        this.blacklist = blacklist;
-        this.fPar = fPar;
-        this.rnd = new Random();
-    }
-       
-    public FunctionCallObfuscator(Random rnd, Map<String, ParList> fPar) {
+
+    public FunctionCallObfuscator(Random rnd) {
+        super();
         this.blacklist = new HashSet<String>();
-        this.fPar = fPar;
+        this.fPar = new HashMap<String, ParList>();
         this.rnd = rnd;
     }
     
-    public FunctionCallObfuscator(Set<String> blacklist, Random rnd) {
-        this.blacklist = blacklist;
+    public FunctionCallObfuscator(List<String> blacklist) {
+        super();
+        this.blacklist = new HashSet<String>();
+        this.fPar = new HashMap<String, ParList>();
+        this.rnd = new Random();
+        for (String name : blacklist) {
+            this.blacklist.add(name);
+        }
+    }
+    
+    public FunctionCallObfuscator(Random rnd, List<String> blacklist) {
+        super();
+        this.blacklist = new HashSet<String>();
+        this.fPar = new HashMap<String, ParList>();
         this.rnd = rnd;
+        for (String name : blacklist) {
+            this.blacklist.add(name);
+        }
+    }
+    
+    @Override
+    public void visit(Chunk n) {
+        
+        // Collect function parameters
+        FunctionDeclarationVisitor fdv = new FunctionDeclarationVisitor();
+        n.block.accept(fdv);
+        fPar = fdv.funcPar;
+        
+        // Modify the remainder of the code
+        n.block.accept(this);
     }
     
     /**
@@ -150,7 +151,8 @@ public class FunctionCallObfuscator extends NameResolver {
         
         // If the function is varargs or function call has fewer args than the prototype, then stop
         if ((null != p.names && null != args.exps && args.exps.size() < p.names.size()) 
-            || p.isvararg)
+            || p.isvararg
+            || (null == args.exps && null != p.names))
             return false;
         
         return true;

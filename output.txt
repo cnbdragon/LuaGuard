@@ -1,3 +1,0 @@
-OTOSOTE0={};OTOSOTE0.__index=OTOSOTE0;
-function OTOSOTE0.create(balance) local OTOSOTE3={};setmetatable(OTOSOTE3,OTOSOTE0);
-OTOSOTE3.balance=balance;return OTOSOTE3;end;function OTOSOTE0:withdraw(amount)self.balance=self.balance - amount;end;OTOSOTE4=OTOSOTE0.create(1000);print(OTOSOTE4.balance);OTOSOTE4:withdraw(100);print(OTOSOTE4.balance);

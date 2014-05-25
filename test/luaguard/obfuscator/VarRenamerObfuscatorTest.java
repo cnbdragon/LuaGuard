@@ -33,7 +33,7 @@ import org.luaj.vm2.parser.ParseException;
  */
 public class VarRenamerObfuscatorTest {
     
-    Obfuscator obf;
+    private Obfuscator obf;
     
     @Before
     public void setup() {
@@ -78,6 +78,20 @@ public class VarRenamerObfuscatorTest {
     @Test
     public void factorsSourceCodeTest() throws FileNotFoundException, ParseException, IOException {
         String path = "Lua/factors.lua";
+        Assert.assertFalse("Identity transformation", 
+               TransformationHarness.isSameSourceCode(path, obf));
+    }
+
+    @Test
+    public void functionsBehaviourTest() throws FileNotFoundException, ParseException, IOException, InterruptedException, ProgramCrashException {
+        String path = "Lua/functions.lua";
+        Assert.assertTrue("Different behaviour",
+               BehaviourHarness.isSameOutput(path, obf));
+    }
+
+    @Test
+    public void functionsSourceCodeTest() throws FileNotFoundException, ParseException, IOException {
+        String path = "Lua/functions.lua";
         Assert.assertFalse("Identity transformation", 
                TransformationHarness.isSameSourceCode(path, obf));
     }
