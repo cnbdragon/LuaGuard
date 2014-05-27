@@ -107,7 +107,9 @@ static Logger logger = LogManager.getLogger("GLOBAL"/*LuaGuard.class.getName()*/
         }
 
         //this is where we deal with the arguments from the cli
-        if (jclg.getHelp()) {
+        if (jclg.getGui()){
+            luaguard.gui.testingGUI.main(null);
+        } else if (jclg.getHelp()) {
             mainCommander.usage();
             System.out.println(hints.getString("knownObfus"));
             ObfuscatorFactory obFactory = new ObfuscatorFactory();

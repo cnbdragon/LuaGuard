@@ -40,6 +40,11 @@ public class JCommanderLuaGuard {
             descriptionKey = "help",
             help = true)
     private boolean help;
+    
+    @Parameter(names = {"-gui"},
+            descriptionKey = "gui",
+            help = true)
+    private boolean gui;
 
     @Parameter(names = {"-!", "--about"},
             descriptionKey = "about",
@@ -180,5 +185,9 @@ public class JCommanderLuaGuard {
     
     public boolean getMap(){
         return map;
+    }
+    
+    public boolean getGui(){
+        return gui;
     }
 }
